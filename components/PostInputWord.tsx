@@ -7,7 +7,6 @@ type PostInputWordProps = {
 export default function PostInputWord( {word} : PostInputWordProps) {
 
 
-
   return (
     <Button
       type="button"
