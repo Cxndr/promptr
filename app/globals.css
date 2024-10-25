@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/violet.css";
+@import "@radix-ui/colors/mauve.css";
+
 :root {
   --max-width: 1280px;
   box-sizing: border-box;
@@ -20,8 +24,6 @@ body {
   min-height: 100vh;
   line-height: 1.5;
 }
-
-
 
 @layer utilities {
   .text-balance {
@@ -92,4 +94,12 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* form reset */
+input,
+textarea,
+button {
+  all: unset;
+  box-sizing: border-box;
 }
