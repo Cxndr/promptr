@@ -1,4 +1,5 @@
 import { ModeToggle } from "@/components/ModeToggle";
+import AniTitle from "@/components/ui/landingtxtani/AniTitle"
 import Image from "next/image";
 import wordGameLogo from "@/app/images/wordGameLogo.webp";
 import { fetchUserProfile } from "@/lib/fetch";
@@ -15,7 +16,7 @@ export default async function Home() {
   return (
     <div>
       <Image
-        className="rounded-full flex m-4"
+        className="flex justify-center mt-16"
         src={wordGameLogo}
         alt="Black & white Art-deco logo of a person holding a card"
         width={100}
@@ -24,6 +25,7 @@ export default async function Home() {
       />
       <div className="absolute top-4 right-4 z-10">
         <ModeToggle />
+        <AniTitle/>
       </div>
     </div>
   );

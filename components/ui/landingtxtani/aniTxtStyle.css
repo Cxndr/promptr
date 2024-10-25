@@ -1,0 +1,48 @@
+
+span {
+    display: inline-block;
+    min-width: 0.7ch;
+}
+
+.AniTitle {
+    font-family: sans-serif;
+    color: #dc3a73;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row-reverse;
+    position: relative;
+    gap: 40px;
+    min-height: 10vh;
+    width: 130vw;
+    transform: translateX(-19vw); 
+    
+}
+
+.word-wrapper {
+    font-size: 1.9rem;
+    letter-spacing: 0.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    width: 70%;
+    overflow: hidden;
+}
+.word {
+    position: absolute;
+    width: max-content;
+    right: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle {
+    width: 55px;
+    aspect-ratio: 1;
+    background-color: #dc3a73;
+    border-radius: 50%;
+    z-index: 2;
+}
