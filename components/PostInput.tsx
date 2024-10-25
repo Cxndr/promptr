@@ -3,17 +3,25 @@ import { useEffect, useState } from "react";
 import PostInputWord from "./PostInputWord";
 import PostInputField from "./PostInputField";
 import { Tag } from "emblor";
-import { Form, FormControl, FormDescription, FormItem, FormLabel, FormMessage, FormField } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  FormField,
+} from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { Word } from "@/lib/types";
 
-export type Word = {
-  word: string;
-  type: 'base' | 'filler';
-  used: number;
-}
-
-export default function PostInput() {
-
+export default function PostInput({
+  baseWords,
+  fillerWords,
+}: {
+  baseWords: Word[];
+  fillerWords: Word[];
+}) {
   const [baseWordList, setBaseWordList] = useState<string[]>([]);
   const [fillerWordList, setFillerWordList] = useState<string[]>([]);
   const [wordList, setWordList] = useState<Word[]>([]);
@@ -21,26 +29,23 @@ export default function PostInput() {
   const [responseSentence, setResponseSentence] = useState<string>("");
 
   useEffect(() => {
-    function getWordLists() {
-      setBaseWordList(["apple", "banana", "cherry", "date", "elderberry", "fig", "grape", "honeydew", "kiwi", "lemon", "mango", "nectarine", "orange", "pear", "quince", "raspberry", "strawberry", "tangerine", "watermelon"]);
-      setFillerWordList(["a", "an", "the", "this", "that", "these", "those", "my", "your", "its", "our", "their", "in", "is", "to", "more", "no", ". ", ", "])
-    }
-    getWordLists();
-  }, []);
+    setBaseWordList(baseWords.map((wordObj) => wordObj.word));
+    setFillerWordList(fillerWords.map((wordObj) => wordObj.word));
+  }, [baseWords, fillerWords]);
 
   useEffect(() => {
     const list: Word[] = [];
     baseWordList.forEach((word) => {
       list.push({
         word: word,
-        type: 'base',
+        type: "base",
         used: 0,
       });
     });
     fillerWordList.forEach((word) => {
       list.push({
         word: word,
-        type: 'filler',
+        type: "filler",
         used: 0,
       });
     });
@@ -57,11 +62,11 @@ export default function PostInput() {
         }
         return part;
       })
-      .join(''); // Rejoin the text
+      .join(""); // Rejoin the text
   }
 
   useEffect(() => {
-    let sentence = tags.map(tag => tag.text).join(" ");
+    let sentence = tags.map((tag) => tag.text).join(" ");
     if (sentence) {
       sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1) + ".";
       sentence = sentence.replaceAll(" .", ".");
@@ -71,9 +76,8 @@ export default function PostInput() {
     setResponseSentence(sentence);
   }, [tags]);
 
-
   function insertWord(word: Word) {
-    setTags([...tags, {id: tags.length.toString(), text: word.word}]);
+    setTags([...tags, { id: tags.length.toString(), text: word.word }]);
   }
 
   function removeWord(tagString: string) {
@@ -84,7 +88,7 @@ export default function PostInput() {
       return word;
     });
     setWordList(updatedWordList);
-    setTags(tags.filter(tag => tag.text !== tagString));
+    setTags(tags.filter((tag) => tag.text !== tagString));
   }
 
   function clearAll() {
@@ -104,12 +108,16 @@ export default function PostInput() {
   return (
     <div>
       <h3 className="text-xl">
-        {responseSentence ? responseSentence : 
-          <span className="text-gray-400">Create a sentence using the words below.</span>
-        }
+        {responseSentence ? (
+          responseSentence
+        ) : (
+          <span className="text-gray-400">
+            Create a sentence using the words below.
+          </span>
+        )}
       </h3>
       <Form {...form}>
-        <form 
+        <form
           onSubmit={handleSubmit}
           className="flex flex-col justify-center items-center p-4"
         >
@@ -118,17 +126,15 @@ export default function PostInput() {
             name="submitPromtResponseForm"
             render={() => (
               <FormItem>
-                <FormLabel/>
+                <FormLabel />
 
-                <FormDescription>
-                  
-                </FormDescription>
+                <FormDescription></FormDescription>
 
                 <FormControl>
                   <div className="">
-                    <PostInputField 
-                      wordList={wordList} 
-                      incomingTags={tags} 
+                    <PostInputField
+                      wordList={wordList}
+                      incomingTags={tags}
                       removeWord={removeWord}
                       clearAll={clearAll}
                     />
@@ -136,31 +142,34 @@ export default function PostInput() {
                 </FormControl>
 
                 <FormControl>
-                  
-                <div id="post-selections" className="flex gap-2 flex-wrap px-4">
-                  {wordList.map((word, index) => {
-                    return (
-                      <PostInputWord
-                        key={index} 
-                        word={word} 
-                        insertWord={insertWord}
-                      />
-                    )
-                  })}
-                </div>
+                  <div
+                    id="post-selections"
+                    className="flex gap-2 flex-wrap px-4"
+                  >
+                    {wordList.map((word, index) => {
+                      return (
+                        <PostInputWord
+                          key={index}
+                          word={word}
+                          insertWord={insertWord}
+                        />
+                      );
+                    })}
+                  </div>
                 </FormControl>
 
-                
-                <FormMessage/>
+                <FormMessage />
               </FormItem>
             )}
           />
-          <button type="submit" className="mt-8 px-4 py-2 bg-green-600 hover:bg-green-700 font-bold rounded-lg shadow-sm shadow-black">Submit</button>
+          <button
+            type="submit"
+            className="mt-8 px-4 py-2 bg-green-600 hover:bg-green-700 font-bold rounded-lg shadow-sm shadow-black"
+          >
+            Submit
+          </button>
         </form>
       </Form>
-
-
-
     </div>
-  )
+  );
 }
