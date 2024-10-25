@@ -6,7 +6,7 @@ import { Tag } from "emblor";
 import {
   Form,
   FormControl,
-  FormDescription,
+  // FormDescription,
   FormItem,
   FormLabel,
   FormMessage,
@@ -109,7 +109,7 @@ export default function PostInput({
           responseSentence
         ) : (
           <span className="text-gray-400">
-            Create a sentence using the words below.
+            Create a response using the words below.
           </span>
         )}
       </h3>
@@ -130,35 +130,38 @@ export default function PostInput({
               <FormItem>
                 <FormLabel />
 
-                <FormDescription></FormDescription>
+                {/* <FormDescription></FormDescription> */}
 
-                <FormControl>
-                  <div className="">
-                    <PostInputField
-                      wordList={wordList}
-                      incomingTags={tags}
-                      removeWord={removeWord}
-                      clearAll={clearAll}
-                    />
-                  </div>
-                </FormControl>
+                <div className="flex flex-col gap-6">
+                  <FormControl>
+                    <div className="">
+                      <PostInputField
+                        wordList={wordList}
+                        incomingTags={tags}
+                        removeWord={removeWord}
+                        clearAll={clearAll}
+                      />
+                    </div>
+                  </FormControl>
 
-                <FormControl>
-                  <div
-                    id="post-selections"
-                    className="flex gap-2 flex-wrap px-4"
-                  >
-                    {wordList.map((word, index) => {
-                      return (
-                        <PostInputWord
-                          key={index}
-                          word={word}
-                          insertWord={insertWord}
-                        />
-                      );
-                    })}
-                  </div>
-                </FormControl>
+                  <FormControl>
+                    <div
+                      id="post-selections"
+                      className="flex gap-2 flex-wrap px-4"
+                    >
+                      {wordList.map((word, index) => {
+                        return (
+                          <PostInputWord
+                            key={index}
+                            word={word}
+                            insertWord={insertWord}
+                          />
+                        );
+                      })}
+                    </div>
+                  </FormControl>
+                </div>
+                
 
                 <FormMessage />
               </FormItem>
@@ -166,7 +169,7 @@ export default function PostInput({
           />
           <button
             type="submit"
-            className="mt-8 px-4 py-2 bg-green-600 hover:bg-green-700 font-bold rounded-lg shadow-sm shadow-black"
+            className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-700 font-bold rounded-lg shadow-sm shadow-black"
           >
             Submit
           </button>

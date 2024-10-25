@@ -80,7 +80,7 @@ export default function PostInputField({
         inlineTagsContainer:
           "bg-zinc-200 text-white rounded-2xl p-2 w-full min-h-11 border-0",
         clearAllButton:
-          "bg-red-500 hover:bg-red-600 text-white w-auto self-center m-2",
+          "bg-red-500 hover:bg-red-600 text-white w-auto self-center mt-3",
         input: "hidden",
         autoComplete: {
           popoverContent: "hidden",
