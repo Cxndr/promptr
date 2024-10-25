@@ -1,17 +1,37 @@
 import PostInput from "@/components/PostInput";
+import PostPrompt from "@/components/PostPrompt";
+
 import { db } from "@/lib/db";
 import { Word } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
+import { Prompt } from "@/lib/types";
 
-export default async function PostTest() {
+type PromptPageProps = {
+  params: {
+    promptId: string;
+  }
+}
+
+export default async function PromptPage({params}: PromptPageProps) {
+
   const { userId } = await auth();
-  const promptId = null; // modify this later when handling specific prompts from db
 
   const { rows: baseWords }: { rows: Word[] } = await db.query(
     "SELECT word FROM wg_words"
   );
   const { rows: fillerWords }: { rows: Word[] } = await db.query(
     "SELECT word FROM wg_filler_words"
+  );
+
+  const {rows: promptRes} : {rows: Prompt[]} = await db.query(
+    "SELECT * FROM wg_prompts WHERE id = ($1)",
+    [params.promptId]
+  )
+  const prompt = promptRes[0];
+    
+
+  const { rows: promptId }: { rows: Prompt[] } = await db.query(
+    "SELECT id, content FROM wg_prompts"
   );
 
   const handleSubmit = async (data: { words: string[]; content: string }) => {
@@ -29,13 +49,13 @@ export default async function PostTest() {
   };
 
   return (
-    <div className="max-w-4xl">
-      
+    <div className="max-w-4xl flex flex-col gap-4">
+      <PostPrompt prompt={prompt}/>
       <PostInput
         baseWords={baseWords}
         fillerWords={fillerWords}
         handleSubmit={handleSubmit}
       />
     </div>
-  );
+  )
 }
