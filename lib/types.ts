@@ -3,3 +3,8 @@ export type Word = {
   type: "base" | "filler";
   used: number;
 };
+
+export type Prompt = {
+  id: number;
+  content: string;
+}

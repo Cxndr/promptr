@@ -58,13 +58,12 @@ export default function PostInput({
     return text
       .split(/(\.\s*)/) // Split on period followed by any number of spaces
       .map((part, index) => {
-        // Only capitalize sentences, skip the period itself
         if (index % 2 === 0) {
           return part.charAt(0).toUpperCase() + part.slice(1);
         }
         return part;
       })
-      .join(""); // Rejoin the text
+      .join("");
   }
 
   useEffect(() => {

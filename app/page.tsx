@@ -1,7 +1,7 @@
 import { ModeToggle } from "@/components/ModeToggle";
 import AniTitle from "@/components/ui/AniTitle"
 import Image from "next/image";
-import wordGameLogo from "@/app/images/wordGameLogo.webp";
+import wordGameLogo from "@/public/img/wordGameLogo.webp";
 import { fetchUserProfile } from "@/lib/fetch";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";

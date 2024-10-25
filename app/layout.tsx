@@ -42,7 +42,9 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header />
-            {children}
+              <main className="flex flex-col justify-center items-center w-full">
+                {children}
+              </main>
             <Footer />
           </ThemeProvider>
         </body>
