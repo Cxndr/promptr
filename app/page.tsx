@@ -1,5 +1,5 @@
 import { ModeToggle } from "@/components/ModeToggle";
-import AniTitle from "@/components/ui/landingtxtani/AniTitle"
+import AniTitle from "@/components/ui/AniTitle"
 import Image from "next/image";
 import wordGameLogo from "@/app/images/wordGameLogo.webp";
 import { fetchUserProfile } from "@/lib/fetch";
@@ -23,9 +23,11 @@ export default async function Home() {
         height={38}
         priority
       />
+      <div className="">
+        <AniTitle/>
+      </div >
       <div className="absolute top-4 right-4 z-10">
         <ModeToggle />
-        <AniTitle/>
       </div>
     </div>
   );
