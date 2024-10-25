@@ -6,6 +6,8 @@ import { Word } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
 import { Prompt } from "@/lib/types";
 
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
 type PromptPageProps = {
   params: {
     promptId: string;
@@ -49,13 +51,22 @@ export default async function PromptPage({params}: PromptPageProps) {
   };
 
   return (
-    <div className="max-w-4xl flex flex-col gap-4">
-      <PostPrompt prompt={prompt}/>
-      <PostInput
-        baseWords={baseWords}
-        fillerWords={fillerWords}
-        handleSubmit={handleSubmit}
-      />
+    <div className="max-w-6xl flex flex-col gap-6 justify-center items-center">
+      
+      <div className="flex justify-center items-center gap-8">
+        <ChevronLeft size={96} className="text-zinc-200" />
+        <PostPrompt prompt={prompt}/>
+        <ChevronRight size={96} className="text-zinc-200"/>
+      </div>
+
+      <div className="max-w-5xl">
+        <PostInput
+          baseWords={baseWords}
+          fillerWords={fillerWords}
+          handleSubmit={handleSubmit}
+        />
+      </div>
+      
     </div>
   )
 }
