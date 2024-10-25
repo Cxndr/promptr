@@ -1,5 +1,5 @@
 'use client'
-import "@/components/ui/landingtxtani/aniTxtStyle.css";
+import aniStyle from "@/styles/aniTxtStyle.module.css";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -18,7 +18,7 @@ export default function AnimatedSubtitle() {
     const wordVariants = {
 // @ts-expect-error yes, i will ignore for now
     hidden: (length) => {
-        console.log(length);
+        
         return {
         x: "calc(100% - 10px)",
         transition: {
@@ -58,10 +58,10 @@ export default function AnimatedSubtitle() {
         }
     };
     return (
-        <div className="AniTitle">
-        <motion.div className="word-wrapper">
+        <div className={aniStyle["AniTitle"]}>
+        <motion.div className={aniStyle["word-wrapper"]}>
             <motion.div
-            className="word"
+            className={aniStyle["word"]}
             initial="hidden"
             animate={toHide ? "hidden" : "visible"}
             custom={words[currentWordIndex].length}
@@ -79,12 +79,12 @@ export default function AnimatedSubtitle() {
             }}
         >
             {currentWord.map((letter, i) => (
-                <motion.span key={i} variants={letterVariants}>
+                <motion.span className = {aniStyle["span"]} key={i} variants={letterVariants}>
                 {letter}
                 </motion.span>
             ))}
             </motion.div>
-            <motion.div className="circle"></motion.div>
+            <motion.div className={aniStyle["circle"]}></motion.div>
         </motion.div>
         </div>
     );
