@@ -1,28 +1,32 @@
 import { ModeToggle } from "@/components/ModeToggle";
 import AniTitle from "@/components/ui/landingtxtani/AniTitle"
 import Image from "next/image";
-import wordGameLogo from "@/app/images/wordGameLogo.webp"
+import wordGameLogo from "@/app/images/wordGameLogo.webp";
+import { fetchUserProfile } from "@/lib/fetch";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
+export default async function Home() {
+  const { userId } = await auth();
+  const profile = await fetchUserProfile(userId);
 
-export default function Home() {
+  if (profile.rowCount === 0) {
+    redirect("/profile");
+  }
   return (
-    <>
-      <main>
-
-        <div className="flex justify-center mt-16">
-          <Image 
-            src={wordGameLogo}
-            alt="Black & white Art-deco logo of a person holding a card"
-            width={100}
-            height={38}
-            priority
-          />
-        </div>
-          <AniTitle/>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        
-      </footer>
-    </>
+    <div>
+      <Image
+        className="flex justify-center mt-16"
+        src={wordGameLogo}
+        alt="Black & white Art-deco logo of a person holding a card"
+        width={100}
+        height={38}
+        priority
+      />
+      <div className="absolute top-4 right-4 z-10">
+        <ModeToggle />
+        <AniTitle/>
+      </div>
+    </div>
   );
 }
