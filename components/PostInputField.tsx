@@ -1,17 +1,21 @@
 // import Button from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { Tag, TagInput } from "emblor";
-import { Word } from "./PostInput";
+import { Word } from "@/lib/types";
 
 type PostInputFieldProps = {
   wordList: Word[];
   incomingTags: Tag[];
-  removeWord: (tagString:string) => void;
+  removeWord: (tagString: string) => void;
   clearAll: () => void;
-}
+};
 
-export default function PostInputField( {wordList, incomingTags, clearAll, removeWord} : PostInputFieldProps) {
-
+export default function PostInputField({
+  wordList,
+  incomingTags,
+  clearAll,
+  removeWord,
+}: PostInputFieldProps) {
   const [tags, setTags] = useState<Tag[]>([]);
   const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
   const [tagOptions, setTagOptions] = useState<Tag[]>([]);
@@ -22,7 +26,7 @@ export default function PostInputField( {wordList, incomingTags, clearAll, remov
         return {
           id: index.toString(),
           text: word.word,
-        }
+        };
       });
       setTagOptions(tags);
     }
@@ -32,7 +36,6 @@ export default function PostInputField( {wordList, incomingTags, clearAll, remov
   useEffect(() => {
     setTags(incomingTags);
   }, [incomingTags]);
-  
 
   function handleRemoveTag(tag: string) {
     console.log("removing tag: ", tag);
@@ -46,7 +49,9 @@ export default function PostInputField( {wordList, incomingTags, clearAll, remov
   return (
     <TagInput
       tags={tags}
-      setTags={(newTags) => { setTags(newTags); }}
+      setTags={(newTags) => {
+        setTags(newTags);
+      }}
       activeTagIndex={activeTagIndex}
       setActiveTagIndex={setActiveTagIndex}
       enableAutocomplete={true}
@@ -60,12 +65,8 @@ export default function PostInputField( {wordList, incomingTags, clearAll, remov
       onTagRemove={handleRemoveTag}
       inlineTags={true}
       usePopoverForTags={false}
-      interaction = {
-        "clickable"
-      }
-      animation = {
-        "slideIn"
-      }
+      interaction={"clickable"}
+      animation={"slideIn"}
       className="bg-red-500"
       styleClasses={{
         tag: {
@@ -76,15 +77,16 @@ export default function PostInputField( {wordList, incomingTags, clearAll, remov
           container: "bg-red-500 p-4",
           sortableList: "bg-blue-500 p-4",
         },
-        inlineTagsContainer: "bg-zinc-200 text-white rounded-2xl p-2 w-full min-h-11 border-0",
-        clearAllButton: "bg-red-500 hover:bg-red-600 text-white w-auto self-center m-2",
+        inlineTagsContainer:
+          "bg-zinc-200 text-white rounded-2xl p-2 w-full min-h-11 border-0",
+        clearAllButton:
+          "bg-red-500 hover:bg-red-600 text-white w-auto self-center m-2",
         input: "hidden",
         autoComplete: {
           popoverContent: "hidden",
           popoverTrigger: "hidden",
-        }
+        },
       }}
-
     />
-  )
+  );
 }
