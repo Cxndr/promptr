@@ -18,9 +18,11 @@ import { Word } from "@/lib/types";
 export default function PostInput({
   baseWords,
   fillerWords,
+  handleSubmit,
 }: {
   baseWords: Word[];
   fillerWords: Word[];
+  handleSubmit: (data: { words: string[]; content: string }) => void;
 }) {
   const [baseWordList, setBaseWordList] = useState<string[]>([]);
   const [fillerWordList, setFillerWordList] = useState<string[]>([]);
@@ -101,10 +103,6 @@ export default function PostInput({
 
   const form = useForm();
 
-  function handleSubmit() {
-    // submit the post
-  }
-
   return (
     <div>
       <h3 className="text-xl">
@@ -118,7 +116,12 @@ export default function PostInput({
       </h3>
       <Form {...form}>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={(e) => {
+            e.preventDefault();
+            const words = wordList.map((word) => word.word);
+            const content = responseSentence;
+            handleSubmit({ words, content });
+          }}
           className="flex flex-col justify-center items-center p-4"
         >
           <FormField
