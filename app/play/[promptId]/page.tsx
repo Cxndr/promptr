@@ -6,7 +6,7 @@ import { Word } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
 import { Prompt } from "@/lib/types";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+
 
 type PromptPageProps = {
   params: {
@@ -31,16 +31,34 @@ export default async function PromptPage({params}: PromptPageProps) {
     LIMIT 20
   `);
 
+  const {rows: allPrompts} : {rows: Prompt[]} = await db.query(
+    "SELECT * FROM wg_prompts"
+  )
+
   const {rows: promptRes} : {rows: Prompt[]} = await db.query(
     "SELECT * FROM wg_prompts WHERE id = ($1)",
     [params.promptId]
   )
-  const prompt = promptRes[0];
-    
 
-  const { rows: promptId }: { rows: Prompt[] } = await db.query(
-    "SELECT id, content FROM wg_prompts"
-  );
+  const prompt = promptRes[0];
+  const promptCount = promptRes.length;
+  const promptsLowerBound = allPrompts[0].id;
+  const promptsUpperBound = promptsLowerBound + promptCount;
+
+
+  async function nextPrompt() {
+    "use server";
+    if (prompt.id < promptsUpperBound) {
+      location.href = `/play/${prompt.id + 1}`;
+    }
+  }
+
+  async function prevPrompt() {
+    "use server";
+    if (prompt.id > promptsLowerBound) {
+      location.href = `/play/${prompt.id - 1}`;
+    }
+  }
 
   const handleSubmit = async (data: { words: string[]; content: string }) => {
     "use server";
@@ -48,7 +66,7 @@ export default async function PromptPage({params}: PromptPageProps) {
     try {
       await db.query(
         `INSERT INTO wg_posts (clerk_id, prompt_id, content, words) VALUES ($1, $2, $3, $4)`,
-        [userId, promptId, data.content, data.words]
+        [userId, prompt.id, data.content, data.words]
       );
       console.log("Success. content:", data.content, "and words:", data.words);
     } catch (err) {
@@ -56,14 +74,17 @@ export default async function PromptPage({params}: PromptPageProps) {
     }
   };
 
+
   return (
-    <div className="max-w-6xl flex flex-col gap-6 justify-center items-center">
-      
-      <div className="flex justify-center items-center gap-8">
-        <ChevronLeft size={96} className="text-zinc-200" />
-        <PostPrompt prompt={prompt}/>
-        <ChevronRight size={96} className="text-zinc-200"/>
-      </div>
+    <div className="max-w-6xl flex flex-col gap-4 justify-center items-center">
+
+      <PostPrompt 
+        prompt={prompt} 
+        promptsUpperBound={promptsUpperBound} 
+        promptsLowerBound={promptsLowerBound}
+        nextPrompt={nextPrompt}
+        prevPrompt={prevPrompt}
+      />
 
       <div className="max-w-5xl">
         <PostInput
