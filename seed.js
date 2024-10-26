@@ -1,9 +1,13 @@
-import pkg from "pg";
-const { Pool } = pkg;
 
-export const db = new Pool({
+import pg from "pg";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+export const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
 });
+
 
 const emptyAllTables = async () => {
   try {
