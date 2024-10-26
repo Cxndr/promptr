@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Noto_Serif, Rubik_Mono_One } from "next/font/google";
 
 export const metadata: Metadata = {
   title: "Word Prompter",
@@ -12,15 +12,18 @@ export const metadata: Metadata = {
     "Create a solution to a prompt based on given words | Word Prompter",
 };
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const noto = Noto_Serif({
+  subsets: ["latin"],
+  style: "normal",
+  weight: "400",
+  variable: "--font-noto",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+const rubik = Rubik_Mono_One({
+  subsets: ["latin"],
+  style: "normal",
+  weight: "400",
+  variable: "--font-rubik",
 });
 
 export default function RootLayout({
@@ -31,9 +34,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
+        <body className={`${noto.variable} ${rubik.variable} antialiased`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -41,7 +42,9 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header />
-            {children}
+              <main className="flex flex-col justify-center items-center w-full">
+                {children}
+              </main>
             <Footer />
           </ThemeProvider>
         </body>

@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Word Prompter
 
-## Getting Started
+(name TBD)
 
-First, run the development server:
+### User Stories
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Create Post with Preset Words:
+   As a user, I want to make a post on each prompt page using a preset list of words, so I can create an answer to the prompt efficiently.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Navigate Through Prompts:
+   As a user, I want to navigate through different prompts, so I can find and interact with various challenges.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. View and Upvote Answers:
+   As a user, I want to see other users' answers to the prompts listed by upvotes and upvote the ones I like, so I can engage with and appreciate the best responses.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Introduction to the Game:
+   As a user, I want an introduction to the game/idea on the landing page, so I know how to interact with the app effectively.
 
-## Learn More
+5. User Authentication with Clerk:
+   As a user, I want to sign in using Clerk and have my user ID associated with my data, so I can have a personalized experience.
 
-To learn more about Next.js, take a look at the following resources:
+6. Enhance UX with Component Library:
+   As a developer, I want to use a component library to enhance the user experience, so the application is visually appealing and user-friendly.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+7. Mobile Compatibility:
+   As a user, I want the application to work on mobile devices, so I can use it conveniently on the go.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Strech Goals
 
-## Deploy on Vercel
+1. User-Generated Prompts:
+   As a user, I want to create my own prompts (either by submitting or live creation) so I can contribute to the community and see how others respond.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Most Popular Answers Grid Layout:
+   As a user, I want a page that shows the most popular answers to all prompts together in a grid layout with the prompt above each answer on the same card, so I can easily browse the best responses.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Most Used and Upvoted Words:
+   As a user, I want a page that displays the most used words and the most upvoted words, so I can see which words are trending and highly rated.
+
+4. Different Reactions:
+   As a user, I want to give different reactions (like laugh, shocked, etc.) to the answers, so I can express my emotions beyond just upvoting.

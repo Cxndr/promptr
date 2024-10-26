@@ -1,8 +1,9 @@
 -- Table for storing users
 CREATE TABLE wg_users (
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    clerk_id TEXT NOT NULL,
+    clerk_id TEXT NOT NULL UNIQUE,
     username VARCHAR(14) NOT NULL,
+    image_url TEXT,
     saved_prompts TEXT[], -- Array of saved prompt IDs
     times_upvoted INT[][] -- Array of arrays storing IDs of upvotes
 );
@@ -16,7 +17,7 @@ CREATE TABLE wg_prompts (
 -- Table for storing posts
 CREATE TABLE wg_posts (
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    user_id INT REFERENCES wg_users(id) ON DELETE CASCADE, -- References user
+    clerk_id TEXT REFERENCES wg_users(clerk_id) ON DELETE CASCADE, -- References user by clerk_id
     prompt_id INT REFERENCES wg_prompts(id) ON DELETE CASCADE, -- References prompt
     content TEXT NOT NULL,
     words TEXT[] NOT NULL, -- Array of words related to the post
