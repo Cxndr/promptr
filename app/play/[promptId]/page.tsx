@@ -5,8 +5,8 @@ import { db } from "@/lib/db";
 import { Word } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
 import { Prompt } from "@/lib/types";
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+
+
 
 type PromptPageProps = {
   params: {
@@ -41,24 +41,22 @@ export default async function PromptPage({params}: PromptPageProps) {
   )
 
   const prompt = promptRes[0];
-  const promptCount = allPrompts.length;
+  const promptCount = promptRes.length;
   const promptsLowerBound = allPrompts[0].id;
-  const promptsUpperBound = promptsLowerBound + promptCount-1;
+  const promptsUpperBound = promptsLowerBound + promptCount;
 
 
   async function nextPrompt() {
     "use server";
     if (prompt.id < promptsUpperBound) {
-      revalidatePath('/play');
-      redirect(`/play/${prompt.id + 1}`);
+      location.href = `/play/${prompt.id + 1}`;
     }
   }
 
   async function prevPrompt() {
     "use server";
     if (prompt.id > promptsLowerBound) {
-      revalidatePath('/play');
-      redirect(`/play/${prompt.id - 1}`);
+      location.href = `/play/${prompt.id - 1}`;
     }
   }
 

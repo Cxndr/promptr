@@ -18,18 +18,12 @@ export default function PostPrompt( {prompt, promptsLowerBound, promptsUpperBoun
   const leftButtonClassName = prompt.id <= promptsLowerBound ? "disabled text-zinc-600" : "text-zinc-200";
   const rightButtonClassName = prompt.id >= promptsUpperBound ? "disabled text-zinc-600" : "text-zinc-200";
   
-  function handleNextNav() {
-      nextPrompt();
-  }
-  function handlePrevNav() {
-      prevPrompt();
-  }
 
   return (
     <>
       <h3 className="text-md font-medium italic text-zinc-500">Prompt #{prompt.id}</h3>
       <div className="flex justify-center items-center gap-8">
-        <button className={leftButtonClassName} onClick={handlePrevNav}>
+        <button className={leftButtonClassName} onClick={prevPrompt}>
           <ChevronLeft size={96} className="" />
         </button>
         <div className="max-w-4xl mx-auto">
@@ -37,7 +31,7 @@ export default function PostPrompt( {prompt, promptsLowerBound, promptsUpperBoun
             <p className="text-2xl font-bold text-left">{prompt.content}</p>
           }
         </div>
-        <button className={rightButtonClassName} onClick={handleNextNav}>
+        <button className={rightButtonClassName} onClick={nextPrompt}>
           <ChevronRight size={96} className=""/>
         </button>
       </div>

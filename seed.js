@@ -2,15 +2,15 @@ import pkg from "pg";
 const { Pool } = pkg;
 
 export const db = new Pool({
-  connectionString: "postgresql://postgres.mvauihveekngrqnpmxpt:PxJjNHlaOXMQ0IZ9@aws-0-eu-west-2.pooler.supabase.com:6543/postgres",
+  connectionString: process.env.DATABASE_URL,
 });
 
 const emptyAllTables = async () => {
   try {
     await db.query("BEGIN");
 
-    // await db.query("TRUNCATE TABLE wg_users RESTART IDENTITY CASCADE");
-    // await db.query("TRUNCATE TABLE wg_prompts RESTART IDENTITY CASCADE");
+    await db.query("TRUNCATE TABLE wg_users RESTART IDENTITY CASCADE");
+    await db.query("TRUNCATE TABLE wg_prompts RESTART IDENTITY CASCADE");
     await db.query("TRUNCATE wg_posts RESTART IDENTITY CASCADE");
     await db.query("TRUNCATE wg_words RESTART IDENTITY CASCADE");
     await db.query("TRUNCATE wg_filler_words RESTART IDENTITY CASCADE");
@@ -40,7 +40,6 @@ const fillerWordList = [
   "such", "only", "just", "quite", "rather", "also"
 ];
 
-
 const insertInChunks = async (table, wordList, chunkSize = 1000) => {
   for (let i = 0; i < wordList.length; i += chunkSize) {
     const chunk = wordList.slice(i, i + chunkSize);
@@ -67,5 +66,5 @@ const fillWithWords = async () => {
 };
 
 
-// emptyAllTables();
+emptyAllTables();
 fillWithWords();
