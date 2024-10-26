@@ -2,7 +2,7 @@ import pkg from "pg";
 const { Pool } = pkg;
 
 export const db = new Pool({
-  connectionString: "postgresql://postgres.mvauihveekngrqnpmxpt:PxJjNHlaOXMQ0IZ9@aws-0-eu-west-2.pooler.supabase.com:6543/postgres",
+  connectionString: process.env.DATABASE_URL,
 });
 
 const emptyAllTables = async () => {
