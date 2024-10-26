@@ -18,12 +18,18 @@ export default async function PromptPage({params}: PromptPageProps) {
 
   const { userId } = await auth();
 
-  const { rows: baseWords }: { rows: Word[] } = await db.query(
-    "SELECT word FROM wg_words"
-  );
-  const { rows: fillerWords }: { rows: Word[] } = await db.query(
-    "SELECT word FROM wg_filler_words"
-  );
+  const { rows: baseWords }: { rows: Word[] } = await db.query(`
+    SELECT word 
+    FROM wg_words 
+    ORDER BY RANDOM() 
+    LIMIT 20
+  `);
+  const { rows: fillerWords }: { rows: Word[] } = await db.query(`
+    SELECT word 
+    FROM wg_filler_words 
+    ORDER BY RANDOM() 
+    LIMIT 20
+  `);
 
   const {rows: promptRes} : {rows: Prompt[]} = await db.query(
     "SELECT * FROM wg_prompts WHERE id = ($1)",

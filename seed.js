@@ -23,65 +23,48 @@ const emptyAllTables = async () => {
   }
 };
 
-const baseWordList = [
-  "apple",
-  "banana",
-  "cherry",
-  "date",
-  "elderberry",
-  "fig",
-  "grape",
-  "honeydew",
-  "kiwi",
-  "lemon",
-  "mango",
-  "nectarine",
-  "orange",
-  "pear",
-  "quince",
-  "raspberry",
-  "strawberry",
-  "tangerine",
-  "watermelon",
-];
+const baseWordList = ["abacus", "abdomen", "ablaze", "abroad", "abyss", "acclaim", "acorn", "adapt", "adobe", "adorn", "afflict", "agent", "agate", "agenda", "aggro", "ailment", "aisle", "ajar", "alarm", "albatross", "alcove", "alder", "almond", "aloof", "alpine", "amber", "amicable", "ample", "amulet", "anchor", "angelic", "anthem", "antics", "apex", "applejack", "apricot", "arable", "archery", "ardent", "arena", "arid", "armory", "arrow", "artful", "ascent", "ashram", "aspen", "attic", "auburn", "aurora", "austere", "avert", "aviary", "await", "azure", "baboon", "backdrop", "baffle", "balcony", "balloon", "bamboo", "banquet", "barber", "barefoot", "bark", "barnacle", "barren", "basalt", "basket", "bassoon", "baton", "battalion", "bayonet", "beacon", "bedrock", "beehive", "befall", "beget", "belay", "beluga", "benign", "beret", "berserk", "beseech", "bespoke", "bestow", "bighorn", "binary", "birch", "bison", "blazon", "blimp", "blithe", "blizzard", "blouse", "blustery", "boar", "bobcat", "bodkin", "bog", "bold", "bonfire", "bonnet", "boomer", "booty", "boron", "boulder", "bovine", "brackish", "bramble", "bravado", "breezy", "brew", "bridle", "brigade", "brindle", "brisk", "brocade", "bronze", "brook", "buck", "buff", "bugle", "bulb", "bunker", "burlap", "bursar", "burrow", "butte", "buzzard", "byline", "cadence", "cadet", "cairn", "caliber", "calico", "calm", "candle", "canvas", "canyon", "caprice", "carbine", "cardinal", "cargo", "caribou", "cask", "castaway", "cathartic", "cavalier", "cedar", "celestial", "census", "centaur", "chalice", "chariot", "cheetah", "cherub", "chiseled", "choir", "chore", "chortle", "cider", "citadel", "citron", "clam", "clarion", "clasp", "cleat", "cloister", "cloven", "clutch", "cobble", "cobalt", "cockatoo", "cog", "cola", "comet", "compound", "concave", "condor", "conifer", "conjuror", "convoke", "coo", "coral", "cormorant", "corsair", "cosmos", "cove", "cradle", "cranial", "crater", "creek", "crescent", "crest", "crib", "crimson", "croon", "crux", "cumulus", "cypress", "dainty", "dapper", "daring", "dawn", "daybreak", "deacon", "dearth", "debate", "debris", "decant", "decree", "deft", "deity", "demure", "dense", "depot", "devoid", "dewy", "diamond", "dictate", "dike", "diorama", "dirge", "disarm", "dismal", "distill", "divine", "dock", "dodo", "dome", "doodle", "doppler", "dormant", "doughty", "dove", "downy", "draught", "drawbridge", "dreg", "driftwood", "drizzle", "drone", "drought", "dubious", "duet", "dune", "duvet", "dweller", "dynamo", "eagle", "ebony", "echo", "edict", "eel", "eerie", "effigy", "elaborate", "elation", "electrum", "elegy", "elm", "elope", "elude", "embargo", "emblem", "emerald", "emissary", "empathy", "empire", "enamel", "enchant", "encore", "enigma", "epic", "epoch", "epoxy", "equine", "ermine", "eschew", "estate", "ether", "etude", "eureka", "evict", "evoke", "exalt", "excavate", "exclaim", "exodus", "exotic", "expound", "extant", "fable", "facet", "falcon", "fang", "farrier", "fast", "fathom", "fauna", "fawn", "fern", "ferry", "festival", "fete", "fiber", "fierce", "finch", "fissure", "fjord", "flagon", "flame", "flannel", "flare", "flatware", "flea", "fledgling", "flex", "flint", "flock", "flora", "flotsam", "fluorescent", "flurry", "foam", "fog", "folly", "foment", "forge", "forlorn", "forte", "fortress", "fowl", "foyer", "fray", "freckle", "fresco", "fringe", "frisk", "froth", "frugal", "fumble", "fungal", "funicular", "furlough", "fuse", "galleon", "galley", "galvanize", "garish", "garland", "garner", "garrison", "gauge", "gaunt", "gazebo", "gem", "genie", "geyser", "giddy", "gild", "ginger", "glade", "glacier", "glimmer", "glint", "glisten", "globe", "gloss", "glowworm", "gnarly", "gnome", "goblet", "golden", "gossamer", "gourd", "granite", "grapevine", "grapple", "grasp", "grate", "grazing", "griddle", "griffin", "grill", "grotto", "grouse", "grumble", "guffaw", "guise", "gull", "gust", "gusto", "gutter", "gypsum", "habitat", "hail", "hallow", "harbor", "hare", "hark", "hatch", "haul", "haven", "hawk", "hay", "hazard", "heather", "heirloom", "helm", "heron", "hickory", "hillock", "hinterland", "hive", "hoarfrost", "hollow", "homestead", "hoof", "hoofbeat", "horizon", "hornet", "hubbub", "hubris", "hue", "hull", "hum", "hummock", "hunch", "hurdle", "hurl", "husky", "hut", "hydra", "hyena", "hymn", "ibex", "ignite", "iguana", "ilk", "illusory", "imbue", "immense", "imp", "imperial", "import", "impulse", "incense", "incipient", "incline", "ingrain", "inkling", "inn", "inquest", "insignia", "invoke", "iodine", "iris", "iron", "irony", "isle", "jackal", "jaguar", "jar", "javelin", "jaunt", "jazz", "jeep", "jiffy", "jingling", "jostle", "hallowed", "harness", "harrow", "haruspice", "haughty", "hazardous", "heartrending", "hegemony", "helical", "herculean", "hermetic", "heyday", "hierarchy", "highborn", "hindrance", "hoary", "homily", "homogeneous", "humus", "iconoclast", "ignominious", "illicit", "illumination", "illustrious", "immaculate", "imminent", "immolate", "imperious", "impetus", "implacable", "incandescent", "incantation", "incendiary", "inchoate", "incoherent", "incognito", "incorrigible", "indigent", "indomitable", "indulgent", "ineffable", "inexorable", "infallible", "infinitesimal", "inimitable", "innumerable", "insatiable", "insidious", "insipid", "insoluble", "insouciant", "insular", "insurgent", "intangible", "integral", "intelligentsia", "interregnum", "intractable", "intricacy", "inundate", "inveterate", "invincible", "irascible", "iridescent", "irksome", "irrevocable", "isothermal", "isthmus", "itinerant", "jabberwocky", "jargon", "jeopardize", "jest", "jubilee", "judicious", "juxtapose", "kaleidoscope", "keystone", "kibosh", "kindred", "kinesthetic", "labyrinth", "lachrymose", "laconic", "languid", "lantern", "larceny", "largesse", "lattice", "laureate", "lazuli", "leaven", "legend", "lemma", "lentil", "lethargy", "lever", "lexicon", "liar", "lichen", "liege", "liminal", "limpid", "linchpin", "lithe", "lodestone", "lore", "ludicrous", "lugubrious", "luminous", "lunatic", "lupine", "lustrous", "lyric", "maelstrom", "magnate", "magnolia", "majestic", "malachite", "malaise", "malefactor", "malediction", "malinger", "mammoth", "mandate", "manticore", "mantle", "mariner", "marmoreal", "martyr", "matriarch", "maudlin", "maze", "meander", "melancholy", "mendicant", "mercurial", "meridian", "mesmerize", "metamorphosis", "metaphor", "mettle", "miasma", "mien", "mirth", "mitigate", "moat", "monarch", "monolith", "monsoon", "moot", "morass", "mordant", "moribund", "mosaic", "muse", "muster", "mutiny", "myriad", "mythic", "nadir", "naive", "narcissist", "nascent", "nebula", "necropolis", "nemesis", "neophyte", "neutron", "nexus", "nimbus", "nocturne", "nomad", "nonchalant", "noon", "nostalgia", "notion", "novice", "noxious", "nuance", "nugatory", "nymph", "oak", "oasis", "obelisk", "obfuscate", "oblivion", "obscure", "observatory", "obsolete", "odyssey", "oenology", "offshoot", "ointment", "olfactory", "omen", "ominous", "omniscient", "opalescent", "opaque", "oracle", "orchard", "ordain", "ordeal", "ordnance", "ornate", "orphan", "osmosis", "ossify", "ostentatious", "ostracize", "outlandish", "outpost", "outrage", "outset", "overseer", "overture", "oxymoron", "pagan", "palette", "palisade", "panacea", "panache", "pandemonium", "panorama", "parable", "paradigm", "paragon", "pariah", "parley", "parochial", "paroxysm", "parsimony", "partisan", "pastiche", "pastoral", "patrician", "patron", "patronage", "patronize", "pavilion", "penchant", "pendant", "penumbra", "penurious", "peregrine", "perfidious", "perfunctory", "peripheral", "perquisite", "persiflage", "persona", "pertinent", "pestilence", "phantasm", "phalanx", "philanthropy", "phlegmatic", "phoenix", "picaresque", "picturesque", "pilfer", "pinnacle", "pious", "pirate", "pithy", "placid", "plagiarize", "plait", "plangent", "plaque", "plasma", "platitude", "plausible", "plenary", "plethora", "pliant", "plummet", "plutocracy", "pluvial", "quagmire", "quaint", "quandary", "quarantine", "quark", "quarry", "quart", "quasar", "quasi", "quatrain", "quaver", "quay", "quell", "quench", "query", "quest", "question", "quibble", "quiescent", "quintessence", "quixotic", "quizzical", "quorum", "quotidian", "rabble", "raconteur", "radiant", "ramble", "rampart", "rapacious", "rapport", "rapscallion", "rascal", "raven", "ravenous", "realm", "recalcitrant", "recant", "recline", "recluse", "rectitude", "redeem", "redolent", "reduction", "refuge", "regalia", "regal", "regent", "rejoinder", "relic", "relinquish", "remorse", "remuneration", "renaissance", "renegade", "replete", "replicate", "repose", "repository", "requiem", "resilient", "resonant", "resplendent", "reticent", "retrench", "retribution", "revel", "reverberate", "revere", "revert", "revolution", "rhapsody", "rhetoric", "riddle", "rift", "rigor", "rime", "riposte", "ritual", "rivulet", "roguish", "rostrum", "rout", "rove", "rudiment", "rue", "ruffian", "ruminate", "rumor", "rustic", "sable", "saccharine", "saga", "sage", "salient", "sallow", "salubrious", "salutary", "salvage", "sanctuary", "sanguine", "sapient", "sapphire", "sarcophagus", "sartorial", "sate", "satire", "saturate", "savant", "savor", "scabbard", "scaffold", "scant", "scapegoat", "scarf", "scenario", "scepter", "scintillate", "scion", "scourge", "scribe", "scrimshaw", "scrutiny", "sculpture", "seance", "sear", "secession", "seclude", "sediment", "seminal", "senescent", "sentinel", "sepulcher", "seraph", "serendipity", "serene", "serrated", "servitude", "shackle", "sham", "shear", "sheen", "shibboleth", "shimmer", "shrine", "sibilant", "siege", "signet", "silhouette", "simulacrum", "sinister", "sinuous", "skeptic", "skeptical", "skirmish", "slake", "slapdash", "slate", "slaver", "slavish", "sleuth", "sluice", "smelt", "smirk", "smite", "smolder", "smug", "snare", "soar", "solder", "soliloquy", "solstice", "somatic", "somber", "sombre", "sonorous", "sorcerer", "sovereign", "specter", "spectral", "sphinx", "spindrift", "spirit", "spite", "splendid", "splenetic", "spurn", "squalid", "squall", "tabby", "tacit", "tadpole", "taffeta", "talon", "tandem", "tangelo", "tango", "tantalize", "tapestry", "tarantula", "tarmac", "tartan", "tassel", "tattoo", "taut", "tavern", "tawny", "taxidermy", "teal", "teapot", "tedious", "telltale", "tempest", "temple", "tenacious", "tender", "tenet", "tenor", "tentacle", "tepid", "terminal", "terrain", "terrapin", "terse", "testament", "tether", "textile", "thatch", "thaw", "theorem", "thicket", "thimble", "thistle", "thorn", "thorough", "thrall", "throng", "thud", "thwart", "tibia", "ticker", "tidal", "tiger", "tightrope", "tilde", "timbre", "timorous", "tincture", "tinder", "tine", "tinsel", "tirade", "titanic", "titian", "tizzy", "toadstool", "toasty", "toboggan", "token", "tome", "topaz", "torpid", "torque", "torrid", "tortoise", "totem", "touchstone", "tourmaline", "towpath", "tracery", "tragedy", "trajectory", "trance", "tranquil", "translucent", "trapdoor", "trapeze", "travail", "trellis", "tremor", "trench", "trespass", "trestle", "triad", "trickle", "tricorn", "trident", "trill", "trinket", "tripod", "trite", "troglodyte", "trope", "trophy", "troubadour", "truce", "trump", "trumpet", "truncate", "tryst", "tuber", "tulip", "tumbleweed", "tundra", "tunnel", "turmoil", "turquoise", "tusk", "tussock", "tutelage", "twinge", "twilight", "tycoon", "typhoon", "typical", "tyrant", "ubiquitous", "ulcer", "ulterior", "ultramarine", "ululate", "umbra", "umpire", "unanimous", "unbending", "uncanny", "underling", "undulate", "unearthly", "uneven", "unfathomable", "unflinching", "ungainly", "unholy", "unicorn", "uniform", "unison", "universal", "unkempt", "unknown", "unleash", "unobtrusive", "unravel", "unrelenting", "unruly", "unsavory", "unseen", "unsettling", "unsullied", "untamed", "untoward", "unveil", "unwieldy", "unwitting", "unyielding", "upbeat", "upbraid", "upheaval", "upholster", "uprising", "uproar", "upstart", "urban", "urchin", "ursine", "utensil", "utopia", "utterance", "vacancy", "vagabond", "vague", "valiant", "valley", "valor", "vampire", "vanguard", "vanquish", "vapid", "vapor", "variable", "variance", "varmint", "vassal", "vault", "veer", "vehement", "veil", "vein", "velocity", "velvet", "venerate", "venom", "venture", "veracity", "veranda", "verdant", "verge", "vermilion", "vernal", "versatile", "vertex", "vestige", "vex", "viaduct", "vicar", "vice", "vicinity", "vigil", "vignette", "vigorous", "vile", "vintage", "violate", "viridian", "virtue", "visage", "vista", "vivid", "vixen", "vocal", "volcano", "volition", "volley", "voluminous", "vortex", "votive", "voyage", "vulcan", "vulnerable", "waft", "wager", "wainscot", "waistcoat", "waive", "waltz", "wander", "wane", "warble", "wardrobe", "warrior", "wary", "wasp", "waterfall", "wavelet", "waver", "waxing", "wayfarer", "waylay", "wean", "weary", "weasel", "weather", "weave", "web", "wedge", "weevil", "welkin", "whale", "whet", "whimsy", "whirl", "whisper", "whistle", "wicker", "wield", "willow", "wilt", "wince", "windfall", "winding", "windmill", "winnow", "winsome", "wispy", "withy", "wizard", "wobble", "wombat", "wonder", "wont", "wool", "woolen", "woozy", "wordsmith", "wraith", "wrangle", "wrath", "wreak", "wreath", "wrench", "wrest", "wretch", "wriggle", "wrinkle", "wrist", "writhe", "wrought", "wry", "xenon", "xylem", "yarn", "yearn", "yeast", "yelp", "yeti", "yield", "yoke", "yonder", "yore", "yowl", "zeal", "zealot", "zephyr", "zigzag", "zinc", "zinnia", "zipper", "zircon", "zither", "zodiac", "zombie", "zone", "zoo", "zoom", "zymurgy", "zenith", "zing", "zest", "zodiacal", "zonal", "zoophilic", "zucchini", "zookeeper", "zoomorphic", "zoological", "zoologist", "zygote", "zealous", "zebra", "zillion", "zephyr", "zen", "zealotry", "zapped", "zigzagged", "zipped", "zoonotic", "zoologic", "zoning", "zoophily", "zylon", "zymic", "zooplastic", "zenist", "zoomable", "zodiacs", "zymogenic", "zymolytic", "zygomatic", "zoonomist", "zephyrs", "zeniths", "zoogleal", "zymoid", "zygomorphy"];
 
 const fillerWordList = [
-  "a",
-  "an",
-  "the",
-  "this",
-  "that",
-  "these",
-  "those",
-  "my",
-  "your",
-  "its",
-  "our",
-  "their",
-  "in",
-  "is",
-  "to",
-  "more",
-  "no",
-  ".",
-  ",",
+  "a", "an", "the", "this", "that", "these", "those", "my", "your", "its", "our", "their", 
+  "in", "is", "to", "more", "no", ",", ".", 
+  "and", "or", "but", "so", "if", "then", "because", "since", "while", 
+  "although", "though", "even", "as", "for", "nor", "yet", 
+  "with", "without", "by", "from", "over", "under", 
+  "on", "at", "of", "off", "into", "onto", "upon", "about", 
+  "up", "down", "before", "after", "between", "among", 
+  "either", "neither", "both", "whether", "until", "unless", 
+  "where", "when", "who", "whom", "whose", "which", "what", 
+  "not", "like", "unlike", "near", "far", "beyond", "within", 
+  "each", "every", "any", "some", "all", "few", "many", "most", 
+  "such", "only", "just", "quite", "rather", "also"
 ];
 
-const fillWithWords = async () => {
-  await db.query(`
-  INSERT INTO wg_words (word) VALUES ${baseWordList
-    .map((word) => `('${word}')`)
-    .join(", ")}
-  ON CONFLICT (word) DO NOTHING
-`);
-
-  await db.query(`
-  INSERT INTO wg_filler_words (word) VALUES ${fillerWordList
-    .map((word) => `('${word}')`)
-    .join(", ")}
-  ON CONFLICT (word) DO NOTHING
-`);
+const insertInChunks = async (table, wordList, chunkSize = 1000) => {
+  for (let i = 0; i < wordList.length; i += chunkSize) {
+    const chunk = wordList.slice(i, i + chunkSize);
+    const values = chunk.map((_, idx) => `($${idx + 1})`).join(", ");
+    const query = `
+      INSERT INTO ${table} (word) VALUES ${values}
+      ON CONFLICT (word) DO NOTHING;
+    `;
+    await db.query(query, chunk);
+  }
 };
+
+const fillWithWords = async () => {
+  try {
+    await db.query("BEGIN");
+    await insertInChunks("wg_words", baseWordList);
+    await insertInChunks("wg_filler_words", fillerWordList);
+    await db.query("COMMIT");
+    console.log("Database seeded successfully.");
+  } catch (error) {
+    await db.query("ROLLBACK");
+    console.error("Error seeding database:", error);
+  }
+};
+
 
 emptyAllTables();
 fillWithWords();

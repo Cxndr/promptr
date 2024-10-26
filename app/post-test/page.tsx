@@ -7,12 +7,18 @@ export default async function PostTest() {
   const { userId } = await auth();
   const promptId = null; // modify this later when handling specific prompts from db
 
-  const { rows: baseWords }: { rows: Word[] } = await db.query(
-    "SELECT word FROM wg_words"
-  );
-  const { rows: fillerWords }: { rows: Word[] } = await db.query(
-    "SELECT word FROM wg_filler_words"
-  );
+  const { rows: baseWords }: { rows: Word[] } = await db.query(`
+    SELECT word 
+    FROM wg_words 
+    ORDER BY RANDOM() 
+    LIMIT 20
+  `);
+  const { rows: fillerWords }: { rows: Word[] } = await db.query(`
+    SELECT word 
+    FROM wg_filler_words
+    ORDER BY RANDOM() 
+    LIMIT 20
+  `);
 
   const handleSubmit = async (data: { words: string[]; content: string }) => {
     "use server";
