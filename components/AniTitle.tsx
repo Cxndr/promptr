@@ -6,7 +6,7 @@ import { useState } from "react";
 const words = [
     "Welcome",
     "to",
-    "Word Prompter!"
+    "OnlyWords!"
 ];
 
 export default function AnimatedSubtitle() {
