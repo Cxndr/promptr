@@ -22,7 +22,7 @@ export default async function PromptPage({params}: PromptPageProps) {
 
   async function getClerkUser(clerkId: string) {
     const user = await (await clerkClient()).users.getUser(clerkId);
-    console.log("USER:", user);
+    // console.log("USER:", user);
     return user;
   }
 
