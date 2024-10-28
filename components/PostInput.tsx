@@ -31,8 +31,24 @@ export default function PostInput({
   const [responseSentence, setResponseSentence] = useState<string>("");
 
   useEffect(() => {
+    const defaultFillerWords: Word[] = [
+      { word: "my", type: "base", used: 0 },
+      { word: "i", type: "base", used: 0 },
+      { word: "you", type: "base", used: 0 },
+      { word: "a", type: "base", used: 0 },
+      { word: "the", type: "base", used: 0 },
+      { word: "and", type: "base", used: 0 },
+      { word: ", ", type: "filler", used: 0 },
+      { word: ". ", type: "filler", used: 0 },
+    ];
+    const updatedFillerWords = [...fillerWords];
+    defaultFillerWords.forEach((word) => {
+      if (!updatedFillerWords.includes(word)) {
+        updatedFillerWords.push(word);
+      }
+    });
     setBaseWordList(baseWords.map((wordObj) => wordObj.word));
-    setFillerWordList(fillerWords.map((wordObj) => wordObj.word));
+    setFillerWordList(updatedFillerWords.map((wordObj) => wordObj.word));
   }, [baseWords, fillerWords]);
 
   useEffect(() => {

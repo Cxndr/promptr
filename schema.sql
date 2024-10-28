@@ -37,3 +37,12 @@ CREATE TABLE wg_filler_words (
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     word TEXT NOT NULL UNIQUE
 );
+
+-- Table for storing comments
+CREATE TABLE wg_comments (
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    post_id INT REFERENCES wg_posts(id) ON DELETE CASCADE, -- References post
+    clerk_id TEXT REFERENCES wg_users(clerk_id) ON DELETE CASCADE, -- References user by clerk_id
+    content TEXT NOT NULL,
+    upvotes INT DEFAULT 0 -- Count of upvotes for the comment
+);
