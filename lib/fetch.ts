@@ -7,7 +7,6 @@ export async function fetchUserProfile(userId: string | null) {
   return profile;
 }
 
-
 export async function fetchPost(postId: number | null) {
   const post = await db.query(
     `

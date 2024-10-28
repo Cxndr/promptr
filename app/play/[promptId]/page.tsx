@@ -49,7 +49,13 @@ export default async function PromptPage({params}: PromptPageProps) {
   )
 
   const promptPostsData = await db.query(
-    "SELECT * FROM wg_posts WHERE prompt_id = ($1)",
+    `
+      SELECT wg_posts.*, wg_users.username, wg_users.image_url 
+      FROM wg_posts
+      JOIN wg_users ON wg_posts.clerk_id = wg_users.clerk_id
+      WHERE prompt_id = ($1) 
+      ORDER BY created_at DESC
+    `,
     [params.promptId]
   );
 
@@ -57,8 +63,15 @@ export default async function PromptPage({params}: PromptPageProps) {
   promptPostsData.rows.forEach((row) => {
     promptPosts.push(
       {
-        ...row,
-        clerkUser: getClerkUser(row.clerk_id)
+        id: row.id,
+        user: {
+          username: row.username,
+          imageUrl: row.image_url
+        },
+        promptId: row.prompt_id,
+        content: row.content,
+        words: row.words,
+        upvotes: row.upvotes
       }
     );
   });
@@ -72,7 +85,6 @@ export default async function PromptPage({params}: PromptPageProps) {
   async function nextPrompt() {
     "use server";
     if (prompt.id < promptsUpperBound) {
-      // revalidatePath('/play');
       redirect(`/play/${prompt.id + 1}`);
     }
   }
@@ -80,7 +92,6 @@ export default async function PromptPage({params}: PromptPageProps) {
   async function prevPrompt() {
     "use server";
     if (prompt.id > promptsLowerBound) {
-      // revalidatePath('/play');
       redirect(`/play/${prompt.id - 1}`);
     }
   }

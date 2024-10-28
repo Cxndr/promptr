@@ -17,9 +17,15 @@ export type Comment = {
   upvotes: number;
 }
 
+export type PublicUser = {
+  username: string;
+  imageUrl: string;
+  // todo: add stats fiels eg. total posts, total upvoted etc.
+}
+
 export type Post = {
   id: number;
-  userClerkId: number;
+  user: PublicUser;
   promptId: number;
   content: string;
   words: Word[];
