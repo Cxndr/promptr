@@ -12,6 +12,7 @@
   margin: 0 auto;
   padding: 0 auto;
   text-align: center;
+  --font-open-dyslexic: 'OpenDyslexic', sans-serif;
 }
 
 * {
