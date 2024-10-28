@@ -1,4 +1,6 @@
 import type { Config } from "tailwindcss";
+import { plugins } from './tailwind-plugins.ts';
+
 
 const config: Config = {
     darkMode: ["class"],
@@ -9,6 +11,11 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		fontFamily: {
+			sans: ['var(--font-noto)'],
+			mono: ['var(--font-rubik)'],
+			dyslexia: ['var(--font-open-dyslexic)'],
+		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
@@ -58,6 +65,6 @@ const config: Config = {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: plugins,
 };
 export default config;

@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Noto_Serif, Rubik_Mono_One } from "next/font/google";
 import { ModeToggle } from "@/components/ModeToggle";
+import localFont from 'next/font/local'
 
 export const metadata: Metadata = {
   title: "Word Prompter",
@@ -27,6 +28,27 @@ const rubik = Rubik_Mono_One({
   variable: "--font-rubik",
 });
 
+const OpenDyslexic = localFont({
+  src: [
+    {
+      path: './fonts/OpenDyslexic-Regular.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: './fonts/OpenDyslexic-Italic.woff2',
+      weight: '400',
+      style: 'italic',
+    },
+    {
+      path: './fonts/OpenDyslexic-Bold-Italic.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+  ],
+  variable: "--font-open-dyslexic"
+})
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -35,7 +57,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${noto.variable} ${rubik.variable} antialiased`}>
+        <body className={`${noto.variable} ${rubik.variable} ${OpenDyslexic.variable} antialiased`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
