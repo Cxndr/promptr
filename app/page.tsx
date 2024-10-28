@@ -24,9 +24,26 @@ export default async function Home() {
       />
       </div>
       
-      <div className="flex absolute h-40 justify-center items-start pt-8 top-32">
+      <div className="left-40 w-10 sm:top-40 absolute">
         <AniTitle/>
       </div >
+
+      <div className="absolute w-4/5 h-28 top-60 sm:top-80 w-3/5">
+      {/* ^^ESLint issue, ignore */}
+          <h2 className="text-2xl p-8">How OnlyWords Works...</h2>
+          <p>In OnlyWords, you choose a question (we call them prompts).</p> <p className="p-4">To respond, 
+          you can only choose from a select range of words. <br/>There are two types:</p>
+        <ul>
+          <li>- Unique words (Blue)</li>
+          <li>- Filler words (Orange)</li>
+        </ul>
+          <p className="p-4">It&#39;s then down to you to come up with the best answer to the prompt. 
+            Your response is then viewed by other users, where they can upvote your answer. 
+            Likewise, you can upvote other users&#39; answers.</p>
+            <p className="p-4">Ultimately, the aim of the game is to create the most popular response to the prompt.</p>
+            <p className="p-4">Good luck!</p>
+      </div>
+      
     </>
   );
 }

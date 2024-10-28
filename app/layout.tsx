@@ -9,9 +9,9 @@ import { ModeToggle } from "@/components/ModeToggle";
 import localFont from 'next/font/local'
 
 export const metadata: Metadata = {
-  title: "Word Prompter",
+  title: "OnlyWords",
   description:
-    "Create a solution to a prompt based on given words | Word Prompter",
+    "Create a solution to a prompt based on given words | OnlyWords",
 };
 
 const noto = Noto_Serif({
