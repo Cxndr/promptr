@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Noto_Serif, Rubik_Mono_One } from "next/font/google";
+import { ModeToggle } from "@/components/ModeToggle";
 
 export const metadata: Metadata = {
   title: "Word Prompter",
@@ -41,10 +42,13 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <div className="absolute top-4 right-4 z-10">
+              <ModeToggle />
+            </div>
             <Header />
-              <main className="flex flex-col justify-center items-center w-full">
-                {children}
-              </main>
+            <main className="flex flex-col justify-center items-center w-full">
+              {children}
+            </main>
             <Footer />
           </ThemeProvider>
         </body>
