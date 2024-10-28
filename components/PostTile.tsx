@@ -7,9 +7,17 @@ import { Heart } from 'lucide-react';
 
 type PromptPostProps = {
   post: Post;
+  deletePost: (postId : number) => void
 }
 
-export default function PostTile({post}:PromptPostProps) {
+export default function PostTile({post, deletePost}:PromptPostProps) {
+
+  function handleDelete() {
+    if (post && post.id) {
+      deletePost(post.id)
+      
+    }
+  }
 
 
   return (
@@ -44,6 +52,10 @@ export default function PostTile({post}:PromptPostProps) {
       <div className="flex flex-col justify-center items-center gap-1 text-2xl w-32 bg-zinc-800">
         <Heart fill="red" strokeWidth={0} size={64} />
         <p>{post.upvotes}</p>
+      </div>
+
+      <div>
+        <button onClick={handleDelete}>Delete</button>
       </div>
 
     </div>

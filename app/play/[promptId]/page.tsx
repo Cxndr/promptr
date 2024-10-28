@@ -22,7 +22,7 @@ export default async function PromptPage({params}: PromptPageProps) {
 
   async function getClerkUser(clerkId: string) {
     const user = await (await clerkClient()).users.getUser(clerkId);
-    console.log("USER:", user);
+    
     return user;
   }
 
@@ -72,7 +72,7 @@ export default async function PromptPage({params}: PromptPageProps) {
   async function nextPrompt() {
     "use server";
     if (prompt.id < promptsUpperBound) {
-      revalidatePath('/play');
+      // revalidatePath('/play');
       redirect(`/play/${prompt.id + 1}`);
     }
   }
@@ -80,7 +80,7 @@ export default async function PromptPage({params}: PromptPageProps) {
   async function prevPrompt() {
     "use server";
     if (prompt.id > promptsLowerBound) {
-      revalidatePath('/play');
+      // revalidatePath('/play');
       redirect(`/play/${prompt.id - 1}`);
     }
   }
@@ -96,9 +96,22 @@ export default async function PromptPage({params}: PromptPageProps) {
       console.log("Success. content:", data.content, "and words:", data.words);
     } catch (err) {
       console.error(err);
+    } finally {
+      revalidatePath(`/play/${prompt.id}`)
     }
   };
 
+  async function deletePost(postId : number) {
+    "use server";
+    try {
+      await db.query(`DELETE FROM wg_posts WHERE (id, clerk_id) = ($1, $2)`,[postId, userId])
+      console.log("Post deleted")
+    } catch(error) {
+      console.error("deleting post failed", error)
+    } finally {
+      revalidatePath(`/play/${prompt.id}`)
+    }
+  }
 
 
   return (
@@ -125,6 +138,7 @@ export default async function PromptPage({params}: PromptPageProps) {
           <PostTile 
             key={post.id} 
             post={post}
+            deletePost={deletePost}
           />
         ))}
       </div>
