@@ -4,7 +4,7 @@ import PostTile from "@/components/PostTile";
 
 import { db } from "@/lib/db";
 import { Word } from "@/lib/types";
-import { auth, clerkClient } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { Prompt } from "@/lib/types";
 import { Post } from "@/lib/types";
 import { redirect } from "next/navigation";
@@ -19,12 +19,6 @@ type PromptPageProps = {
 export default async function PromptPage({params}: PromptPageProps) {
 
   const { userId } = await auth();
-
-  async function getClerkUser(clerkId: string) {
-    const user = await (await clerkClient()).users.getUser(clerkId);
-
-    return user;
-  }
 
   const { rows: baseWords }: { rows: Word[] } = await db.query(`
     SELECT word 
