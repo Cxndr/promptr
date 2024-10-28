@@ -14,6 +14,13 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { Word } from "@/lib/types";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { Button } from "./ui/button";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 export default function PostInput({
   baseWords,
@@ -29,6 +36,7 @@ export default function PostInput({
   const [wordList, setWordList] = useState<Word[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [responseSentence, setResponseSentence] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const defaultFillerWords: Word[] = [
@@ -119,78 +127,103 @@ export default function PostInput({
   const form = useForm();
 
   return (
-    <div>
-      <h3 className="text-xl">
-        {responseSentence ? (
-          responseSentence
-        ) : (
-          <span className="text-gray-400">
-            Create a response using the words below.
-          </span>
-        )}
-      </h3>
-      <Form {...form}>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const words = wordList.map((word) => word.word);
-            const content = responseSentence;
-            handleSubmit({ words, content });
-          }}
-          className="flex flex-col justify-center items-center p-4"
-        >
-          <FormField
-            control={form.control}
-            name="submitPromtResponseForm"
-            render={() => (
-              <FormItem>
-                <FormLabel />
+    <Collapsible
+      open={isOpen}
+      onOpenChange={setIsOpen}
+    >
 
-                {/* <FormDescription></FormDescription> */}
+      <CollapsibleTrigger asChild className="mb-6">
+        {isOpen 
+          ? (
+            <Button className="font-bold bg-pink-600 hover:bg-pink-700 text-zinc-50 rounded-lg">
+              Hide
+              <ChevronUp/>
+            </Button>
+          )
+          : (
+            <Button className="font-bold bg-pink-600 hover:bg-pink-700 text-zinc-50 rounded-lg">
+              Create a Response
+              <ChevronDown/>
+            </Button>
+          )
+        }
+        
+      </CollapsibleTrigger>
 
-                <div className="flex flex-col gap-6">
-                  <FormControl>
-                    <div className="">
-                      <PostInputField
-                        wordList={wordList}
-                        incomingTags={tags}
-                        removeWord={removeWord}
-                        clearAll={clearAll}
-                      />
-                    </div>
-                  </FormControl>
-
-                  <FormControl>
-                    <div
-                      id="post-selections"
-                      className="flex gap-2 flex-wrap px-4"
-                    >
-                      {wordList.map((word, index) => {
-                        return (
-                          <PostInputWord
-                            key={index}
-                            word={word}
-                            insertWord={insertWord}
-                          />
-                        );
-                      })}
-                    </div>
-                  </FormControl>
-                </div>
-                
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <button
-            type="submit"
-            className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-700 font-bold rounded-lg shadow-sm shadow-black"
+      <CollapsibleContent className="CollapsibleContent">
+        <h3 className="text-xl">
+          {responseSentence ? (
+            responseSentence
+          ) : (
+            <span className="text-gray-400">
+              Create a response using the words below.
+            </span>
+          )}
+        </h3>
+        <Form {...form}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const words = wordList.map((word) => word.word);
+              const content = responseSentence;
+              handleSubmit({ words, content });
+            }}
+            className="flex flex-col justify-center items-center p-4"
           >
-            Submit
-          </button>
-        </form>
-      </Form>
-    </div>
+            <FormField
+              control={form.control}
+              name="submitPromtResponseForm"
+              render={() => (
+                <FormItem>
+                  <FormLabel />
+
+                  {/* <FormDescription></FormDescription> */}
+
+                  <div className="flex flex-col gap-6">
+                    <FormControl>
+                      <div className="">
+                        <PostInputField
+                          wordList={wordList}
+                          incomingTags={tags}
+                          removeWord={removeWord}
+                          clearAll={clearAll}
+                        />
+                      </div>
+                    </FormControl>
+
+                    <FormControl>
+                      <div
+                        id="post-selections"
+                        className="flex gap-2 flex-wrap px-4"
+                      >
+                        {wordList.map((word, index) => {
+                          return (
+                            <PostInputWord
+                              key={index}
+                              word={word}
+                              insertWord={insertWord}
+                            />
+                          );
+                        })}
+                      </div>
+                    </FormControl>
+                  </div>
+                  
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <button
+              type="submit"
+              className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-700 font-bold rounded-lg shadow-sm shadow-black"
+            >
+              Submit
+            </button>
+          </form>
+        </Form>
+      </CollapsibleContent>
+
+    </Collapsible>
   );
 }

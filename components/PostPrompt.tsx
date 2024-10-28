@@ -28,7 +28,7 @@ export default function PostPrompt( {prompt, promptsLowerBound, promptsUpperBoun
   return (
     <>
       <h3 className="text-md font-medium italic text-zinc-500">Prompt #{prompt.id}</h3>
-      <div className="flex justify-center items-center gap-8">
+      <div className="w-full flex justify-center items-center gap-8">
         <button className={leftButtonClassName} onClick={handlePrevNav}>
           <ChevronLeft size={96} className="" />
         </button>
