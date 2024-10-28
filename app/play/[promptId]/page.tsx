@@ -1,10 +1,12 @@
 import PostInput from "@/components/PostInput";
 import PostPrompt from "@/components/PostPrompt";
+import PostTile from "@/components/PostTile";
 
 import { db } from "@/lib/db";
 import { Word } from "@/lib/types";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { Prompt } from "@/lib/types";
+import { Post } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
@@ -18,6 +20,12 @@ export default async function PromptPage({params}: PromptPageProps) {
 
   const { userId } = await auth();
 
+  async function getClerkUser(clerkId: string) {
+    const user = await (await clerkClient()).users.getUser(clerkId);
+    console.log("USER:", user);
+    return user;
+  }
+
   const { rows: baseWords }: { rows: Word[] } = await db.query(`
     SELECT word 
     FROM wg_words 
@@ -28,7 +36,7 @@ export default async function PromptPage({params}: PromptPageProps) {
     SELECT word 
     FROM wg_filler_words 
     ORDER BY RANDOM() 
-    LIMIT 20
+    LIMIT 15
   `);
 
   const {rows: allPrompts} : {rows: Prompt[]} = await db.query(
@@ -39,6 +47,21 @@ export default async function PromptPage({params}: PromptPageProps) {
     "SELECT * FROM wg_prompts WHERE id = ($1)",
     [params.promptId]
   )
+
+  const promptPostsData = await db.query(
+    "SELECT * FROM wg_posts WHERE prompt_id = ($1)",
+    [params.promptId]
+  );
+
+  const promptPosts: Post[] = [];
+  promptPostsData.rows.forEach((row) => {
+    promptPosts.push(
+      {
+        ...row,
+        clerkUser: getClerkUser(row.clerk_id)
+      }
+    );
+  });
 
   const prompt = promptRes[0];
   const promptCount = allPrompts.length;
@@ -77,10 +100,11 @@ export default async function PromptPage({params}: PromptPageProps) {
   };
 
 
+
   return (
     <div className="max-w-6xl flex flex-col gap-4 justify-center items-center">
 
-      <PostPrompt 
+      <PostPrompt
         prompt={prompt} 
         promptsUpperBound={promptsUpperBound} 
         promptsLowerBound={promptsLowerBound}
@@ -94,6 +118,15 @@ export default async function PromptPage({params}: PromptPageProps) {
           fillerWords={fillerWords}
           handleSubmit={handleSubmit}
         />
+      </div>
+
+      <div className="max-w-5xl flex flex-col gap-8">
+        {promptPosts.map((post) => (
+          <PostTile 
+            key={post.id} 
+            post={post}
+          />
+        ))}
       </div>
       
     </div>
