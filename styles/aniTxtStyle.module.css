@@ -42,7 +42,10 @@
 .circle {
     width: 55px;
     aspect-ratio: 1;
-    background-color: #dc3a73;
+    background-image: url('../public/img/wordGameLogo.webp');
+    background-color: var(--circle-bg-color);
+    background-size: contain;
+    background-repeat: no-repeat;
     border-radius: 50%;
     z-index: 2;
 }
