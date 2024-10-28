@@ -1,4 +1,3 @@
-import { ModeToggle } from "@/components/ModeToggle";
 import AniTitle from "@/components/AniTitle"
 import Image from "next/image";
 import wordGameLogo from "@/public/img/wordGameLogo.webp";
