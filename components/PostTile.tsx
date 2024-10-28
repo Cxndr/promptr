@@ -19,7 +19,6 @@ export default function PostTile({post, deletePost}:PromptPostProps) {
     }
   }
 
-
   return (
     <div className="flex bg-zinc-800 bg-opacity-70 rounded-2xl p-0 overflow-hidden">
       

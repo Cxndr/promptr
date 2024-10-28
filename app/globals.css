@@ -90,6 +90,31 @@ body {
     --chart-5: 340 75% 55%;
     --circle-bg-color: #09090b;
   }
+  .CollapsibleContent {
+    overflow: hidden;
+  }
+  .CollapsibleContent[data-state="open"] {
+    animation: slideDown 1s ease-out;
+  }
+  .CollapsibleContent[data-state="closed"] {
+    animation: slideUp 1s ease-out;
+  }
+  @keyframes slideDown {
+    from {
+      max-height: 0;
+    }
+    to {
+      max-height: 500px; /* this is a stupid solution, use radix variable instead. look at: https://www.radix-ui.com/primitives/docs/components/collapsible#animating-content-size */
+    }
+  }
+  @keyframes slideUp {
+    from {
+      max-height: 500px
+    }
+    to {
+      max-height: 0;
+    }
+  }
 }
 
 @layer base {

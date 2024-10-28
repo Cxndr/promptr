@@ -10,6 +10,13 @@ import { Post } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import { Button } from "@/components/ui/button";
+
 type PromptPageProps = {
   params: {
     promptId: string;
@@ -137,7 +144,7 @@ export default async function PromptPage({params}: PromptPageProps) {
           handleSubmit={handleSubmit}
         />
       </div>
-
+      
       <div className="max-w-5xl flex flex-col gap-8">
         {promptPosts.map((post) => (
           <PostTile 
