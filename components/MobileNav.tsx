@@ -30,13 +30,13 @@ export default function MobileNav() {
                         <House className="text-red-500" />
                     </Link>
                     <nav className="flex flex-col gap-3 lg:gap-4 mt-6 items-start pl-0">
-                        <Link href="/post-test" onClick={closeSheet}>
+                        <Link href="/play/1" onClick={closeSheet}>
                             Prompt 1
                         </Link>
-                        <Link href="/prompt2" onClick={closeSheet}>
+                        <Link href="/play/2" onClick={closeSheet}>
                             Prompt 2
                         </Link>
-                        <Link href="/prompt3" onClick={closeSheet}>
+                        <Link href="/play/3" onClick={closeSheet}>
                             Prompt 3
                         </Link>
                         <Link href="/AboutUs" onClick={closeSheet}>
