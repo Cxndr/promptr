@@ -14,21 +14,24 @@ export default async function Home() {
     redirect("/profile");
   }
   return (
-    <div>
-      <Image
-        className="flex justify-center mt-16"
+    <>
+      <div className="flex absolute w-full h-40 justify-center items-start pt-8 top-8">
+        <Image
         src={wordGameLogo}
         alt="Black & white Art-deco logo of a person holding a card"
         width={100}
         height={38}
         priority
       />
-      <div className="">
+      </div>
+      
+      <div className="flex absolute w-full h-40 justify-center items-start pt-8 top-32 left-20">
         <AniTitle/>
       </div >
+
       <div className="absolute top-4 right-4 z-10">
         <ModeToggle />
       </div>
-    </div>
+    </>
   );
 }
