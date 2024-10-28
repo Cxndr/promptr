@@ -26,21 +26,21 @@ export default function PostTile({post, deletePost}:PromptPostProps) {
       <div className="flex flex-col justify-center items-center gap-4 relative">
         <Avatar className="w-36 h-36">
           <AvatarImage 
-            src={post.clerkUser?.imageUrl || "/img/default-avatar.webp"} 
+            src={post.user.imageUrl || "/img/default-avatar.webp"} 
             alt="User Profile Image"
             width={96}
             height={96}
             className="w-full h-full"
           />
           <AvatarFallback>
-            { post.clerkUser.username ? 
-              post.clerkUser.username.charAt(0).toUpperCase() 
+            { post.user.username ? 
+              post.user.username.charAt(0).toUpperCase() 
               : "?"
             }
           </AvatarFallback> 
         </Avatar>
         <h3 className="bg-zinc-800 bg-opacity-70 p-1 absolute bottom-0 w-full font-bold">
-          {post.clerkUser?.username || "Unknown User"}
+          {post.user.username || "Unknown User"}
         </h3>
       </div>
 
