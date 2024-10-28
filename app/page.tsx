@@ -28,10 +28,6 @@ export default async function Home() {
       <div className="flex absolute w-full h-40 justify-center items-start pt-8 top-32 left-20">
         <AniTitle/>
       </div >
-
-      <div className="absolute top-4 right-4 z-10">
-        <ModeToggle />
-      </div>
     </>
   );
 }
