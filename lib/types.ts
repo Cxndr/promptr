@@ -1,5 +1,3 @@
-import { User } from "@clerk/nextjs/server";
-
 export type Word = {
   word: string;
   type: "base" | "filler";
@@ -21,10 +19,10 @@ export type Comment = {
 
 export type Post = {
   id: number;
+  userClerkId: number;
   promptId: number;
   content: string;
   words: Word[];
   upvotes: number;
-  clerkUser: User;
   // dateCreated: Date;
 }
