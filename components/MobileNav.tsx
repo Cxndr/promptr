@@ -11,6 +11,7 @@ import {
 import { AlignJustify, House } from "lucide-react";
 import Link from "next/link";
 import { useState } from 'react';
+import FontToggle from "./FontToggle";
 
 export default function MobileNav() {
     const [isOpen, setIsOpen] = useState(false);
@@ -42,6 +43,9 @@ export default function MobileNav() {
                         <Link href="/AboutUs" onClick={closeSheet}>
                             About Us
                         </Link>
+                        <div onClick={closeSheet}>
+                            <FontToggle/>
+                        </div>
                     </nav>
                 </SheetContent>
             </Sheet>
