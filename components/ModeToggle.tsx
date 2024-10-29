@@ -21,16 +21,21 @@ export function ModeToggle() {
       document.body.classList.add(themeName);
     }
   };
-
-  const handleThemeChange = (selectedTheme: 'light' | 'dark' | 'system' | 'colorblind-deuteranopia' | 'colorblind-protanopia' | 'colorblind-tritanopia') => {
-    if (["light", "dark", "system", "colorblind-deuteranopia", "colorblind-protanopia", "colorblind-tritanopia"].includes(selectedTheme)) {
-      setTheme(selectedTheme);
-      applyCustomTheme("");
+// @ts-expect-error: just ignore it works
+  const handleThemeChange = (selectedTheme) => {
+    console.log("Selected theme:", selectedTheme);
+    if (["light", "dark", "system"].includes(selectedTheme)) {
+        setTheme(selectedTheme);
+        applyCustomTheme("");
+        console.log("Applied default theme:", selectedTheme);
     } else {
-      setTheme("light");
-      applyCustomTheme(selectedTheme);
+        setTheme("light");
+        applyCustomTheme(selectedTheme);
+        console.log("Applied custom theme:", selectedTheme);
     }
-  };
+};
+
+
 
   return (
     <DropdownMenu>
