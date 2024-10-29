@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
 import * as React from "react";
-import { Moon, Sun, } from "lucide-react";
+import { Moon, Sun, EyeOff, Eye, Palette } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
@@ -12,58 +12,85 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+type Theme =
+  | "light"
+  | "dark"
+  | "system"
+  | "colorblind-deuteranopia"
+  | "colorblind-protanopia"
+  | "colorblind-tritanopia";
+
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme(); 
+  const [currentTheme, setCurrentTheme] = React.useState<Theme>("light"); 
+
+  React.useEffect(() => {
+    if (theme) {
+      setCurrentTheme(theme as Theme); 
+    }
+  }, [theme]);
 
   const applyCustomTheme = (themeName: string) => {
-    document.body.className = "";
+    document.body.className = ""; 
+
     if (themeName) {
       document.body.classList.add(themeName);
     }
   };
-// @ts-expect-error: just ignore it works
-  const handleThemeChange = (selectedTheme) => {
+
+  const handleThemeChange = (selectedTheme: Theme) => {
     console.log("Selected theme:", selectedTheme);
     if (["light", "dark", "system"].includes(selectedTheme)) {
-        setTheme(selectedTheme);
-        applyCustomTheme("");
-        console.log("Applied default theme:", selectedTheme);
+      setTheme(selectedTheme);
+      applyCustomTheme(""); 
     } else {
-        setTheme("light");
-        applyCustomTheme(selectedTheme);
-        console.log("Applied custom theme:", selectedTheme);
+      setTheme("light");
+      applyCustomTheme(selectedTheme); 
     }
-};
+    setCurrentTheme(selectedTheme); 
+    console.log("Applied theme:", selectedTheme);
+  };
 
-
+  const renderIcon = (theme: Theme) => {
+    switch (theme) {
+      case "light":
+        return <Sun className="h-5 w-5" />;
+      case "dark":
+        return <Moon className="h-5 w-5" />;
+      case "colorblind-deuteranopia":
+        return <EyeOff className="h-5 w-5" />;
+      case "colorblind-protanopia":
+        return <Eye className="h-5 w-5" />;
+      case "colorblind-tritanopia":
+        return <Palette className="h-5 w-5" />;
+      default:
+        return <Sun className="h-5 w-5" />; 
+    }
+  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          {renderIcon(currentTheme)} 
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => handleThemeChange("light")}>
-          Light
+          {renderIcon("light")} Light
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleThemeChange("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleThemeChange("system")}>
-          System
+          {renderIcon("dark")} Dark
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleThemeChange("colorblind-deuteranopia")}>
-          Deuteranopia
+          {renderIcon("colorblind-deuteranopia")} Deuteranopia
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleThemeChange("colorblind-protanopia")}>
-          Protanopia
+          {renderIcon("colorblind-protanopia")} Protanopia
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleThemeChange("colorblind-tritanopia")}>
-          Tritanopia
+          {renderIcon("colorblind-tritanopia")} Tritanopia
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

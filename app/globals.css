@@ -32,22 +32,21 @@ body {
     text-wrap: balance;
   }
 }
+
 .colorblind-deuteranopia {
-  --tw-text-opacity: 1;
-  filter: grayscale(1) brightness(0.9) contrast(1.1);
-  background-color: #f4f4f4; 
+  filter: grayscale(0.5) brightness(0.9) contrast(1.1) saturate(0.7);
+  background-color: #f4f4f4;
 }
 
 .colorblind-protanopia {
-  filter: sepia(1) saturate(2) hue-rotate(-50deg);
-  background-color: #eaeaea; 
+  filter: sepia(1) saturate(1.5) hue-rotate(-40deg) brightness(1.1);
+  background-color: #eaeaea;
 }
 
 .colorblind-tritanopia {
-  filter: hue-rotate(180deg) saturate(0.8);
-  background-color: #d9d9d9; 
+  filter: hue-rotate(180deg) saturate(0.6) brightness(1.1);
+  background-color: #d9d9d9;
 }
-
 
 @layer base {
   :root {
