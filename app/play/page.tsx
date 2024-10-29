@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { db } from '@/lib/db'; 
 
-export default async function PromptsPage() {
+export default async function PlayPage() {
   const prompts = await db.query('SELECT id, content FROM wg_prompts');
 
   return (

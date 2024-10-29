@@ -32,13 +32,10 @@ export default function MobileNav() {
                     </Link>
                     <nav className="flex flex-col gap-3 lg:gap-4 mt-6 items-start pl-0">
                         <Link href="/play/1" onClick={closeSheet}>
-                            Prompt 1
+                            Play
                         </Link>
-                        <Link href="/play/2" onClick={closeSheet}>
-                            Prompt 2
-                        </Link>
-                        <Link href="/play/3" onClick={closeSheet}>
-                            Prompt 3
+                        <Link href="/play" onClick={closeSheet}>
+                            Prompts
                         </Link>
                         <Link href="/AboutUs" onClick={closeSheet}>
                             About Us

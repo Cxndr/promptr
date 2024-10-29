@@ -9,9 +9,8 @@ export default function MainNav() {
         <House className="text-red-500" />
       </Link>
       <nav className="flex items-center gap-3 lg:gap-4 ml-8">
-        <Link href="/play/1">Prompt 1</Link>
-        <Link href="/play/2">Prompt 2</Link>
-        <Link href="/play/3">Prompt 3</Link>
+        <Link href="/play/1">Play</Link>
+        <Link href="/play">Prompts</Link>
         <Link href="/AboutUs">About Us</Link>
         <FontToggle/>
       </nav>
