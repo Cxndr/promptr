@@ -1,5 +1,6 @@
 import { House } from "lucide-react";
 import Link from "next/link";
+import FontToggle from "./FontToggle";
 
 export default function MainNav() {
   return (
@@ -12,6 +13,7 @@ export default function MainNav() {
         <Link href="/play/2">Prompt 2</Link>
         <Link href="/play/3">Prompt 3</Link>
         <Link href="/AboutUs">About Us</Link>
+        <FontToggle/>
       </nav>
     </div>
   );

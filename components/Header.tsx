@@ -1,7 +1,6 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import MobileNav from "./MobileNav";
 import MainNav from "./DesktopNav";
-import FontToggle from "./FontToggle";
 
 const Header: React.FC = () => {
   return (
@@ -9,7 +8,6 @@ const Header: React.FC = () => {
       <div className="flex flex-row">
         <MainNav />
         <MobileNav />
-        <FontToggle/>
       </div>
 
       <div className="absolute left-1/2 transform -translate-x-1/2">

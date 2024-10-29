@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export default function FontToggleClient() {
+export default function FontToggle() {
   const [isDyslexic, setIsDyslexic] = useState(false);
 
   const toggleFont = () => {
@@ -32,7 +32,7 @@ export default function FontToggleClient() {
   }, [isDyslexic]);
 
   return (
-    <button className={"pl-4"} onClick={toggleFont}>
+    <button onClick={toggleFont}>
       {isDyslexic ? "Default Font" : "Dyslexic Font"}
     </button>
   );
