@@ -46,7 +46,7 @@ const OpenDyslexic = localFont({
       style: 'normal',
     },
   ],
-  variable: "--font-open-dyslexic"
+  variable: "--font-dyslexic"
 })
 
 export default function RootLayout({

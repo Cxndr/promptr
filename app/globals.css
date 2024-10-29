@@ -12,7 +12,6 @@
   margin: 0 auto;
   padding: 0 auto;
   text-align: center;
-  --font-open-dyslexic: 'OpenDyslexic', sans-serif;
 }
 
 * {
@@ -142,9 +141,14 @@ body {
   }
 }
 
-/* form reset */ /* why we do this? - it breaks default styling on all these elements app wide */
-/* input,
-textarea,
-button {
-  all: unset;
-} */
+.font-default {
+  font-family: var(--font-noto) !important;
+}
+
+.font-dyslexic {
+  font-family: var(--font-dyslexic) !important;
+}
+
+.test {
+  font-family: var(--font-dyslexic);
+}
