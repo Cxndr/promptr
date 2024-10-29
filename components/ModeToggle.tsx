@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react";
-import { Moon, Sun,} from "lucide-react";
+import { Moon, Sun, } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
@@ -16,24 +16,21 @@ export function ModeToggle() {
   const { setTheme } = useTheme();
 
   const applyCustomTheme = (themeName: string) => {
-    document.body.className = ""; 
+    document.body.className = "";
     if (themeName) {
-      document.body.classList.add(themeName); 
+      document.body.classList.add(themeName);
     }
   };
-  
 
-  const handleThemeChange = (selectedTheme) => {
-    if (["light", "dark", "system"].includes(selectedTheme)) {
+  const handleThemeChange = (selectedTheme: 'light' | 'dark' | 'system' | 'colorblind-deuteranopia' | 'colorblind-protanopia' | 'colorblind-tritanopia') => {
+    if (["light", "dark", "system", "colorblind-deuteranopia", "colorblind-protanopia", "colorblind-tritanopia"].includes(selectedTheme)) {
       setTheme(selectedTheme);
-      applyCustomTheme(""); 
+      applyCustomTheme("");
     } else {
-      setTheme("light"); 
-      applyCustomTheme(selectedTheme); 
+      setTheme("light");
+      applyCustomTheme(selectedTheme);
     }
   };
-
-
 
   return (
     <DropdownMenu>
