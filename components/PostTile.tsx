@@ -1,24 +1,49 @@
 "use client";
 
 import { Post } from "@/lib/types";
-// import { User } from "@clerk/nextjs/server";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Heart, Trash2, Pencil } from 'lucide-react';
+import { Trash2, Pencil } from 'lucide-react';
 import { Button } from "./ui/button";
+import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
 
 type PromptPostProps = {
   post: Post;
+  makeReactions: (post_id : number, clerk_id : string, newReaction : boolean, reactionType: "heart" | "laugh" | "sick" | "eyeroll" ) => void
+  getExistingReactions: (postId : number, userId : string | undefined) => { heart: boolean; laugh: boolean; sick: boolean; eyeroll: boolean; }
   deletePost: (postId : number) => void
   editPost: (postId : number) => void
   ownedByUser: boolean
   timeAgoCreated: string
 }
 
-export default function PostTile({post, deletePost, editPost, ownedByUser, timeAgoCreated}:PromptPostProps) {
+export default function PostTile({post, deletePost, makeReactions, getExistingReactions, editPost, ownedByUser, timeAgoCreated}:PromptPostProps) {
+  const currentUser = useUser()
+  const [existingReactions, setExistingReactions] = useState({heart: false, laugh: false, sick: false, eyeroll: false})
+  useEffect(() => {
+    async function getReaction(){
+      const incomingExistingReactions = await getExistingReactions(post.id, currentUser.user?.id)
+      setExistingReactions(incomingExistingReactions)
+    }
+    getReaction()
+  },[currentUser, getExistingReactions, post])
 
   function handleDelete() {
     if (post && post.id) {
       deletePost(post.id); 
+    }
+  }
+
+  function handleReaction(reactionType: "heart" | "laugh" | "sick" | "eyeroll") {
+    if (post && post.id) {
+      let bool = false;
+      if (reactionType === "heart") bool = !existingReactions.heart
+      if (reactionType === "laugh") bool = !existingReactions.laugh
+      if (reactionType === "sick") bool = !existingReactions.sick
+      if (reactionType === "eyeroll") bool = !existingReactions.eyeroll
+      makeReactions(post.id, post.user.clerkId, bool, reactionType)
+
+      
     }
   }
 
@@ -84,26 +109,24 @@ export default function PostTile({post, deletePost, editPost, ownedByUser, timeA
 
           
         <div className="flex justify-center items-center gap-4 text-lg absolute right-6 bottom-2">
+          <Button onClick={() => handleReaction("heart")} className="flex gap-1 items-center">❤️
+            <span>0</span>
+          </Button>
 
-          <span className="flex gap-1 items-center">
-            <Heart fill="red" strokeWidth={0} size={24} />
-            <span>{post.upvotes}</span>
-          </span>
-
-          <span className="flex gap-1 items-center">
+          <Button onClick={() => handleReaction("laugh")} className="flex gap-1 items-center">
             <span>😂</span>
             <span>0</span>
-          </span>
+          </Button>
 
-          <span className="flex gap-1 items-center">
+          <Button  onClick={() => handleReaction("sick")} className="flex gap-1 items-center">
             <span>🤮</span>
             <span>0</span>
-          </span>
+          </Button>
           
-          <span className="flex gap-1 items-center">
+          <Button onClick={() => handleReaction("eyeroll")} className="flex gap-1 items-center">
             <span>🙄</span>
             <span>0</span>
-          </span>
+          </Button>
 
         </div>
 
