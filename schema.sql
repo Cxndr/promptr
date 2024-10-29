@@ -46,3 +46,15 @@ CREATE TABLE wg_comments (
     content TEXT NOT NULL,
     upvotes INT DEFAULT 0 -- Count of upvotes for the comment
 );
+
+-- Table for reactions
+CREATE TABLE wg_reactions (
+    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    clerk_id TEXT REFERENCES wg_users(clerk_id) ON DELETE CASCADE,
+    post_id INT REFERENCES wg_posts(id) ON DELETE CASCADE,
+    heart SMALLINT CHECK (heart IN (1)),
+    laugh SMALLINT CHECK (laugh IN (1)),
+    sick SMALLINT CHECK (sick IN (1)),
+    eyeroll SMALLINT CHECK (eyeroll IN (1)),
+    UNIQUE(clerk_id, post_id)
+);

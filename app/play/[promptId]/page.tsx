@@ -10,6 +10,7 @@ import { Post } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { timeAgo } from "@/lib/timeAgo";
+import { queryObjects } from "v8";
 
 type PromptPageProps = {
   params: {
@@ -20,7 +21,6 @@ type PromptPageProps = {
 export default async function PromptPage({params}: PromptPageProps) {
 
   const { userId } = await auth();
-  const currUser = currentUser();
 
   const { rows: baseWords }: { rows: Word[] } = await db.query(`
     SELECT word 
@@ -123,6 +123,42 @@ export default async function PromptPage({params}: PromptPageProps) {
     }
   }
 
+  // Pull exisiting reactions from DB:
+  async function getExistingReactions(postId : number, userId : string | undefined) {
+    'use server'
+    const existingReactionsResponse = await db.query(
+      `SELECT * FROM wg_reactions WHERE (post_id, clerk_id) = ($1, $2)`, [postId, userId])
+      const existingReactions = {
+        heart: existingReactionsResponse.rows[0].heart as boolean,
+        laugh: existingReactionsResponse.rows[0].laugh as boolean,
+        sick: existingReactionsResponse.rows[0].sick as boolean,
+        eyeroll: existingReactionsResponse.rows[0].eyeroll as boolean,
+      }
+      return existingReactions
+  }
+  // If no reaction, create new:
+  async function makeReactions
+  (post_id : number, userId : string, newReaction : boolean, reactionType : "heart" | "laugh" | "sick" | "eyeroll") {
+    'use server'
+    // const existingReaction = await getExistingReactions(post_id, userId)
+    const validReactions = ["heart", "laugh", "sick", "eyeroll"];
+  if (!validReactions.includes(reactionType)) {
+    throw new Error("Invalid reaction type");
+  }
+    try {
+        await db.query(`
+          INSERT INTO wg_reactions (clerk_id, post_id, ${reactionType})
+          VALUES ($1, $2, $3)
+          ON CONFLICT (clerk_id, post_id) 
+          DO UPDATE SET
+          ${reactionType} = EXCLUDED.${reactionType};
+          `,[userId, post_id, newReaction])
+        } catch(err) {
+          console.error(err)
+        }
+          revalidatePath(`/play/${prompt.id}`)
+  }
+
   async function editPost(postId : number) {
     "use server";
     // edit function
@@ -155,6 +191,8 @@ export default async function PromptPage({params}: PromptPageProps) {
               <PostTile 
                 key={post.id} 
                 post={post}
+                getExistingReactions = {getExistingReactions}
+                makeReactions={makeReactions}
                 deletePost={deletePost}
                 editPost={editPost}
                 ownedByUser={post.user.clerkId === userId}
