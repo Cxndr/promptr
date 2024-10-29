@@ -21,7 +21,7 @@ export function ModeToggle() {
       document.body.classList.add(themeName);
     }
   };
-// @ts-expect-error: just ignore it 
+// @ts-expect-error: just ignore it works
   const handleThemeChange = (selectedTheme) => {
     console.log("Selected theme:", selectedTheme);
     if (["light", "dark", "system"].includes(selectedTheme)) {
