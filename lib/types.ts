@@ -18,6 +18,8 @@ export type Comment = {
 }
 
 export type PublicUser = {
+  userId: number;
+  clerkId: string;
   username: string;
   imageUrl: string;
   // todo: add stats fiels eg. total posts, total upvoted etc.
@@ -30,5 +32,5 @@ export type Post = {
   content: string;
   words: Word[];
   upvotes: number;
-  // dateCreated: Date;
+  createdAt: Date;
 }
