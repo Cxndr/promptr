@@ -4,11 +4,12 @@ import PostTile from "@/components/PostTile";
 
 import { db } from "@/lib/db";
 import { Word } from "@/lib/types";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { Prompt } from "@/lib/types";
 import { Post } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { timeAgo } from "@/lib/timeAgo";
 
 type PromptPageProps = {
   params: {
@@ -19,6 +20,7 @@ type PromptPageProps = {
 export default async function PromptPage({params}: PromptPageProps) {
 
   const { userId } = await auth();
+  const currUser = currentUser();
 
   const { rows: baseWords }: { rows: Word[] } = await db.query(`
     SELECT word 
@@ -44,7 +46,7 @@ export default async function PromptPage({params}: PromptPageProps) {
 
   const promptPostsData = await db.query(
     `
-      SELECT wg_posts.*, wg_users.username, wg_users.image_url 
+      SELECT wg_posts.*, wg_users.clerk_id , wg_users.id as user_id, wg_users.username, wg_users.image_url 
       FROM wg_posts
       JOIN wg_users ON wg_posts.clerk_id = wg_users.clerk_id
       WHERE prompt_id = ($1) 
@@ -59,13 +61,16 @@ export default async function PromptPage({params}: PromptPageProps) {
       {
         id: row.id,
         user: {
+          userId: row.user_id,
+          clerkId: row.clerk_id,
           username: row.username,
           imageUrl: row.image_url
         },
         promptId: row.prompt_id,
         content: row.content,
         words: row.words,
-        upvotes: row.upvotes
+        upvotes: row.upvotes,
+        createdAt: row.created_at
       }
     );
   });
@@ -118,6 +123,11 @@ export default async function PromptPage({params}: PromptPageProps) {
     }
   }
 
+  async function editPost(postId : number) {
+    "use server";
+    // edit function
+  }
+
 
   return (
     <div className="max-w-6xl flex flex-col gap-4 justify-center items-center">
@@ -138,15 +148,23 @@ export default async function PromptPage({params}: PromptPageProps) {
         />
       </div>
       
-      <div className="max-w-5xl flex flex-col gap-8">
-        {promptPosts.map((post) => (
-          <PostTile 
-            key={post.id} 
-            post={post}
-            deletePost={deletePost}
-          />
-        ))}
-      </div>
+      {
+        promptPosts.length > 0 && (
+          <div className="max-w-5xl flex flex-col gap-8">
+            {promptPosts.map((post) => (
+              <PostTile 
+                key={post.id} 
+                post={post}
+                deletePost={deletePost}
+                editPost={editPost}
+                ownedByUser={post.user.clerkId === userId}
+                timeAgoCreated={timeAgo(post.createdAt)}
+              />
+            ))}
+          </div>
+        )
+      }
+      
       
     </div>
   )
