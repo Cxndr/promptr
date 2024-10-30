@@ -20,33 +20,37 @@ type Theme =
   | "colorblind-tritanopia";
 
 export function ModeToggle() {
-  const { theme, setTheme } = useTheme(); 
-  const [currentTheme, setCurrentTheme] = React.useState<Theme>("light"); 
+  const { setTheme } = useTheme();
+  const [currentTheme, setCurrentTheme] = React.useState<Theme>("light");
 
   React.useEffect(() => {
-    if (theme) {
-      setCurrentTheme(theme as Theme); 
-    }
-  }, [theme]);
+    const applyColorblindClass = (themeName: Theme) => {
+      document.body.classList.remove(
+        "colorblind-deuteranopia",
+        "colorblind-protanopia",
+        "colorblind-tritanopia"
+      );
 
-  const applyCustomTheme = (themeName: string) => {
-    document.body.className = ""; 
+      if (themeName.startsWith("colorblind")) {
+        document.body.classList.add(themeName);
+      }
+    };
 
-    if (themeName) {
-      document.body.classList.add(themeName);
-    }
-  };
+    applyColorblindClass(currentTheme);
+  }, [currentTheme]);
 
   const handleThemeChange = (selectedTheme: Theme) => {
+    if (currentTheme === selectedTheme) return;
+
     console.log("Selected theme:", selectedTheme);
-    if (["light", "dark",].includes(selectedTheme)) {
+    setCurrentTheme(selectedTheme);
+
+    if (selectedTheme === "light" || selectedTheme === "dark") {
       setTheme(selectedTheme);
-      applyCustomTheme(""); 
     } else {
       setTheme("light");
-      applyCustomTheme(selectedTheme); 
     }
-    setCurrentTheme(selectedTheme); 
+
     console.log("Applied theme:", selectedTheme);
   };
 
@@ -63,7 +67,7 @@ export function ModeToggle() {
       case "colorblind-tritanopia":
         return <Palette className="h-5 w-5" />;
       default:
-        return <Sun className="h-5 w-5" />; 
+        return <Sun className="h-5 w-5" />;
     }
   };
 
@@ -71,7 +75,7 @@ export function ModeToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
-          {renderIcon(currentTheme)} 
+          {renderIcon(currentTheme)}
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
