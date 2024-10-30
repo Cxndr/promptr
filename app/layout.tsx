@@ -5,9 +5,9 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Noto_Sans, Rubik_Mono_One } from "next/font/google";
-import { ModeToggle } from "@/components/ModeToggle";
+// import { ModeToggle } from "@/components/ModeToggle";
 import localFont from 'next/font/local'
-import { baseWordList, generateBg } from "@/lib/generateBg";
+import BackGroundStyling from "@/components/BackgroundStyling";
 
 export const metadata: Metadata = {
   title: "Phrase Factory",
@@ -56,9 +56,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const bgSvg = generateBg(baseWordList);
-  const bgSvgDataUri = `data:image/svg+xml;base64,${btoa(bgSvg.svgContent)}`;
-
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
@@ -69,26 +66,19 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <BackGroundStyling>
 
-            <div className="absolute top-4 right-4 z-10">
-              <ModeToggle />
-            </div>
               <Header />
-
+              
                 <main 
-                  className={`flex flex-col justify-center items-center w-full`}
-                  style={{
-                    backgroundImage: `url(${bgSvgDataUri})`,
-                    backgroundRepeat: "repeat", 
-                    // backgroundSize: `${bgSvg.svgWidth}px ${bgSvg.svgHeight}px`,
-                    backgroundSize: "500px 500px",
-                  }}
+                  className={`flex-grow flex flex-col items-center w-full mb-4 mt-24`}
                 >
                   {children}
                 </main>
 
               <Footer />
 
+            </BackGroundStyling>
           </ThemeProvider>
         </body>
       </html>

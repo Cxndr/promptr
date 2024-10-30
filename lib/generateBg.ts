@@ -13,29 +13,27 @@ function getXRandomWords(words: string[], amount: number) {
   return words;
 }
 
-export function generateBg(words: string[]) {
-  // remove all words over 8 characters
+export function generateBg(words: string[], theme: string | undefined) {
+
   words = words.filter(word => word.length <= 8);
 
-  // Set SVG dimensions and text properties
   const svgWidth = 500;
   const svgHeight = 500;
-  const gridSize = 70; // Controls spacing between words horizontally and vertically
+  const gridSize = 70; // spacing between words
   const textRotation = -45;
   const textFontSize = 20;
-  const fillColor = "#2F2F2F";
+  let fillColor = "#9494ac";
+  if (theme === "dark") { fillColor = "#2F2F2F"; }
 
   // SVG template
   let svgContent = `
     <svg width="${svgWidth}" height="${svgHeight}" xmlns="http://www.w3.org/2000/svg">
   `;
 
-  // Arrange words in a grid, with staggered starting points for each row
   const wordsPerRow = Math.floor(svgWidth / gridSize);
   for (let row = 0; row < Math.floor(svgHeight / gridSize); row++) {
 
     const rowWords = getXRandomWords(words, 20);
-    // Offset the starting index for each row to stagger the pattern
     const offset = row % rowWords.length;
 
     for (let col = 0; col < wordsPerRow; col++) {
@@ -53,7 +51,6 @@ export function generateBg(words: string[]) {
     }
   }
 
-  // Close SVG element
   svgContent += `</svg>`;
 
   return { svgContent, svgHeight, svgWidth };

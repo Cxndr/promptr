@@ -17,8 +17,16 @@ const config: Config = {
 			dyslexia: ['var(--font-open-dyslexic)'],
 		},
   		colors: {
-  			background: 'hsl(var(--background))',
-  			foreground: 'hsl(var(--foreground))',
+  			background: {
+					DEFAULT: 'hsl(var(--background))',
+					svg: 'hsl(var(--background-svg))',
+					raised: 'hsl(var(--background-raised))',
+					raiseddarker: 'hsl(var(--background-raised-darker))',
+				},
+  			foreground: {
+					DEFAULT: 'hsl(var(--foreground))',
+					raised: 'hsl(var(--foreground-raised))',
+				},
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
@@ -29,7 +37,8 @@ const config: Config = {
   			},
   			primary: {
   				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
+  				foreground: 'hsl(var(--primary-foreground))',
+					dark: 'hsl(var(--primary-dark))',
   			},
   			secondary: {
   				DEFAULT: 'hsl(var(--secondary))',

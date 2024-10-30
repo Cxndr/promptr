@@ -57,22 +57,22 @@ export function ModeToggle() {
   const renderIcon = (theme: Theme) => {
     switch (theme) {
       case "light":
-        return <Sun className="h-5 w-5" />;
+        return <Sun className="h-7 w-7" />;
       case "dark":
-        return <Moon className="h-5 w-5" />;
+        return <Moon className="h-7 w-7" />;
       case "colorblind-deuteranopia":
-        return <EyeOff className="h-5 w-5" />;
+        return <EyeOff className="h-7 w-7" />;
       case "colorblind-protanopia":
-        return <Eye className="h-5 w-5" />;
+        return <Eye className="h-7 w-7" />;
       case "colorblind-tritanopia":
-        return <Palette className="h-5 w-5" />;
+        return <Palette className="h-7 w-7" />;
       default:
-        return <Sun className="h-5 w-5" />;
+        return <Sun className="h-7 w-7" />;
     }
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
           {renderIcon(currentTheme)}

@@ -135,13 +135,13 @@ export default function PostInput({
       <CollapsibleTrigger asChild className="mb-6">
         {isOpen 
           ? (
-            <Button className="font-bold bg-zinc-700 hover:bg-zinc-800 text-zinc-50 rounded-lg transition-all duration-200 text-base">
+            <Button className="font-bold bg-zinc-700 hover:bg-zinc-800 text-zinc-50 rounded-lg transition-all duration-200 text-base shadow-sm shadow-black">
               Hide
               <ChevronUp/>
             </Button>
           )
           : (
-            <Button className="font-bold bg-pink-600 hover:bg-pink-700 text-zinc-50 rounded-lg transition-all duration-200 text-base">
+            <Button className="font-bold bg-primary hover:bg-primary-dark text-zinc-50 rounded-lg transition-all duration-200 text-base shadow-sm shadow-black">
               Create a Response
               <ChevronDown/>
             </Button>
