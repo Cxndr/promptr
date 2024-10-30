@@ -24,7 +24,11 @@ body {
   display: flex;
   min-width: 320px;
   min-height: 100vh;
+  height: 100%;
   line-height: 1.5;
+  /* background-image: url('/img/background.svg'); */
+  background-repeat: repeat;
+  background-size: 300px 300px;
 }
 
 @layer utilities {
@@ -47,6 +51,8 @@ body {
   filter: hue-rotate(180deg) saturate(0.6) brightness(1.1);
   background-color: #d9d9d9;
 }
+
+
 
 @layer base {
   :root {
@@ -150,4 +156,30 @@ body {
 
 .test {
   font-family: var(--font-dyslexic);
+}
+
+
+.reaction-button {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  color: var(--muted-foreground);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  height: auto;
+  font-size: 1rem;
+  transition: transform 0.3s, filter 0.5s;
+}
+.reaction-button:hover {
+  background: transparent;
+  background-color: rgb(255, 255, 255, 0);
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transform: scale(1.16);
+}
+.reaction-button-active {
+  filter: drop-shadow(0 0 0.25rem #91862b);
+  color: var(--muted-foreground);
 }

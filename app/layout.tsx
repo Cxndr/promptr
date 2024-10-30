@@ -4,9 +4,10 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Noto_Serif, Rubik_Mono_One } from "next/font/google";
+import { Noto_Sans, Rubik_Mono_One } from "next/font/google";
 import { ModeToggle } from "@/components/ModeToggle";
 import localFont from 'next/font/local'
+// import { generateBg } from "@/lib/generateBg";
 
 export const metadata: Metadata = {
   title: "OnlyWords",
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     "Create a solution to a prompt based on given words | OnlyWords",
 };
 
-const noto = Noto_Serif({
+const noto = Noto_Sans({
   subsets: ["latin"],
   style: "normal",
   weight: "400",
@@ -54,6 +55,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  // const bgSvgString = generateBg(["Create", "a", "solution", "to", "a", "prompt", "based", "on", "given", "words"]);
+  // const bgSvgDataUri = `data:image/svg+xml;base64,${btoa(bgSvgString)}`;
+
   return (
     <ClerkProvider>
       <html lang="en">
@@ -64,14 +69,27 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+
             <div className="absolute top-4 right-4 z-10">
               <ModeToggle />
             </div>
+
             <Header />
-            <main className="flex flex-col justify-center items-center w-full">
-              {children}
-            </main>
+
+            {/* <div style={{ 
+            width:"100%", 
+            height:"100%", 
+            backgroundImage:`url(${bgSvgDataUri})`,
+            backgroundRepeat:"repeat",
+            backgroundSize:"200px 200px",
+          }}> */}
+              <main className="flex flex-col justify-center items-center w-full">
+                {children}
+              </main>
+            {/* </div> */}
+
             <Footer />
+
           </ThemeProvider>
         </body>
       </html>

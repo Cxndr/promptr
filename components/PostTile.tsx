@@ -2,56 +2,67 @@
 
 import { Post } from "@/lib/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Trash2, Pencil } from 'lucide-react';
 import { Button } from "./ui/button";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
-import { Heart, Trash2, Pencil } from 'lucide-react';
-import { Button } from "@/components/ui/button"
+import { Trash2, Pencil } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
+  // DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+// import { Input } from "@/components/ui/input"
+// import { Label } from "@/components/ui/label"
 import PostInput from "./PostInput";
-import { useEffect } from "react";
 import { Word } from "@/lib/types";        
 
 type PromptPostProps = {
   post: Post;
-  makeReactions: (post_id : number, clerk_id : string, newReaction : boolean, reactionType: "heart" | "laugh" | "sick" | "eyeroll" ) => void
-  getExistingReactions: (postId : number, userId : string | undefined) => { heart: boolean; laugh: boolean; sick: boolean; eyeroll: boolean; }
-  deletePost: (postId : number) => void
-  editPost: (postId : number) => void
-  ownedByUser: boolean
-  timeAgoCreated: string
+  makeReactions: (post_id: number, clerk_id: string, newReaction: boolean, reactionType: "heart" | "laugh" | "sick" | "eyeroll") => void;
+  getExistingReactions: (postId: number, userId: string | undefined) => Promise<{ heart: boolean, laugh: boolean, sick: boolean, eyeroll: boolean }>;
+  getReactionCount: (postId: number) => Promise<{ heart: number, laugh: number, sick: number, eyeroll: number }>;
+  deletePost: (postId: number) => void;
+  editPost: (postId: number) => void;
+  ownedByUser: boolean;
+  timeAgoCreated: string;
 }
 
+export default function PostTile({post, deletePost, makeReactions, getExistingReactions, getReactionCount, editPost, ownedByUser, timeAgoCreated}:PromptPostProps) {
 
-export default function PostTile({post, deletePost, makeReactions, getExistingReactions, editPost, ownedByUser, timeAgoCreated}:PromptPostProps) {
-  const currentUser = useUser()
+
   const [existingReactions, setExistingReactions] = useState({heart: false, laugh: false, sick: false, eyeroll: false})
+  const [reactionCount, setReactionCount] = useState({heart: 0, laugh: 0, sick: 0, eyeroll: 0})
+
+  const currentUser = useUser()
+
+  const reactionButtonActiveClass = `reaction-button-active`
+
   useEffect(() => {
-    async function getReaction(){
+    async function getCurrentUserReactions(){
       const incomingExistingReactions = await getExistingReactions(post.id, currentUser.user?.id)
       setExistingReactions(incomingExistingReactions)
     }
-    getReaction()
-  },[currentUser, getExistingReactions, post])
+    if (currentUser.isLoaded && currentUser.user) { 
+      getCurrentUserReactions()
+    }
+  },[currentUser.isLoaded, currentUser.user, getExistingReactions, post])
 
   useEffect(() => {
+    async function getAllReactionCount(){
+      const incomingReactionCount = await getReactionCount(post.id)
+      setReactionCount(incomingReactionCount)
+    }
+    getAllReactionCount()
+  },[getReactionCount, post])
 
-  })
   const baseWords: Word[] = []
   console.log('post.words',post.words)
   console.log('post.slice',post.words.slice(0,20))
-  post.words.slice(0.20).map((baseWord) => {
+  post.words.slice(0, 20).map((baseWord) => {
     baseWords.push({
       word: baseWord,
       type: 'base',
@@ -84,9 +95,9 @@ export default function PostTile({post, deletePost, makeReactions, getExistingRe
       if (reactionType === "laugh") bool = !existingReactions.laugh
       if (reactionType === "sick") bool = !existingReactions.sick
       if (reactionType === "eyeroll") bool = !existingReactions.eyeroll
-      makeReactions(post.id, post.user.clerkId, bool, reactionType)
-
-      
+      if (currentUser.isLoaded && currentUser.user) {
+        makeReactions(post.id, currentUser.user.id, bool, reactionType)    
+      }
     }
   }
 
@@ -131,12 +142,12 @@ export default function PostTile({post, deletePost, makeReactions, getExistingRe
             </div>
           }
           {ownedByUser &&
-            <div className="flex">
+            <div className="flex h-full">
               <Dialog>
                 <DialogTrigger asChild>
                   <Button
                     onClick={handleEdit}
-                    className="bg-zinc-50 bg-opacity-0 hover:bg-zinc-700"
+                    className="bg-zinc-50 bg-opacity-0 hover:bg-zinc-700 shadow-none"
                   >
                     <Pencil color={"white"} />
                   </Button>
@@ -145,7 +156,7 @@ export default function PostTile({post, deletePost, makeReactions, getExistingRe
                   <DialogHeader>
                     <DialogTitle>Edit post</DialogTitle>
                     <DialogDescription>
-                      Make changes to your post here. Click save when you're done.
+                      Make changes to your post here. Click save when you&apos;re done.
                     </DialogDescription>
                   </DialogHeader>
                   <PostInput
@@ -157,7 +168,7 @@ export default function PostTile({post, deletePost, makeReactions, getExistingRe
               </Dialog>
               <Button
                 onClick={handleDelete}
-                className="bg-zinc-50 bg-opacity-0 hover:bg-red-800"
+                className="bg-zinc-50 bg-opacity-0 hover:bg-red-800 shadow-none"
               >
                 <Trash2 color={"white"} />
               </Button>
@@ -171,24 +182,38 @@ export default function PostTile({post, deletePost, makeReactions, getExistingRe
         </p>
 
 
-        <div className="flex justify-center items-center gap-4 text-lg absolute right-6 bottom-2">
-          <Button onClick={() => handleReaction("heart")} className="flex gap-1 items-center">❤️
-            <span>0</span>
-          </Button>
+        <div className="flex justify-center items-center text-lg absolute right-4 bottom-1">
 
-          <Button onClick={() => handleReaction("laugh")} className="flex gap-1 items-center">
+            <Button 
+            onClick={() => handleReaction("heart")} 
+            className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${existingReactions.heart && reactionButtonActiveClass}`}
+            >
+            <span>❤️</span>
+            <span className="opacity-85 text-sm">{reactionCount.heart}</span>
+            </Button>
+
+          <Button 
+            onClick={() => handleReaction("laugh")} 
+            className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${existingReactions.laugh && reactionButtonActiveClass}`}
+          >
             <span>😂</span>
-            <span>0</span>
+            <span className="opacity-85 text-sm">{reactionCount.laugh}</span>
           </Button>
 
-          <Button  onClick={() => handleReaction("sick")} className="flex gap-1 items-center">
+          <Button 
+            onClick={() => handleReaction("sick")}
+            className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${existingReactions.sick && reactionButtonActiveClass}`}
+          >
             <span>🤮</span>
-            <span>0</span>
-
+            <span className="opacity-85 text-sm">{reactionCount.sick}</span>
           </Button>
-          <Button onClick={() => handleReaction("eyeroll")} className="flex gap-1 items-center">
+
+          <Button 
+            onClick={() => handleReaction("eyeroll")}
+            className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${existingReactions.eyeroll && reactionButtonActiveClass}`}
+          >
             <span>🙄</span>
-            <span>0</span>
+            <span className="opacity-85 text-sm">{reactionCount.eyeroll}</span>
           </Button>
 
         </div>

@@ -4,13 +4,13 @@ import PostTile from "@/components/PostTile";
 
 import { db } from "@/lib/db";
 import { Word } from "@/lib/types";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { Prompt } from "@/lib/types";
 import { Post } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { timeAgo } from "@/lib/timeAgo";
-import { queryObjects } from "v8";
+// import { queryObjects } from "v8";
 
 type PromptPageProps = {
   params: {
@@ -126,42 +126,98 @@ export default async function PromptPage({params}: PromptPageProps) {
   // Pull exisiting reactions from DB:
   async function getExistingReactions(postId : number, userId : string | undefined) {
     'use server'
-    const existingReactionsResponse = await db.query(
-      `SELECT * FROM wg_reactions WHERE (post_id, clerk_id) = ($1, $2)`, [postId, userId])
-      const existingReactions = {
-        heart: existingReactionsResponse.rows[0].heart as boolean,
-        laugh: existingReactionsResponse.rows[0].laugh as boolean,
-        sick: existingReactionsResponse.rows[0].sick as boolean,
-        eyeroll: existingReactionsResponse.rows[0].eyeroll as boolean,
+    if (!userId) {
+      return {
+        heart: false,
+        laugh: false,
+        sick: false,
+        eyeroll: false,
       }
-      return existingReactions
+    }
+    const existingReactionsResponse = await db.query(
+      `SELECT * FROM wg_reactions WHERE (post_id, clerk_id) = ($1, $2)`, [postId, userId]
+    )
+    if (existingReactionsResponse.rows.length === 0) {
+      return {
+        heart: false,
+        laugh: false,
+        sick: false,
+        eyeroll: false,
+      }
+    }
+    const existingReactions = {
+      heart: existingReactionsResponse.rows[0].heart as boolean,
+      laugh: existingReactionsResponse.rows[0].laugh as boolean,
+      sick: existingReactionsResponse.rows[0].sick as boolean,
+      eyeroll: existingReactionsResponse.rows[0].eyeroll as boolean,
+    }
+    return existingReactions
   }
   // If no reaction, create new:
   async function makeReactions
   (post_id : number, userId : string, newReaction : boolean, reactionType : "heart" | "laugh" | "sick" | "eyeroll") {
+    
     'use server'
-    // const existingReaction = await getExistingReactions(post_id, userId)
+
     const validReactions = ["heart", "laugh", "sick", "eyeroll"];
-  if (!validReactions.includes(reactionType)) {
-    throw new Error("Invalid reaction type");
-  }
+    if (!validReactions.includes(reactionType)) {
+      throw new Error("Invalid reaction type");
+    }
     try {
-        await db.query(`
-          INSERT INTO wg_reactions (clerk_id, post_id, ${reactionType})
-          VALUES ($1, $2, $3)
-          ON CONFLICT (clerk_id, post_id) 
-          DO UPDATE SET
-          ${reactionType} = EXCLUDED.${reactionType};
-          `,[userId, post_id, newReaction])
-        } catch(err) {
-          console.error(err)
-        }
-          revalidatePath(`/play/${prompt.id}`)
+      await db.query(`
+        INSERT INTO wg_reactions (clerk_id, post_id, ${reactionType})
+        VALUES ($1, $2, $3)
+        ON CONFLICT (clerk_id, post_id) 
+        DO UPDATE SET
+        ${reactionType} = EXCLUDED.${reactionType};
+        `,[userId, post_id, newReaction])
+    } catch(err) {
+      console.error(err)
+    }
+    
+    revalidatePath(`/play/${prompt.id}`)
+  }
+
+  async function getReactionCount(postId: number) {
+    "use server";
+    try {
+      const heartRes = await db.query(
+        `SELECT COUNT(*) FROM wg_reactions WHERE post_id = $1 AND heart=true`, [postId]
+      )
+      const laughRes = await db.query(
+        `SELECT COUNT(*) FROM wg_reactions WHERE post_id = $1 AND laugh=true`, [postId]
+      )
+      const sickRes = await db.query(
+        `SELECT COUNT(*) FROM wg_reactions WHERE post_id = $1 AND sick=true`, [postId]
+      )
+      const eyerollRes = await db.query(
+        `SELECT COUNT(*) FROM wg_reactions WHERE post_id = $1 AND eyeroll=true`, [postId]
+      )
+      const reactionCounts = {
+        heart: parseInt(heartRes.rows[0].count, 10),
+        laugh: parseInt(laughRes.rows[0].count, 10),
+        sick: parseInt(sickRes.rows[0].count, 10),
+        eyeroll: parseInt(eyerollRes.rows[0].count, 10),
+      }
+      return reactionCounts;
+
+    } catch(err) {
+      console.error(err)
+    }
+
+    return {
+      heart: 0,
+      laugh: 0,
+      sick: 0,
+      eyeroll: 0,
+    }
+
+
   }
 
   async function editPost(postId : number) {
     "use server";
-    // edit function
+    // update post sql query here
   }
 
 
@@ -193,6 +249,7 @@ export default async function PromptPage({params}: PromptPageProps) {
                 post={post}
                 getExistingReactions = {getExistingReactions}
                 makeReactions={makeReactions}
+                getReactionCount={getReactionCount}
                 deletePost={deletePost}
                 editPost={editPost}
                 ownedByUser={post.user.clerkId === userId}
