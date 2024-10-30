@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import { Noto_Sans, Rubik_Mono_One } from "next/font/google";
 import { ModeToggle } from "@/components/ModeToggle";
 import localFont from 'next/font/local'
-// import { generateBg } from "@/lib/generateBg";
+import { baseWordList, generateBg } from "@/lib/generateBg";
 
 export const metadata: Metadata = {
   title: "Phrase Factory",
@@ -56,12 +56,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  // const bgSvgString = generateBg(["Create", "a", "solution", "to", "a", "prompt", "based", "on", "given", "words"]);
-  // const bgSvgDataUri = `data:image/svg+xml;base64,${btoa(bgSvgString)}`;
+  const bgSvg = generateBg(baseWordList);
+  const bgSvgDataUri = `data:image/svg+xml;base64,${btoa(bgSvg.svgContent)}`;
 
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className={`${noto.variable} ${rubik.variable} ${OpenDyslexic.variable} antialiased`}>
           <ThemeProvider
             attribute="class"
@@ -73,22 +73,21 @@ export default function RootLayout({
             <div className="absolute top-4 right-4 z-10">
               <ModeToggle />
             </div>
+              <Header />
 
-            <Header />
+                <main 
+                  className={`flex flex-col justify-center items-center w-full`}
+                  style={{
+                    backgroundImage: `url(${bgSvgDataUri})`,
+                    backgroundRepeat: "repeat", 
+                    // backgroundSize: `${bgSvg.svgWidth}px ${bgSvg.svgHeight}px`,
+                    backgroundSize: "500px 500px",
+                  }}
+                >
+                  {children}
+                </main>
 
-            {/* <div style={{ 
-            width:"100%", 
-            height:"100%", 
-            backgroundImage:`url(${bgSvgDataUri})`,
-            backgroundRepeat:"repeat",
-            backgroundSize:"200px 200px",
-          }}> */}
-              <main className="flex flex-col justify-center items-center w-full">
-                {children}
-              </main>
-            {/* </div> */}
-
-            <Footer />
+              <Footer />
 
           </ThemeProvider>
         </body>

@@ -135,7 +135,7 @@ export default function PostTile({ post, deletePost, makeReactions, getExistingR
   }
 
   return (
-    <div className="flex bg-zinc-800 bg-opacity-70 rounded-2xl p-0 overflow-hidden">
+    <div className="flex bg-zinc-800 bg-opacity-70 rounded-2xl p-0 overflow-hidden shadow-md shadow-black">
 
       <div className="flex flex-col justify-start items-center gap-4 relative">
         <Avatar className="w-40 h-40 relative">
