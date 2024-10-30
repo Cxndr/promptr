@@ -11,16 +11,33 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { timeAgo } from "@/lib/timeAgo";
 // import { queryObjects } from "v8";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 
 type PromptPageProps = {
   params: {
     promptId: string;
   }
-}
+  searchParams: {
+    page?: string; 
+  };
+};
 
-export default async function PromptPage({ params }: PromptPageProps) {
+
+export default async function PromptPage({params, searchParams}: PromptPageProps) {
 
   const { userId } = await auth();
+  // pageination related
+  const itemsPerPage = 10; // ten posts per page, might change later
+  const currentPage = parseInt(searchParams.page || "1", 8);// Default to page 1 if not specified
+  const offset = (currentPage - 1) * itemsPerPage;
 
   const { rows: baseWords }: { rows: Word[] } = await db.query(`
     SELECT word 
@@ -44,6 +61,14 @@ export default async function PromptPage({ params }: PromptPageProps) {
     [params.promptId]
   )
 
+  //total pages for pageination
+  const totalPostsData = await db.query(
+    "SELECT COUNT(*) FROM wg_posts WHERE prompt_id = ($1)",
+    [params.promptId]
+  );
+  const totalPosts = parseInt(totalPostsData.rows[0].count);
+  const totalPages = Math.ceil(totalPosts / itemsPerPage);
+
   const promptPostsData = await db.query(
     `
       SELECT wg_posts.*, wg_users.clerk_id , wg_users.id as user_id, wg_users.username, wg_users.image_url 
@@ -51,8 +76,9 @@ export default async function PromptPage({ params }: PromptPageProps) {
       JOIN wg_users ON wg_posts.clerk_id = wg_users.clerk_id
       WHERE prompt_id = ($1) 
       ORDER BY created_at DESC
+      LIMIT ($2) OFFSET ($3)
     `,
-    [params.promptId]
+    [params.promptId, itemsPerPage, offset]
   );
 
   const promptPosts: Post[] = [];
@@ -231,32 +257,29 @@ export default async function PromptPage({ params }: PromptPageProps) {
   };
 
 
-
-return (
-  <div className="max-w-6xl flex flex-col gap-4 justify-center items-center">
-
-    <PostPrompt
-      prompt={prompt}
-      promptsUpperBound={promptsUpperBound}
-      promptsLowerBound={promptsLowerBound}
-      nextPrompt={nextPrompt}
-      prevPrompt={prevPrompt}
-    />
-
-    <div className="max-w-5xl">
-      <PostInput
-        baseWords={baseWords}
-        fillerWords={fillerWords}
-        handleSubmit={handleSubmit}
+  return (
+    <div className="max-w-6xl flex flex-col gap-4 justify-center items-center">
+      <PostPrompt
+        prompt={prompt}
+        promptsUpperBound={promptsUpperBound}
+        promptsLowerBound={promptsLowerBound}
+        nextPrompt={nextPrompt}
+        prevPrompt={prevPrompt}
       />
-    </div>
-
-    {
-      promptPosts.length > 0 && (
+  
+      <div className="max-w-5xl">
+        <PostInput
+          baseWords={baseWords}
+          fillerWords={fillerWords}
+          handleSubmit={handleSubmit}
+        />
+      </div>
+  
+      {promptPosts.length > 0 && (
         <div className="max-w-5xl flex flex-col gap-8">
           {promptPosts.map((post) => (
-            <PostTile
-              key={post.id}
+            <PostTile 
+              key={post.id} 
               post={post}
               getExistingReactions={getExistingReactions}
               makeReactions={makeReactions}
@@ -268,10 +291,27 @@ return (
             />
           ))}
         </div>
-      )
-    }
-
-
-  </div>
-)
+      )}
+  
+      {/* Pagination Controls */}
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious href={`?page=${currentPage - 1}`} disabled={currentPage === 1} />
+          </PaginationItem>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <PaginationItem key={index + 1}>
+              <PaginationLink href={`?page=${index + 1}`} active={index + 1 === currentPage}>
+                {index + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <PaginationNext href={`?page=${currentPage + 1}`} disabled={currentPage === totalPages} />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    </div>
+  );
 }
+  
