@@ -32,7 +32,7 @@ export default function FontToggle() {
   }, [isDyslexic]);
 
   return (
-    <button onClick={toggleFont}>
+    <button onClick={toggleFont} className="px-2 hover:scale-110 hover:text-primary transition-all duration-300">
       {isDyslexic ? "Default Font" : "Dyslexic Font"}
     </button>
   );

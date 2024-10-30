@@ -1,25 +1,35 @@
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import MobileNav from "./MobileNav";
 import MainNav from "./DesktopNav";
+import { ModeToggle } from "./ModeToggle";
 
 const Header: React.FC = () => {
   return (
-    <header className="flex justify-between items-center w-full absolute top-0 left-0 p-4">
-      <div className="flex flex-row">
-        <MainNav />
-        <MobileNav />
-      </div>
+    <header className="fixed w-full h-12 px-6 bg-background z-20 shadow-md shadow-black">
+      <div className="flex justify-between items-center h-full w-full ">
 
-      <div className="absolute left-1/2 transform -translate-x-1/2">
-        <SignedOut>
-          <SignInButton />
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-      </div>
+        <div className="flex flex-row">
+          <MainNav />
+          <MobileNav />
+        </div>
 
-      <div className="flex flex-row">
+        <div className="flex gap-4 items-center">
+
+          <div className="">
+            <ModeToggle />
+          </div>
+
+          <div className="flex items-center hover:scale-110 transition-all duration-300">
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </div>
+
+        </div>
+
       </div>
     </header>
   );

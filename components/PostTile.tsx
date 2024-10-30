@@ -135,7 +135,7 @@ export default function PostTile({ post, deletePost, makeReactions, getExistingR
   }
 
   return (
-    <div className="flex bg-zinc-800 bg-opacity-70 rounded-2xl p-0 overflow-hidden shadow-md shadow-black">
+    <div className="flex bg-background-raised/70 rounded-2xl p-0 overflow-hidden shadow-md shadow-black">
 
       <div className="flex flex-col justify-start items-center gap-4 relative">
         <Avatar className="w-40 h-40 relative">
@@ -152,7 +152,7 @@ export default function PostTile({ post, deletePost, makeReactions, getExistingR
               : "?"
             }
           </AvatarFallback>
-          <h3 className="bg-zinc-800 bg-opacity-70 p-1 absolute bottom-0 w-full font-bold">
+          <h3 className="bg-zinc-800 bg-opacity-70 text-zinc-100 p-1 absolute bottom-0 w-full font-bold">
             {post.user.username || "Unknown User"}
           </h3>
         </Avatar>
@@ -193,7 +193,7 @@ export default function PostTile({ post, deletePost, makeReactions, getExistingR
               </Dialog>
               <Button
                 onClick={handleDelete}
-                className="bg-zinc-50 bg-opacity-0 hover:bg-red-800 shadow-none"
+                className="bg-zinc-50 bg-opacity-0 hover:bg-destructive shadow-none"
               >
                 <Trash2 color={"white"} />
               </Button>

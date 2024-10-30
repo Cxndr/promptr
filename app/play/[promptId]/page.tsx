@@ -200,7 +200,7 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
       console.error(err)
     }
 
-    revalidatePath(`/play/${prompt.id}`)
+    // revalidatePath(`/play/${prompt.id}`) // don't need to do this with optimistic ui updating, and having it here causes background to re-render on click.
   }
 
   async function getReactionCount(postId: number) {

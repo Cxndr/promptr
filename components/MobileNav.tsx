@@ -28,7 +28,7 @@ export default function MobileNav() {
                 </SheetTrigger>
                 <SheetContent side="left">
                     <Link href="/" onClick={closeSheet}>
-                        <House className="text-red-500" />
+                        <House className="text-primary" />
                     </Link>
                     <nav className="flex flex-col gap-3 lg:gap-4 mt-6 items-start pl-0">
                         <Link href="/play/1" onClick={closeSheet}>
