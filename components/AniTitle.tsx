@@ -6,7 +6,7 @@ import { useState } from "react";
 const words = [
     "Welcome",
     "to",
-    "OnlyWords!"
+    "Phrase Factory!"
 ];
 
 export default function AnimatedSubtitle() {
