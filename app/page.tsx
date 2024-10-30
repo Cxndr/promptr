@@ -1,4 +1,5 @@
 import AniTitle from "@/components/AniTitle"
+import Gravity from "@/components/Gravity";
 // import Image from "next/image";
 // import wordGameLogo from "@/public/img/wordGameLogo.webp";
 import { fetchUserProfile } from "@/lib/fetch";
@@ -46,7 +47,7 @@ export default async function Home() {
         <p className="p-4">Ultimately, the aim of the game is to create the most popular response to the prompt.</p>
         <p className="p-4">Good luck!</p>
       </div>
-
+      <Gravity />
     </>
   );
 }
