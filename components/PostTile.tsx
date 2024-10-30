@@ -42,13 +42,12 @@ export default function PostTile({post, deletePost, makeReactions, getExistingRe
   const reactionButtonActiveClass = `reaction-button-active`
 
   useEffect(() => {
+    if (!currentUser.isLoaded) return;
     async function getCurrentUserReactions(){
       const incomingExistingReactions = await getExistingReactions(post.id, currentUser.user?.id)
       setExistingReactions(incomingExistingReactions)
     }
-    if (currentUser.isLoaded && currentUser.user) { 
-      getCurrentUserReactions()
-    }
+    getCurrentUserReactions()
   },[currentUser.isLoaded, currentUser.user, getExistingReactions, post])
 
   useEffect(() => {
@@ -60,8 +59,6 @@ export default function PostTile({post, deletePost, makeReactions, getExistingRe
   },[getReactionCount, post])
 
   const baseWords: Word[] = []
-  console.log('post.words',post.words)
-  console.log('post.slice',post.words.slice(0,20))
   post.words.slice(0, 20).map((baseWord) => {
     baseWords.push({
       word: baseWord,
@@ -69,7 +66,6 @@ export default function PostTile({post, deletePost, makeReactions, getExistingRe
       used: 0,
     })
   })
-  console.log('baseWords:',baseWords)
 
   const fillerWords: Word[] = []
   post.words.slice(20, post.words.length).map((fillerWord) => {
@@ -79,7 +75,6 @@ export default function PostTile({post, deletePost, makeReactions, getExistingRe
       used: 0,
     })
   })
-  console.log('fillerwords:',fillerWords)
 
 
   function handleDelete() {
@@ -91,13 +86,46 @@ export default function PostTile({post, deletePost, makeReactions, getExistingRe
   function handleReaction(reactionType: "heart" | "laugh" | "sick" | "eyeroll") {
     if (post && post.id) {
       let bool = false;
-      if (reactionType === "heart") bool = !existingReactions.heart
-      if (reactionType === "laugh") bool = !existingReactions.laugh
-      if (reactionType === "sick") bool = !existingReactions.sick
-      if (reactionType === "eyeroll") bool = !existingReactions.eyeroll
-      if (currentUser.isLoaded && currentUser.user) {
-        makeReactions(post.id, currentUser.user.id, bool, reactionType)    
+
+      const updatedReactions = { ...existingReactions };
+      const updatedReactionCount = { ...reactionCount };
+
+      if (reactionType === "heart") {
+        bool = !existingReactions.heart;
+        updatedReactions.heart = bool;
+        updatedReactionCount.heart += bool ? 1 : -1;
       }
+      if (reactionType === "laugh") {
+        bool = !existingReactions.laugh;
+        updatedReactions.laugh = bool;
+        updatedReactionCount.laugh += bool ? 1 : -1;
+      }
+      if (reactionType === "sick") {
+        bool = !existingReactions.sick;
+        updatedReactions.sick = bool;
+        updatedReactionCount.sick += bool ? 1 : -1;
+      }
+      if (reactionType === "eyeroll") {
+        bool = !existingReactions.eyeroll;
+        updatedReactions.eyeroll = bool;
+        updatedReactionCount.eyeroll += bool ? 1 : -1;
+      }
+
+      // Optimistic UI update - this makes the ui update go way faster (2s without 0.03s with)
+      setExistingReactions(updatedReactions);
+      setReactionCount(updatedReactionCount);
+
+      if (currentUser.isLoaded && currentUser.user) {
+        try {
+          makeReactions(post.id, currentUser.user.id, bool, reactionType)
+        } catch (err) {
+          console.error(err);
+          // Revert Optimistic UI update if API call fails
+          setExistingReactions(existingReactions);
+          setReactionCount(reactionCount);
+        }
+      }
+
     }
   }
 
