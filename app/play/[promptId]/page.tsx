@@ -18,7 +18,7 @@ type PromptPageProps = {
   }
 }
 
-export default async function PromptPage({params}: PromptPageProps) {
+export default async function PromptPage({ params }: PromptPageProps) {
 
   const { userId } = await auth();
 
@@ -35,11 +35,11 @@ export default async function PromptPage({params}: PromptPageProps) {
     LIMIT 15
   `);
 
-  const {rows: allPrompts} : {rows: Prompt[]} = await db.query(
+  const { rows: allPrompts }: { rows: Prompt[] } = await db.query(
     "SELECT * FROM wg_prompts"
   )
 
-  const {rows: promptRes} : {rows: Prompt[]} = await db.query(
+  const { rows: promptRes }: { rows: Prompt[] } = await db.query(
     "SELECT * FROM wg_prompts WHERE id = ($1)",
     [params.promptId]
   )
@@ -78,7 +78,7 @@ export default async function PromptPage({params}: PromptPageProps) {
   const prompt = promptRes[0];
   const promptCount = allPrompts.length;
   const promptsLowerBound = allPrompts[0].id;
-  const promptsUpperBound = promptsLowerBound + promptCount-1;
+  const promptsUpperBound = promptsLowerBound + promptCount - 1;
 
 
   async function nextPrompt() {
@@ -111,19 +111,19 @@ export default async function PromptPage({params}: PromptPageProps) {
     }
   };
 
-  async function deletePost(postId : number) {
+  async function deletePost(postId: number) {
     "use server";
     try {
-      await db.query(`DELETE FROM wg_posts WHERE (id, clerk_id) = ($1, $2)`,[postId, userId])
+      await db.query(`DELETE FROM wg_posts WHERE (id, clerk_id) = ($1, $2)`, [postId, userId])
       console.log("Post deleted")
-    } catch(error) {
+    } catch (error) {
       console.error("deleting post failed", error)
     } finally {
       revalidatePath(`/play/${prompt.id}`)
     }
   }
 
-  async function getExistingReactions(postId : number, userId : string | undefined) {
+  async function getExistingReactions(postId: number, userId: string | undefined) {
     'use server'
     if (!userId) {
       return {
@@ -154,8 +154,8 @@ export default async function PromptPage({params}: PromptPageProps) {
   }
   // If no reaction, create new:
   async function makeReactions
-  (post_id : number, userId : string, newReaction : boolean, reactionType : "heart" | "laugh" | "sick" | "eyeroll") {
-    
+    (post_id: number, userId: string, newReaction: boolean, reactionType: "heart" | "laugh" | "sick" | "eyeroll") {
+
     'use server'
 
     const validReactions = ["heart", "laugh", "sick", "eyeroll"];
@@ -169,11 +169,11 @@ export default async function PromptPage({params}: PromptPageProps) {
         ON CONFLICT (clerk_id, post_id) 
         DO UPDATE SET
         ${reactionType} = EXCLUDED.${reactionType};
-        `,[userId, post_id, newReaction])
-    } catch(err) {
+        `, [userId, post_id, newReaction])
+    } catch (err) {
       console.error(err)
     }
-    
+
     revalidatePath(`/play/${prompt.id}`)
   }
 
@@ -187,7 +187,7 @@ export default async function PromptPage({params}: PromptPageProps) {
           COALESCE(SUM(CASE WHEN sick = true THEN 1 ELSE 0 END), 0) as sick,
           COALESCE(SUM(CASE WHEN eyeroll = true THEN 1 ELSE 0 END), 0) as eyeroll
         FROM wg_reactions 
-        WHERE post_id = $1`, 
+        WHERE post_id = $1`,
         [postId]
       );
 
@@ -199,7 +199,7 @@ export default async function PromptPage({params}: PromptPageProps) {
       };
       return reactionCounts;
 
-    } catch(err) {
+    } catch (err) {
       console.error(err)
     }
 
@@ -213,52 +213,65 @@ export default async function PromptPage({params}: PromptPageProps) {
 
   }
 
-  async function editPost(postId : number) {
+  async function editPost(postId: number,content: string ) {
     "use server";
-    // update post sql query here
-  }
+    try {
+      await db.query(
+        `UPDATE wg_posts
+        SET content =$2
+        WHERE id = $1`,
+        [postId, content]
+      );
+      console.log("Success. content:", content);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      revalidatePath(`/play/${prompt.id}`)
+    }
+  };
 
 
-  return (
-    <div className="max-w-6xl flex flex-col gap-4 justify-center items-center">
 
-      <PostPrompt
-        prompt={prompt} 
-        promptsUpperBound={promptsUpperBound} 
-        promptsLowerBound={promptsLowerBound}
-        nextPrompt={nextPrompt}
-        prevPrompt={prevPrompt}
+return (
+  <div className="max-w-6xl flex flex-col gap-4 justify-center items-center">
+
+    <PostPrompt
+      prompt={prompt}
+      promptsUpperBound={promptsUpperBound}
+      promptsLowerBound={promptsLowerBound}
+      nextPrompt={nextPrompt}
+      prevPrompt={prevPrompt}
+    />
+
+    <div className="max-w-5xl">
+      <PostInput
+        baseWords={baseWords}
+        fillerWords={fillerWords}
+        handleSubmit={handleSubmit}
       />
-
-      <div className="max-w-5xl">
-        <PostInput
-          baseWords={baseWords}
-          fillerWords={fillerWords}
-          handleSubmit={handleSubmit}
-        />
-      </div>
-      
-      {
-        promptPosts.length > 0 && (
-          <div className="max-w-5xl flex flex-col gap-8">
-            {promptPosts.map((post) => (
-              <PostTile 
-                key={post.id} 
-                post={post}
-                getExistingReactions = {getExistingReactions}
-                makeReactions={makeReactions}
-                getReactionCount={getReactionCount}
-                deletePost={deletePost}
-                editPost={editPost}
-                ownedByUser={post.user.clerkId === userId}
-                timeAgoCreated={timeAgo(post.createdAt)}
-              />
-            ))}
-          </div>
-        )
-      }
-      
-      
     </div>
-  )
+
+    {
+      promptPosts.length > 0 && (
+        <div className="max-w-5xl flex flex-col gap-8">
+          {promptPosts.map((post) => (
+            <PostTile
+              key={post.id}
+              post={post}
+              getExistingReactions={getExistingReactions}
+              makeReactions={makeReactions}
+              getReactionCount={getReactionCount}
+              deletePost={deletePost}
+              editPost={editPost}
+              ownedByUser={post.user.clerkId === userId}
+              timeAgoCreated={timeAgo(post.createdAt)}
+            />
+          ))}
+        </div>
+      )
+    }
+
+
+  </div>
+)
 }
