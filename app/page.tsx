@@ -15,7 +15,7 @@ export default async function Home() {
   }
   return (
     <>
-      <div className="left-40 w-10 top-20 sm:top-40 absolute">
+      <div className="left-36 w-10 top-20 sm:top-40 absolute">
         <AniTitle />
       </div >
 
@@ -29,8 +29,8 @@ export default async function Home() {
           <li className="text-amber-500">- Filler words</li>
         </ul>
         <p className="p-4">It&#39;s then down to you to come up with the best answer to the prompt.
-          Your response is then viewed by other users, where they can upvote your answer.
-          Likewise, you can upvote other users&#39; answers.</p>
+          Your response is then viewed by other users, where they can react to your answer.
+          Likewise, you can react to other users&#39; answers.</p>
         <p className="p-4">Also, if you select the icon on the top right of the website you can toggle between dark mode and light mode.
           Furthermore, there are filters for people <br></br>who experience green, red and blue colorblind.</p>
         <p className="p-4">Ultimately, the aim of the game is to create the most popular response to the prompt.</p>
