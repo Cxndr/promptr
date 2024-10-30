@@ -15,25 +15,14 @@ export default async function Home() {
   }
   return (
     <>
-      {/* <div className="flex absolute w-full justify-center items-start pt-8 top-8">
-        <Image
-        src={wordGameLogo}
-        alt="Black & white Art-deco logo of a person holding a card"
-        width={100}
-        height={38}
-        priority
-        className="h-auto w-100" 
-      />
-      </div> */}
-
-      <div className="left-40 w-10 sm:top-40 absolute">
+      <div className="left-40 w-10 top-20 sm:top-40 absolute">
         <AniTitle />
       </div >
 
-      <div className="absolute h-28 top-60 sm:top-80 w-3/5">
-        {/* ^^ESLint issue, ignore */}
-        <h2 className="text-2xl p-8">How OnlyWords Works...</h2>
-        <p>In OnlyWords, you choose a question (we call them prompts).</p> <p className="p-4">To respond,
+      <div className="absolute h-28 top-36 sm:top-80 w-3/5">
+        
+        <h2 className="text-2xl p-8">How Phrase Factory Works...</h2>
+        <p>In Phrase Factory, you choose a question (we call them prompts).</p> <p className="p-4">To respond,
           you can only choose from a select range of words. <br />There are two types:</p>
         <ul>
           <li className="text-blue-500">- Unique words</li>

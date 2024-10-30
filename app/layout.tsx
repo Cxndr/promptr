@@ -10,9 +10,9 @@ import localFont from 'next/font/local'
 // import { generateBg } from "@/lib/generateBg";
 
 export const metadata: Metadata = {
-  title: "OnlyWords",
+  title: "Phrase Factory",
   description:
-    "Create a solution to a prompt based on given words | OnlyWords",
+    "Create a solution to a prompt based on given words | Phrase Factory",
 };
 
 const noto = Noto_Sans({
