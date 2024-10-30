@@ -18,3 +18,8 @@ export async function fetchPost(postId: number | null) {
     [postId]);
   return post;
 }
+
+export async function fetchWords() {
+  const words = await db.query(`SELECT word FROM wg_words`);
+  return words;
+}

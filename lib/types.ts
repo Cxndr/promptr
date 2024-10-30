@@ -34,3 +34,12 @@ export type Post = {
   upvotes: number;
   createdAt: Date;
 }
+
+export type Reaction = {
+  postId: number;
+  userId: number;
+  heart: boolean;
+  laugh: boolean;
+  sick: boolean;
+  eyeroll: boolean;
+}
