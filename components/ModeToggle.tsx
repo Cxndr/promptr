@@ -15,7 +15,6 @@ import {
 type Theme =
   | "light"
   | "dark"
-  | "system"
   | "colorblind-deuteranopia"
   | "colorblind-protanopia"
   | "colorblind-tritanopia";
@@ -40,7 +39,7 @@ export function ModeToggle() {
 
   const handleThemeChange = (selectedTheme: Theme) => {
     console.log("Selected theme:", selectedTheme);
-    if (["light", "dark", "system"].includes(selectedTheme)) {
+    if (["light", "dark",].includes(selectedTheme)) {
       setTheme(selectedTheme);
       applyCustomTheme(""); 
     } else {
