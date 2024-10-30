@@ -5,8 +5,8 @@
 // }
 
 export function generateBg(words: string[]) {
-  const svgWidth = 200;
-  const svgHeight = 200;
+  const svgWidth = 500;
+  const svgHeight = 500;
   const textRotation = -45;
   const textFontSize = 20;
   const fillColor = "#555";

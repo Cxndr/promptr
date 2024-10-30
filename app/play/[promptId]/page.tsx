@@ -123,7 +123,6 @@ export default async function PromptPage({params}: PromptPageProps) {
     }
   }
 
-  // Pull exisiting reactions from DB:
   async function getExistingReactions(postId : number, userId : string | undefined) {
     'use server'
     if (!userId) {
@@ -181,24 +180,23 @@ export default async function PromptPage({params}: PromptPageProps) {
   async function getReactionCount(postId: number) {
     "use server";
     try {
-      const heartRes = await db.query(
-        `SELECT COUNT(*) FROM wg_reactions WHERE post_id = $1 AND heart=true`, [postId]
-      )
-      const laughRes = await db.query(
-        `SELECT COUNT(*) FROM wg_reactions WHERE post_id = $1 AND laugh=true`, [postId]
-      )
-      const sickRes = await db.query(
-        `SELECT COUNT(*) FROM wg_reactions WHERE post_id = $1 AND sick=true`, [postId]
-      )
-      const eyerollRes = await db.query(
-        `SELECT COUNT(*) FROM wg_reactions WHERE post_id = $1 AND eyeroll=true`, [postId]
-      )
+      const reactionCountsRes = await db.query(
+        `SELECT 
+          COALESCE(SUM(CASE WHEN heart = true THEN 1 ELSE 0 END), 0) as heart,
+          COALESCE(SUM(CASE WHEN laugh = true THEN 1 ELSE 0 END), 0) as laugh,
+          COALESCE(SUM(CASE WHEN sick = true THEN 1 ELSE 0 END), 0) as sick,
+          COALESCE(SUM(CASE WHEN eyeroll = true THEN 1 ELSE 0 END), 0) as eyeroll
+        FROM wg_reactions 
+        WHERE post_id = $1`, 
+        [postId]
+      );
+
       const reactionCounts = {
-        heart: parseInt(heartRes.rows[0].count, 10),
-        laugh: parseInt(laughRes.rows[0].count, 10),
-        sick: parseInt(sickRes.rows[0].count, 10),
-        eyeroll: parseInt(eyerollRes.rows[0].count, 10),
-      }
+        heart: parseInt(reactionCountsRes.rows[0].heart, 10),
+        laugh: parseInt(reactionCountsRes.rows[0].laugh, 10),
+        sick: parseInt(reactionCountsRes.rows[0].sick, 10),
+        eyeroll: parseInt(reactionCountsRes.rows[0].eyeroll, 10),
+      };
       return reactionCounts;
 
     } catch(err) {
