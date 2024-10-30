@@ -9,15 +9,14 @@
     color: #dc3a73;
     text-align: center;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: row-reverse;
     position: relative;
     gap: 40px;
     min-height: 10vh;
-    width: 80svw;
-    transform: translateX(-30svw); 
-    
+    width: 87svw;
+    transform: translateX(-34svw); 
 }
 
 .word-wrapper {
@@ -27,7 +26,7 @@
     align-items: center;
     justify-content: flex-end;
     position: relative;
-    width: 100%;
+    width: 25vw;
     overflow: hidden;
 }
 .word {
@@ -48,4 +47,14 @@
     background-repeat: no-repeat;
     border-radius: 50%;
     z-index: 2;
+}
+
+@media (min-width: 380px) {
+    .word-wrapper {
+        width: 95svw;
+    }
+
+    .AniTitle {
+        width: 88svw;
+    }
 }

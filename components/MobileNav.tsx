@@ -37,7 +37,7 @@ export default function MobileNav() {
                         <Link href="/play" onClick={closeSheet}>
                             Prompts
                         </Link>
-                        <Link href="/AboutUs" onClick={closeSheet}>
+                        <Link href="/aboutus" onClick={closeSheet}>
                             About Us
                         </Link>
                         <div onClick={closeSheet}>
