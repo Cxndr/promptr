@@ -3,13 +3,12 @@ import PostPrompt from "@/components/PostPrompt";
 import PostTile from "@/components/PostTile";
 
 import { db } from "@/lib/db";
-import { PublicUser, Word, Post, PromptPostsData } from "@/lib/types";
+import { Word, Post, RawPost } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
 import { Prompt } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { timeAgo } from "@/lib/timeAgo";
-import { RawPost } from "@/lib/types";
 
 import {
   Pagination,
