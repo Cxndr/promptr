@@ -24,16 +24,16 @@ export default function MobileNav() {
             <House className="text-primary" />
           </Link>
           <nav className="flex flex-col gap-3 lg:gap-4 mt-6 items-start pl-0">
-            <Link href="/play/1" onClick={closeSheet}>
+            <Link href="/play/1" aria-label="Play Page" onClick={closeSheet}>
               Play
             </Link>
-            <Link href="/play" onClick={closeSheet}>
+            <Link href="/play" aria-label="Prompts Page" onClick={closeSheet}>
               Prompts
             </Link>
-            <Link href="/aboutus" onClick={closeSheet}>
+            <Link href="/aboutus" aria-label="About Page" onClick={closeSheet}>
               About Us
             </Link>
-            <div onClick={closeSheet}>
+            <div aria-label="Close" onClick={closeSheet}>
               <FontToggle />
             </div>
           </nav>

@@ -628,8 +628,10 @@ const fillWithWords = async () => {
 
 const fillPrompts = async () => {
   try {
-    await db.query(`INSERT INTO wg_prompts (content)
-VALUES 
+    await db.query("BEGIN");
+    await db.query(`
+    INSERT INTO wg_prompts (content)
+    VALUES 
     ('Explain why you’re always late to work.'),
     ('Describe your worst date ever.'),
     ('Convince an alien to come visit Earth.'),
@@ -643,6 +645,8 @@ VALUES
     console.error("Error seeding database:", error);
   }
 };
+
+// uncomment these functions to call what you need
 
 //emptyAllTables();
 //fillWithWords();
