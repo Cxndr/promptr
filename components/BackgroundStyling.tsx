@@ -1,25 +1,29 @@
 "use client"
 
+import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { baseWordList, generateBg } from "@/lib/generateBg";
 
 export default function BackGroundStyling({children}: Readonly<{children: React.ReactNode}>) {
-
   const { theme } = useTheme();
-  console.log("THEME:::::::: ", theme);
-  const bgSvg = generateBg(baseWordList, theme);
-  const bgSvgDataUri = `data:image/svg+xml;base64,${btoa(bgSvg.svgContent)}`;
+  const [bgSvgDataUri, setBgSvgDataUri] = useState("");
+
+  useEffect(() => {
+    const bgSvg = generateBg(baseWordList, theme);
+    const dataUri = `data:image/svg+xml;base64,${btoa(bgSvg.svgContent)}`;
+    setBgSvgDataUri(dataUri);
+  }, [theme]);
 
   return (
     <div 
-      className={`flex-grow flex flex-col items-center`}
+      className="flex-grow flex flex-col items-center"
       style={{
         backgroundImage: `url(${bgSvgDataUri})`,
         backgroundRepeat: "repeat", 
-        backgroundSize: `${bgSvg.svgWidth}px ${bgSvg.svgHeight}px`,
+        backgroundSize: bgSvgDataUri ? `${generateBg(baseWordList, theme).svgWidth}px ${generateBg(baseWordList, theme).svgHeight}px` : "initial",
       }}
     >
       {children}
     </div>
-  )
+  );
 }

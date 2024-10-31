@@ -1,4 +1,5 @@
 import { db } from "./db";
+import { getXRandomWords } from "./generateBg";
 
 export async function fetchUserProfile(userId: string | null) {
   const profile = await db.query(`SELECT * FROM wg_users WHERE clerk_id = $1`, [
@@ -22,4 +23,13 @@ export async function fetchPost(postId: number | null) {
 export async function fetchWords() {
   const words = await db.query(`SELECT word FROM wg_words`);
   return words;
+}
+
+export async function fetchRandomWords(amount: number) {
+  const wordsArr:string[] = [];
+  const res = (await fetchWords()).rows;
+  res.map((item) => {
+    wordsArr.push(item.word);
+  })
+  return getXRandomWords(wordsArr,amount)
 }

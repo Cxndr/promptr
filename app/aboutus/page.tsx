@@ -7,13 +7,17 @@ import nextlogo from "@/public/img/nextlogo.webp"
 import pglogo from "@/public/img/pglogo.webp"
 import twlogo from "@/public/img/twlogo.webp"
 import supabaselogo from "@/public/img/supabaselogo.webp"
+import { fetchRandomWords } from "@/lib/fetch";
 
 export default async function AboutUsPage() {
 
+    const wordsArr = await fetchRandomWords(40);
 
     return (
         <>
-            <div className="bg-background/80 py-8 my-auto m-4 flex flex-col gap-8 justify-center items-center rounded-3xl shadow-md shadow-black">
+            <Gravity wordsArr={wordsArr}/>
+            
+            <div className="max-w-7xl bg-background/80 py-8 my-auto m-4 flex flex-col gap-8 justify-center items-center rounded-3xl shadow-md shadow-black z-10">
                 <div className="">
                     <AniTitle />
                 </div >
@@ -31,7 +35,7 @@ export default async function AboutUsPage() {
                 
                 <div className="flex gap-8 justify-center items-center">
                     <div className="flex flex-col gap-2 justify-center items-center font-semibold text-sm">
-                        <div className="h-[74px] flex justify-center items-center">
+                        <div className="h-[74px] w-auto flex justify-center items-center">
                             <Image className="rounded-xl "
                                 src={tslogo}
                                 alt="TypeScript logo"
@@ -43,7 +47,7 @@ export default async function AboutUsPage() {
                     </div>
                     
                     <div className="flex flex-col gap-2 justify-center items-center font-semibold text-sm">
-                        <div className="h-[74px] flex justify-center items-center">
+                        <div className="h-[74px] w-auto flex justify-center items-center">
                             <Image className="rounded-xl "
                                 src={nextlogo}
                                 alt="Next.js logo"
@@ -55,7 +59,7 @@ export default async function AboutUsPage() {
                     </div>
                         
                     <div className="flex flex-col gap-2 justify-center items-center font-semibold text-sm">
-                        <div className="h-[74px] flex justify-center items-center">
+                        <div className="h-[74px] w-auto flex justify-center items-center">
                             <Image className="rounded-xl "
                                 src={pglogo}
                                 alt="PostgreSQL logo"
@@ -67,7 +71,7 @@ export default async function AboutUsPage() {
                     </div>
 
                     <div className="flex flex-col gap-2 justify-center items-center font-semibold text-sm">
-                        <div className="h-[74px] flex justify-center items-center">
+                        <div className="h-[74px] w-auto flex justify-center items-center">
                             <Image className="rounded-xl "
                                 src={supabaselogo}
                                 alt="Supabase logo"
@@ -79,7 +83,7 @@ export default async function AboutUsPage() {
                     </div>
 
                     <div className="flex flex-col gap-2 justify-center items-center font-semibold text-sm">
-                        <div className="h-[74px] flex justify-center items-center">
+                        <div className="h-[74px] w-auto flex justify-center items-center">
                             <Image className="rounded-xl "
                                 src={githublogo}
                                 alt="Github logo"
@@ -91,7 +95,7 @@ export default async function AboutUsPage() {
                     </div>
 
                     <div className="flex flex-col gap-2 justify-center items-center font-semibold text-sm">
-                        <div className="h-[74px] flex justify-center items-center">
+                        <div className="h-[74px] w-auto flex justify-center items-center">
                             <Image className="rounded-xl "
                                 src={twlogo}
                                 alt="Tailwind logo"
@@ -103,9 +107,10 @@ export default async function AboutUsPage() {
                     </div>
                 </div>
 
-                
+            
             </div>
-            <Gravity/>
+
+
         </>
     );
 }
