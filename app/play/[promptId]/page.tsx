@@ -9,6 +9,27 @@ import { revalidatePath } from "next/cache";
 import { timeAgo } from "@/lib/timeAgo";
 import { mergedDataQuery } from "@/lib/fetch";
 
+export async function generateMetadata({ params }: { params: { promptId: string } }) {
+  const promptId = parseInt(params.promptId);
+
+  try {
+    const { rows } = await db.query(
+      `SELECT content AS prompt_title FROM wg_prompts WHERE id = $1`,
+      [promptId]
+    );
+
+    const promptTitle = rows[0]?.prompt_title || 'Default Prompt Title';
+    return {
+      title: `${promptTitle} prompt`,
+    };
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+    return {
+      title: 'Error fetching prompt',
+    };
+  }
+}
+
 type PromptPageProps = {
   params: {
     promptId: string;

@@ -8,6 +8,13 @@ import pglogo from "@/public/img/pglogo.webp";
 import twlogo from "@/public/img/twlogo.webp";
 import supabaselogo from "@/public/img/supabaselogo.webp";
 import { fetchRandomWords } from "@/lib/fetch";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Us",
+  description:
+    "The team members info | About Us",
+};
 
 export default async function AboutUsPage() {
   const wordsArr = await fetchRandomWords(40);
