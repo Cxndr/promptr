@@ -6,8 +6,6 @@ import { fetchUserProfile } from "@/lib/fetch";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 
-import style from "@/styles/profile.module.css";
-
 const ModularForm = dynamic(() => import("@/components/ModularForm"), {
   ssr: false,
 });
@@ -75,7 +73,7 @@ export default async function ProfilePage() {
       <SignedIn>
         {user?.imageUrl && (
           <Image
-            className={style["profile-img"]}
+            className={"rounded-full"}
             src={user.imageUrl}
             alt={`${user?.username}'s profile image`}
             height={100}
