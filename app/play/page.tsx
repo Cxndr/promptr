@@ -2,6 +2,13 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import Gravity from "@/components/Gravity";
 import { fetchRandomWords } from "@/lib/fetch";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Prompts",
+  description:
+    "Select a prompt to go to try and answer them | Prompts",
+};
 
 export default async function PlayPage() {
   const prompts = await db.query("SELECT id, content FROM wg_prompts");
