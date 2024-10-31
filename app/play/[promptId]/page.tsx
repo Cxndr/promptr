@@ -9,16 +9,7 @@ import { Prompt } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { timeAgo } from "@/lib/timeAgo";
-
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
+import PaginationComponent from "@/components/PaginationComponent";
 
 type PromptPageProps = {
   params: {
@@ -34,56 +25,9 @@ export default async function PromptPage({
   searchParams,
 }: PromptPageProps) {
   const { userId } = await auth();
-  // pageination related
   const itemsPerPage = 8; // posts per page
   const currentPage = parseInt(searchParams.page || "1", 8);
   const offset = (currentPage - 1) * itemsPerPage;
-
-  const generatePaginationItems = () => {
-    const items = [];
-
-    // First page
-    if (currentPage > 2) {
-      items.push(
-        <PaginationItem key={1}>
-          <PaginationLink href={`?page=1`}>1</PaginationLink>
-        </PaginationItem>
-      );
-      if (currentPage > 3) {
-        items.push(<PaginationEllipsis key="start-ellipsis" />);
-      }
-    }
-
-    // Pages around the current page
-    const startPage = Math.max(2, currentPage - 1);
-    const endPage = Math.min(totalPages - 1, currentPage + 1);
-
-    for (let i = startPage; i <= endPage; i++) {
-      items.push(
-        <PaginationItem key={i}>
-          <PaginationLink href={`?page=${i}`} isActive={i === currentPage}>
-            {i}
-          </PaginationLink>
-        </PaginationItem>
-      );
-    }
-
-    // Ellipsis and last page
-    if (currentPage < totalPages - 2) {
-      items.push(<PaginationEllipsis key="end-ellipsis" />);
-    }
-    if (currentPage < totalPages - 1) {
-      items.push(
-        <PaginationItem key={totalPages}>
-          <PaginationLink href={`?page=${totalPages}`}>
-            {totalPages}
-          </PaginationLink>
-        </PaginationItem>
-      );
-    }
-
-    return items;
-  };
 
   const mergedData = await db.query(
     `
@@ -361,23 +305,7 @@ export default async function PromptPage({
           No posts available for this prompt yet. Be the first to contribute!
         </p>
       )}
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              href={`?page=${currentPage - 1}`}
-              disabled={currentPage === 1}
-            />
-          </PaginationItem>
-          {generatePaginationItems()}
-          <PaginationItem>
-            <PaginationNext
-              href={`?page=${currentPage + 1}`}
-              disabled={currentPage === totalPages}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <PaginationComponent currentPage={currentPage} totalPages={totalPages} />
     </div>
   );
 }
