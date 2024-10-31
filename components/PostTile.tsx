@@ -90,15 +90,15 @@ export default function PostTile({
     getAllReactionCount();
   }, [getReactionCount, post]);
 
-  const baseWords: Word[] = []
-  const fillerWords: Word[] = []
+  const baseWords: Word[] = [];
+  const fillerWords: Word[] = [];
   post.words.map((word) => {
-    if (word.type === 'base') {
-      baseWords.push(word)
+    if (word.type === "base") {
+      baseWords.push(word);
     } else {
-      fillerWords.push(word)
+      fillerWords.push(word);
     }
-  })
+  });
 
   function handleDelete() {
     if (post && post.id) {
@@ -182,19 +182,14 @@ export default function PostTile({
 
       <div className="relative h-full flex flex-col justify-center items-center flex-grow">
         <div className="absolute right-0 top-0 flex justify-center items-center">
-          
-          {post.createdAt &&
-            <div className="text-zinc-500 py-2 px-3">
-              {timeAgoCreated}
-            </div>
-          }
-          {ownedByUser &&
+          {post.createdAt && (
+            <div className="text-zinc-500 py-2 px-3">{timeAgoCreated}</div>
+          )}
+          {ownedByUser && (
             <div className="flex h-full max-w-5xl">
               <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button
-                    className="bg-zinc-50 bg-opacity-0 hover:bg-zinc-700 shadow-none"
-                  >
+                  <Button className="bg-zinc-50 bg-opacity-0 hover:bg-zinc-700 shadow-none">
                     <Pencil color={"white"} />
                   </Button>
                 </DialogTrigger>
