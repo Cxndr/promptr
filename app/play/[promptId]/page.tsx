@@ -10,7 +10,7 @@ import { Post } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { timeAgo } from "@/lib/timeAgo";
-// import { queryObjects } from "v8";
+
 import {
   Pagination,
   PaginationContent,
@@ -30,82 +30,146 @@ type PromptPageProps = {
   };
 };
 
-
 export default async function PromptPage({params, searchParams}: PromptPageProps) {
 
   const { userId } = await auth();
   // pageination related
-  const itemsPerPage = 10; // ten posts per page, might change later
-  const currentPage = parseInt(searchParams.page || "1", 8);// Default to page 1 if not specified
+  const itemsPerPage = 8; // posts per page
+  const currentPage = parseInt(searchParams.page || "1", 8);
   const offset = (currentPage - 1) * itemsPerPage;
 
-  const { rows: baseWords }: { rows: Word[] } = await db.query(`
-    SELECT word 
-    FROM wg_words 
-    ORDER BY RANDOM() 
-    LIMIT 20
-  `);
-  const { rows: fillerWords }: { rows: Word[] } = await db.query(`
-    SELECT word 
-    FROM wg_filler_words 
-    ORDER BY RANDOM() 
-    LIMIT 15
-  `);
+  const generatePaginationItems = () => {
+    const items = [];
 
-  const { rows: allPrompts }: { rows: Prompt[] } = await db.query(
-    "SELECT * FROM wg_prompts"
-  )
-
-  const { rows: promptRes }: { rows: Prompt[] } = await db.query(
-    "SELECT * FROM wg_prompts WHERE id = ($1)",
-    [params.promptId]
-  )
-
-  //total pages for pageination
-  const totalPostsData = await db.query(
-    "SELECT COUNT(*) FROM wg_posts WHERE prompt_id = ($1)",
-    [params.promptId]
-  );
-  const totalPosts = parseInt(totalPostsData.rows[0].count);
-  const totalPages = Math.ceil(totalPosts / itemsPerPage);
-
-  const promptPostsData = await db.query(
-    `
-      SELECT wg_posts.*, wg_users.clerk_id , wg_users.id as user_id, wg_users.username, wg_users.image_url 
-      FROM wg_posts
-      JOIN wg_users ON wg_posts.clerk_id = wg_users.clerk_id
-      WHERE prompt_id = ($1) 
-      ORDER BY created_at DESC
-      LIMIT ($2) OFFSET ($3)
-    `,
-    [params.promptId, itemsPerPage, offset]
-  );
-
-  const promptPosts: Post[] = [];
-  promptPostsData.rows.forEach((row) => {
-    promptPosts.push(
-      {
-        id: row.id,
-        user: {
-          userId: row.user_id,
-          clerkId: row.clerk_id,
-          username: row.username,
-          imageUrl: row.image_url
-        },
-        promptId: row.prompt_id,
-        content: row.content,
-        words: row.words,
-        upvotes: row.upvotes,
-        createdAt: row.created_at
+    // First page
+    if (currentPage > 2) {
+      items.push(
+        <PaginationItem key={1}>
+          <PaginationLink href={`?page=1`}>1</PaginationLink>
+        </PaginationItem>
+      );
+      if (currentPage > 3) {
+        items.push(<PaginationEllipsis key="start-ellipsis" />);
       }
-    );
-  });
+    }
 
+    // Pages around the current page
+    const startPage = Math.max(2, currentPage - 1);
+    const endPage = Math.min(totalPages - 1, currentPage + 1);
+
+    for (let i = startPage; i <= endPage; i++) {
+      items.push(
+        <PaginationItem key={i}>
+          <PaginationLink href={`?page=${i}`} isActive={i === currentPage}>
+            {i}
+          </PaginationLink>
+        </PaginationItem>
+      );
+    }
+
+    // Ellipsis and last page
+    if (currentPage < totalPages - 2) {
+      items.push(<PaginationEllipsis key="end-ellipsis" />);
+    }
+    if (currentPage < totalPages - 1) {
+      items.push(
+        <PaginationItem key={totalPages}>
+          <PaginationLink href={`?page=${totalPages}`}>{totalPages}</PaginationLink>
+        </PaginationItem>
+      );
+    }
+
+    return items;
+  };
+
+  type PromptPostsData = {
+    prompt_posts: Post[];
+  }
+
+  const mergedData = await db.query(`
+    WITH
+      base_words AS (
+        SELECT word
+        FROM wg_words
+        ORDER BY RANDOM()
+        LIMIT 20
+      ),
+      filler_words AS (
+        SELECT word
+        FROM wg_filler_words
+        ORDER BY RANDOM()
+        LIMIT 15
+      ),
+      all_prompts AS (
+        SELECT *
+        FROM wg_prompts
+      ),
+      prompt_details AS (
+        SELECT *
+        FROM wg_prompts
+        WHERE id = $1
+      ),
+      post_count AS (
+        SELECT COUNT(*) AS total_posts
+        FROM wg_posts
+        WHERE prompt_id = $1
+      ),
+      prompt_posts AS (
+        SELECT wg_posts.*, wg_users.clerk_id, wg_users.id AS user_id, 
+               wg_users.username, wg_users.image_url
+        FROM wg_posts
+        JOIN wg_users ON wg_posts.clerk_id = wg_users.clerk_id
+        WHERE prompt_id = $1
+        ORDER BY created_at DESC
+        LIMIT $2 OFFSET $3
+      )
+    SELECT 
+      (SELECT json_agg(base_words.*) FROM base_words) AS base_words,
+      (SELECT json_agg(filler_words.*) FROM filler_words) AS filler_words,
+      (SELECT json_agg(all_prompts.*) FROM all_prompts) AS all_prompts,
+      (SELECT json_agg(prompt_details.*) FROM prompt_details) AS prompt_details,
+      (SELECT total_posts FROM post_count) AS total_posts,
+      (SELECT json_agg(prompt_posts.*) FROM prompt_posts) AS prompt_posts
+    `, [params.promptId, itemsPerPage, offset]);
+
+    const baseWords: Word[]= mergedData.rows[0].base_words;
+    const fillerWords: Word[] = mergedData.rows[0].filler_words;
+    const allPrompts: Prompt[] = mergedData.rows[0].all_prompts;
+    const promptRes: Prompt[] = mergedData.rows[0].prompt_details;
+    const totalPosts: number = parseInt(mergedData.rows[0].total_posts);
+    const promptPostsData: PromptPostsData | null = mergedData.rows[0];
+    const totalPages: number = Math.ceil(totalPosts / itemsPerPage);  
+    
+    // console.log("base ", baseWords)
+    // console.log("filler ", fillerWords)
+    // console.log("all ", allPrompts)
+    // console.log("res ", promptRes)
+    // console.log("total ", totalPosts)
+    // console.log("post data ", promptPostsData)
+    // console.log("pages ", totalPages)
+
+  const promptPosts: Post[] = promptPostsData?.prompt_posts?.length
+  ? promptPostsData.prompt_posts.map((prompt_post: any) => ({
+        id: prompt_post.id,
+        user: {
+          userId: prompt_post.user_id,
+          clerkId: prompt_post.clerk_id,
+          username: prompt_post.username,
+          imageUrl: prompt_post.image_url
+        },
+        promptId: prompt_post.prompt_id,
+        content: prompt_post.content,
+        words: prompt_post.words,
+        upvotes: prompt_post.upvotes,
+        createdAt: new Date(prompt_post.created_at),
+      }))
+      : [];
+
+  //console.log(promptPosts)
   const prompt = promptRes[0];
   const promptCount = allPrompts.length;
   const promptsLowerBound = allPrompts[0].id;
   const promptsUpperBound = promptsLowerBound + promptCount - 1;
-
 
   async function nextPrompt() {
     "use server";
@@ -235,8 +299,6 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
       sick: 0,
       eyeroll: 0,
     }
-
-
   }
 
   async function editPost(postId: number,content: string ) {
@@ -275,7 +337,7 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
         />
       </div>
   
-      {promptPosts.length > 0 && (
+      {promptPosts.length > 0 ? (
         <div className="max-w-5xl flex flex-col gap-8">
           {promptPosts.map((post) => (
             <PostTile 
@@ -291,6 +353,8 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
             />
           ))}
         </div>
+      ) : (
+        <p>No posts available for this prompt yet. Be the first to contribute!</p>
       )}
   
       {/* Pagination Controls */}
@@ -299,13 +363,7 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
           <PaginationItem>
             <PaginationPrevious href={`?page=${currentPage - 1}`} disabled={currentPage === 1} />
           </PaginationItem>
-          {Array.from({ length: totalPages }, (_, index) => (
-            <PaginationItem key={index + 1}>
-              <PaginationLink href={`?page=${index + 1}`} active={index + 1 === currentPage}>
-                {index + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
+          {generatePaginationItems()}
           <PaginationItem>
             <PaginationNext href={`?page=${currentPage + 1}`} disabled={currentPage === totalPages} />
           </PaginationItem>
@@ -314,4 +372,3 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
     </div>
   );
 }
-  
