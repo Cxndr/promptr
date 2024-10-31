@@ -7,7 +7,7 @@ export type Word = {
 export type Prompt = {
   id: number;
   content: string;
-}
+};
 
 export type Comment = {
   id: number;
@@ -15,7 +15,7 @@ export type Comment = {
   promptId: number;
   userClerkId: number;
   upvotes: number;
-}
+};
 
 export type PublicUser = {
   userId: number;
@@ -23,7 +23,7 @@ export type PublicUser = {
   username: string;
   imageUrl: string;
   // todo: add stats fiels eg. total posts, total upvoted etc.
-}
+};
 
 export type Post = {
   id: number;
@@ -33,7 +33,7 @@ export type Post = {
   words: Word[];
   upvotes: number;
   createdAt: Date;
-}
+};
 
 export type Reaction = {
   postId: number;
@@ -42,4 +42,17 @@ export type Reaction = {
   laugh: boolean;
   sick: boolean;
   eyeroll: boolean;
-}
+};
+
+export type RawPost = {
+  id: number;
+  prompt_id: number;
+  content: string;
+  words: Word[];
+  upvotes: number;
+  created_at: string;
+  clerk_id: string;
+  user_id: number;
+  username: string;
+  image_url: string;
+};

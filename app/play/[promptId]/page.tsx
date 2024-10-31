@@ -10,6 +10,7 @@ import { Post } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { timeAgo } from "@/lib/timeAgo";
+import { RawPost } from "@/lib/types";
 
 import {
   Pagination,
@@ -19,19 +20,21 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
+} from "@/components/ui/pagination";
 
 type PromptPageProps = {
   params: {
     promptId: string;
-  }
+  };
   searchParams: {
-    page?: string; 
+    page?: string;
   };
 };
 
-export default async function PromptPage({params, searchParams}: PromptPageProps) {
-
+export default async function PromptPage({
+  params,
+  searchParams,
+}: PromptPageProps) {
   const { userId } = await auth();
   // pageination related
   const itemsPerPage = 8; // posts per page
@@ -74,7 +77,9 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
     if (currentPage < totalPages - 1) {
       items.push(
         <PaginationItem key={totalPages}>
-          <PaginationLink href={`?page=${totalPages}`}>{totalPages}</PaginationLink>
+          <PaginationLink href={`?page=${totalPages}`}>
+            {totalPages}
+          </PaginationLink>
         </PaginationItem>
       );
     }
@@ -82,11 +87,8 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
     return items;
   };
 
-  type PromptPostsData = {
-    prompt_posts: Post[];
-  }
-
-  const mergedData = await db.query(`
+  const mergedData = await db.query(
+    `
     WITH
       base_words AS (
         SELECT word
@@ -130,32 +132,35 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
       (SELECT json_agg(prompt_details.*) FROM prompt_details) AS prompt_details,
       (SELECT total_posts FROM post_count) AS total_posts,
       (SELECT json_agg(prompt_posts.*) FROM prompt_posts) AS prompt_posts
-    `, [params.promptId, itemsPerPage, offset]);
+    `,
+    [params.promptId, itemsPerPage, offset]
+  );
 
-    const baseWords: Word[]= mergedData.rows[0].base_words;
-    const fillerWords: Word[] = mergedData.rows[0].filler_words;
-    const allPrompts: Prompt[] = mergedData.rows[0].all_prompts;
-    const promptRes: Prompt[] = mergedData.rows[0].prompt_details;
-    const totalPosts: number = parseInt(mergedData.rows[0].total_posts);
-    const promptPostsData: PromptPostsData | null = mergedData.rows[0];
-    const totalPages: number = Math.ceil(totalPosts / itemsPerPage);  
-    
-    // console.log("base ", baseWords)
-    // console.log("filler ", fillerWords)
-    // console.log("all ", allPrompts)
-    // console.log("res ", promptRes)
-    // console.log("total ", totalPosts)
-    // console.log("post data ", promptPostsData)
-    // console.log("pages ", totalPages)
+  const baseWords: Word[] = mergedData.rows[0].base_words;
+  const fillerWords: Word[] = mergedData.rows[0].filler_words;
+  const allPrompts: Prompt[] = mergedData.rows[0].all_prompts;
+  const promptRes: Prompt[] = mergedData.rows[0].prompt_details;
+  const totalPosts: number = parseInt(mergedData.rows[0].total_posts);
+  const promptPostsData: { prompt_posts: RawPost[] } | null =
+    mergedData.rows[0];
+  const totalPages: number = Math.ceil(totalPosts / itemsPerPage);
+
+  // console.log("base ", baseWords)
+  // console.log("filler ", fillerWords)
+  // console.log("all ", allPrompts)
+  // console.log("res ", promptRes)
+  // console.log("total ", totalPosts)
+  // console.log("post data ", promptPostsData?.prompt_posts);
+  // console.log("pages ", totalPages)
 
   const promptPosts: Post[] = promptPostsData?.prompt_posts?.length
-  ? promptPostsData.prompt_posts.map((prompt_post: any) => ({
+    ? promptPostsData.prompt_posts.map((prompt_post: RawPost) => ({
         id: prompt_post.id,
         user: {
           userId: prompt_post.user_id,
           clerkId: prompt_post.clerk_id,
           username: prompt_post.username,
-          imageUrl: prompt_post.image_url
+          imageUrl: prompt_post.image_url,
         },
         promptId: prompt_post.prompt_id,
         content: prompt_post.content,
@@ -163,7 +168,7 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
         upvotes: prompt_post.upvotes,
         createdAt: new Date(prompt_post.created_at),
       }))
-      : [];
+    : [];
 
   //console.log(promptPosts)
   const prompt = promptRes[0];
@@ -197,71 +202,84 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
     } catch (err) {
       console.error(err);
     } finally {
-      revalidatePath(`/play/${prompt.id}`)
+      revalidatePath(`/play/${prompt.id}`);
     }
   };
 
   async function deletePost(postId: number) {
     "use server";
     try {
-      await db.query(`DELETE FROM wg_posts WHERE (id, clerk_id) = ($1, $2)`, [postId, userId])
-      console.log("Post deleted")
+      await db.query(`DELETE FROM wg_posts WHERE (id, clerk_id) = ($1, $2)`, [
+        postId,
+        userId,
+      ]);
+      console.log("Post deleted");
     } catch (error) {
-      console.error("deleting post failed", error)
+      console.error("deleting post failed", error);
     } finally {
-      revalidatePath(`/play/${prompt.id}`)
+      revalidatePath(`/play/${prompt.id}`);
     }
   }
 
-  async function getExistingReactions(postId: number, userId: string | undefined) {
-    'use server'
+  async function getExistingReactions(
+    postId: number,
+    userId: string | undefined
+  ) {
+    "use server";
     if (!userId) {
       return {
         heart: false,
         laugh: false,
         sick: false,
         eyeroll: false,
-      }
+      };
     }
     const existingReactionsResponse = await db.query(
-      `SELECT * FROM wg_reactions WHERE (post_id, clerk_id) = ($1, $2)`, [postId, userId]
-    )
+      `SELECT * FROM wg_reactions WHERE (post_id, clerk_id) = ($1, $2)`,
+      [postId, userId]
+    );
     if (existingReactionsResponse.rows.length === 0) {
       return {
         heart: false,
         laugh: false,
         sick: false,
         eyeroll: false,
-      }
+      };
     }
     const existingReactions = {
       heart: existingReactionsResponse.rows[0].heart as boolean,
       laugh: existingReactionsResponse.rows[0].laugh as boolean,
       sick: existingReactionsResponse.rows[0].sick as boolean,
       eyeroll: existingReactionsResponse.rows[0].eyeroll as boolean,
-    }
-    return existingReactions
+    };
+    return existingReactions;
   }
   // If no reaction, create new:
-  async function makeReactions
-    (post_id: number, userId: string, newReaction: boolean, reactionType: "heart" | "laugh" | "sick" | "eyeroll") {
-
-    'use server'
+  async function makeReactions(
+    post_id: number,
+    userId: string,
+    newReaction: boolean,
+    reactionType: "heart" | "laugh" | "sick" | "eyeroll"
+  ) {
+    "use server";
 
     const validReactions = ["heart", "laugh", "sick", "eyeroll"];
     if (!validReactions.includes(reactionType)) {
       throw new Error("Invalid reaction type");
     }
     try {
-      await db.query(`
+      await db.query(
+        `
         INSERT INTO wg_reactions (clerk_id, post_id, ${reactionType})
         VALUES ($1, $2, $3)
         ON CONFLICT (clerk_id, post_id) 
         DO UPDATE SET
         ${reactionType} = EXCLUDED.${reactionType};
-        `, [userId, post_id, newReaction])
+        `,
+        [userId, post_id, newReaction]
+      );
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
 
     // revalidatePath(`/play/${prompt.id}`) // don't need to do this with optimistic ui updating, and having it here causes background to re-render on click.
@@ -288,9 +306,8 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
         eyeroll: parseInt(reactionCountsRes.rows[0].eyeroll, 10),
       };
       return reactionCounts;
-
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
 
     return {
@@ -298,10 +315,10 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
       laugh: 0,
       sick: 0,
       eyeroll: 0,
-    }
+    };
   }
 
-  async function editPost(postId: number,content: string ) {
+  async function editPost(postId: number, content: string) {
     "use server";
     try {
       await db.query(
@@ -314,10 +331,9 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
     } catch (err) {
       console.error(err);
     } finally {
-      revalidatePath(`/play/${prompt.id}`)
+      revalidatePath(`/play/${prompt.id}`);
     }
-  };
-
+  }
 
   return (
     <div className="max-w-6xl flex flex-col gap-4 justify-center items-center">
@@ -328,7 +344,7 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
         nextPrompt={nextPrompt}
         prevPrompt={prevPrompt}
       />
-  
+
       <div className="max-w-5xl">
         <PostInput
           baseWords={baseWords}
@@ -336,12 +352,12 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
           handleSubmit={handleSubmit}
         />
       </div>
-  
+
       {promptPosts.length > 0 ? (
         <div className="max-w-5xl flex flex-col gap-8">
           {promptPosts.map((post) => (
-            <PostTile 
-              key={post.id} 
+            <PostTile
+              key={post.id}
               post={post}
               getExistingReactions={getExistingReactions}
               makeReactions={makeReactions}
@@ -354,18 +370,26 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
           ))}
         </div>
       ) : (
-        <p>No posts available for this prompt yet. Be the first to contribute!</p>
+        <p>
+          No posts available for this prompt yet. Be the first to contribute!
+        </p>
       )}
-  
+
       {/* Pagination Controls */}
       <Pagination>
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious href={`?page=${currentPage - 1}`} disabled={currentPage === 1} />
+            <PaginationPrevious
+              href={`?page=${currentPage - 1}`}
+              disabled={currentPage === 1}
+            />
           </PaginationItem>
           {generatePaginationItems()}
           <PaginationItem>
-            <PaginationNext href={`?page=${currentPage + 1}`} disabled={currentPage === totalPages} />
+            <PaginationNext
+              href={`?page=${currentPage + 1}`}
+              disabled={currentPage === totalPages}
+            />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
