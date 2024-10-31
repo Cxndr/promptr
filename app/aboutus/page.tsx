@@ -16,7 +16,7 @@ export default async function AboutUsPage() {
     <>
       <Gravity wordsArr={wordsArr} />
 
-      <div className="max-w-7xl bg-background/80 py-8 my-auto m-4 flex flex-col gap-8 justify-center items-center rounded-3xl shadow-md shadow-black z-10">
+      <div className="max-w-4xl bg-background/80 py-8 my-auto m-4 flex flex-col gap-8 justify-center items-center rounded-3xl shadow-md shadow-black z-10">
         <div className="">
           <AniTitle />
         </div>
@@ -35,7 +35,7 @@ export default async function AboutUsPage() {
           </ul>
         </div>
 
-        <div className="flex gap-8 justify-center items-center">
+        <div className="flex-wrap flex gap-8 justify-center items-center">
           <div className="flex flex-col gap-2 justify-center items-center font-semibold text-sm">
             <div className="h-[74px] w-auto flex justify-center items-center">
               <Image
