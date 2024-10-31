@@ -3,10 +3,9 @@ import PostPrompt from "@/components/PostPrompt";
 import PostTile from "@/components/PostTile";
 
 import { db } from "@/lib/db";
-import { Word } from "@/lib/types";
+import { PublicUser, Word, Post, PromptPostsData } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
 import { Prompt } from "@/lib/types";
-import { Post } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { timeAgo } from "@/lib/timeAgo";
@@ -118,7 +117,7 @@ export default async function PromptPage({
       ),
       prompt_posts AS (
         SELECT wg_posts.*, wg_users.clerk_id, wg_users.id AS user_id, 
-               wg_users.username, wg_users.image_url
+              wg_users.username, wg_users.image_url
         FROM wg_posts
         JOIN wg_users ON wg_posts.clerk_id = wg_users.clerk_id
         WHERE prompt_id = $1
@@ -145,14 +144,6 @@ export default async function PromptPage({
     mergedData.rows[0];
   const totalPages: number = Math.ceil(totalPosts / itemsPerPage);
 
-  // console.log("base ", baseWords)
-  // console.log("filler ", fillerWords)
-  // console.log("all ", allPrompts)
-  // console.log("res ", promptRes)
-  // console.log("total ", totalPosts)
-  // console.log("post data ", promptPostsData?.prompt_posts);
-  // console.log("pages ", totalPages)
-
   const promptPosts: Post[] = promptPostsData?.prompt_posts?.length
     ? promptPostsData.prompt_posts.map((prompt_post: RawPost) => ({
         id: prompt_post.id,
@@ -170,7 +161,6 @@ export default async function PromptPage({
       }))
     : [];
 
-  //console.log(promptPosts)
   const prompt = promptRes[0];
   const promptCount = allPrompts.length;
   const promptsLowerBound = allPrompts[0].id;
@@ -281,8 +271,6 @@ export default async function PromptPage({
     } catch (err) {
       console.error(err);
     }
-
-    // revalidatePath(`/play/${prompt.id}`) // don't need to do this with optimistic ui updating, and having it here causes background to re-render on click.
   }
 
   async function getReactionCount(postId: number) {
@@ -374,8 +362,6 @@ export default async function PromptPage({
           No posts available for this prompt yet. Be the first to contribute!
         </p>
       )}
-
-      {/* Pagination Controls */}
       <Pagination>
         <PaginationContent>
           <PaginationItem>

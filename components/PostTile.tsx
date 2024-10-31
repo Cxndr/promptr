@@ -10,13 +10,10 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  // DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-// import { Input } from "@/components/ui/input"
-// import { Label } from "@/components/ui/label"
 import PostInput from "./PostInput";
 import { Word } from "@/lib/types";
 
@@ -93,23 +90,15 @@ export default function PostTile({
     getAllReactionCount();
   }, [getReactionCount, post]);
 
-  const baseWords: Word[] = [];
-  post.words.slice(0, 20).map((baseWord) => {
-    baseWords.push({
-      word: baseWord.word,
-      type: "base",
-      used: 0,
-    });
-  });
-
-  const fillerWords: Word[] = [];
-  post.words.slice(20, post.words.length).map((fillerWord) => {
-    fillerWords.push({
-      word: fillerWord.word,
-      type: "filler",
-      used: 0,
-    });
-  });
+  const baseWords: Word[] = []
+  const fillerWords: Word[] = []
+  post.words.map((word) => {
+    if (word.type === 'base') {
+      baseWords.push(word)
+    } else {
+      fillerWords.push(word)
+    }
+  })
 
   function handleDelete() {
     if (post && post.id) {
@@ -193,21 +182,23 @@ export default function PostTile({
 
       <div className="relative h-full flex flex-col justify-center items-center flex-grow">
         <div className="absolute right-0 top-0 flex justify-center items-center">
-          {post.createdAt && (
-            <div className="text-zinc-500 py-2 px-3">{timeAgoCreated}</div>
-          )}
-          {ownedByUser && (
-            <div className="flex h-full">
+          
+          {post.createdAt &&
+            <div className="text-zinc-500 py-2 px-3">
+              {timeAgoCreated}
+            </div>
+          }
+          {ownedByUser &&
+            <div className="flex h-full max-w-5xl">
               <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 <DialogTrigger asChild>
                   <Button
-                    // onClick={handleEdit}
                     className="bg-zinc-50 bg-opacity-0 hover:bg-zinc-700 shadow-none"
                   >
                     <Pencil color={"white"} />
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="">
                   <DialogHeader>
                     <DialogTitle>Edit post</DialogTitle>
                     <DialogDescription>
