@@ -1,8 +1,8 @@
-import Link from 'next/link';
-import { db } from '@/lib/db'; 
+import Link from "next/link";
+import { db } from "@/lib/db";
 
 export default async function PlayPage() {
-  const prompts = await db.query('SELECT id, content FROM wg_prompts');
+  const prompts = await db.query("SELECT id, content FROM wg_prompts");
 
   return (
     <div>
@@ -10,9 +10,7 @@ export default async function PlayPage() {
       <ul>
         {prompts.rows.map((prompt) => (
           <li key={prompt.id}>
-            <Link href={`/play/${prompt.id}`}>
-              {prompt.content}
-            </Link>
+            <Link href={`/play/${prompt.id}`}>{prompt.content}</Link>
           </li>
         ))}
       </ul>
