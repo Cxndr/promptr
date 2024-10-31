@@ -155,7 +155,7 @@ export default function PostInput({
           {responseSentence ? (
             responseSentence
           ) : (
-            <span className="text-gray-400">
+            <span className="text-faded-light">
               Create a response using the words below.
             </span>
           )}

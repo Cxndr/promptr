@@ -27,6 +27,10 @@ const config: Config = {
 					DEFAULT: 'hsl(var(--foreground))',
 					raised: 'hsl(var(--foreground-raised))',
 				},
+				faded: {
+					light: 'hsl(var(--faded-light))',
+					dark: 'hsl(var(--faded-dark))',
+				},
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'

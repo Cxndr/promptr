@@ -23,7 +23,7 @@ export function generateBg(words: string[], theme: string | undefined) {
   const textRotation = -45;
   const textFontSize = 20;
   let fillColor = "#9494ac";
-  if (theme === "dark") { fillColor = "#2F2F2F"; }
+  if (theme === "light") { fillColor = "#9494ac"; } else { fillColor = "#2F2F2F";}
 
   // SVG template
   let svgContent = `

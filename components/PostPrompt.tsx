@@ -27,7 +27,7 @@ export default function PostPrompt( {prompt, promptsLowerBound, promptsUpperBoun
 
   return (
     <>
-      <h3 className="text-md font-medium italic text-zinc-500 cursor">Prompt #{prompt.id}</h3>
+      <h3 className="text-md font-medium italic text-faded-dark">Prompt #{prompt.id}</h3>
       <div className="bg-foreground-raised/70 rounded-2xl shadow-md shadow-black">
         <div className="w-full flex justify-center items-center gap-8">
           <button className={leftButtonClassName} onClick={handlePrevNav}>

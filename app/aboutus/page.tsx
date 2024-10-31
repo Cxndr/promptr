@@ -13,74 +13,98 @@ export default async function AboutUsPage() {
 
     return (
         <>
-            <div className="left-40 w-10 top-20 sm:top-40 absolute">
-                <AniTitle />
-            </div >
-            <div className="absolute h-28 top-44 sm:top-72 w-3/5">
+            <div className="bg-background/80 py-8 my-auto m-4 flex flex-col gap-8 justify-center items-center rounded-3xl shadow-md shadow-black">
+                <div className="">
+                    <AniTitle />
+                </div >
                 <h2 className="text-2xl">About us...</h2>
-                <p className="p-8">Thank you for visiting our final week group project, with the Tech Educators!</p>
-                <h3 className="text-xl p-8">👥Credits👥</h3>
-                <ul>
-                    <li className="p-4">🦥 Matt</li>
-                    <li>🦏 Scott</li>
-                    <li className="p-4">🦇 Nitej</li>
-                    <li>🐕 Joe</li>
-                </ul>
-            </div>
-            <div className="absolute right-10 w-8 bottom-10">
-                <Image className="h-auto w-100" 
-                    src={tslogo}
-                    alt="TypeScript logo"
-                    width={50}
-                    height={38}
-                    priority />
-            </div>
-            
-            <div className="absolute right-24 w-8 bottom-16">
-                <Image className="h-auto w-100 rounded" 
-                    src={nextlogo}
-                    alt="Next.js logo"
-                    width={50}
-                    height={38}
-                    priority />
-            </div>
+                <p className="">Thank you for visiting our final week group project, with the Tech Educators!</p>
+                <div className="flex flex-col gap-4">
+                    <h3 className="text-xl">👥 Credits 👥</h3>
+                    <ul className="flex flex-col gap-4">
+                        <li>🦥 Matt</li>
+                        <li>🦏 Scott</li>
+                        <li>🦇 Nitej</li>
+                        <li>🐕 Joe</li>
+                    </ul>
+                </div>
                 
-            <div className="absolute right-36 w-12 bottom-10">
-                <Image className="h-auto w-100 rounded" 
-                    src={pglogo}
-                    alt="PostgreSQL logo"
-                    width={50}
-                    height={38}
-                    priority />
-            </div>
+                <div className="flex gap-8 justify-center items-center">
+                    <div className="flex flex-col gap-2 justify-center items-center font-semibold text-sm">
+                        <div className="h-[74px] flex justify-center items-center">
+                            <Image className="rounded-xl "
+                                src={tslogo}
+                                alt="TypeScript logo"
+                                width={74}
+                                height={74}
+                                priority />
+                        </div>
+                        TypeScript
+                    </div>
+                    
+                    <div className="flex flex-col gap-2 justify-center items-center font-semibold text-sm">
+                        <div className="h-[74px] flex justify-center items-center">
+                            <Image className="rounded-xl "
+                                src={nextlogo}
+                                alt="Next.js logo"
+                                width={74}
+                                height={74}
+                                priority />
+                        </div>
+                        NextJS
+                    </div>
+                        
+                    <div className="flex flex-col gap-2 justify-center items-center font-semibold text-sm">
+                        <div className="h-[74px] flex justify-center items-center">
+                            <Image className="rounded-xl "
+                                src={pglogo}
+                                alt="PostgreSQL logo"
+                                width={74}
+                                height={74}
+                                priority />
+                        </div>
+                        Postgres
+                    </div>
 
-            <div className="absolute right-48 w-12 bottom-14">
-                <Image className="h-auto w-100 rounded" 
-                    src={supabaselogo}
-                    alt="Supabase logo"
-                    width={50}
-                    height={38}
-                    priority />
-            </div>
+                    <div className="flex flex-col gap-2 justify-center items-center font-semibold text-sm">
+                        <div className="h-[74px] flex justify-center items-center">
+                            <Image className="rounded-xl "
+                                src={supabaselogo}
+                                alt="Supabase logo"
+                                width={74}
+                                height={74}
+                                priority />
+                        </div>
+                        Supabase
+                    </div>
 
-            <div className="absolute right-64 w-8 bottom-10">
-                <Image className="h-auto w-100 rounded" 
-                    src={githublogo}
-                    alt="Github logo"
-                    width={50}
-                    height={38}
-                    priority />
-            </div>
+                    <div className="flex flex-col gap-2 justify-center items-center font-semibold text-sm">
+                        <div className="h-[74px] flex justify-center items-center">
+                            <Image className="rounded-xl "
+                                src={githublogo}
+                                alt="Github logo"
+                                width={74}
+                                height={74}
+                                priority />
+                        </div>
+                        Github
+                    </div>
 
-            <div className="absolute right-80 w-8 bottom-16">
-                <Image className="h-auto w-100 rounded" 
-                    src={twlogo}
-                    alt="Tailwind logo"
-                    width={50}
-                    height={38}
-                    priority />
-            </div>
+                    <div className="flex flex-col gap-2 justify-center items-center font-semibold text-sm">
+                        <div className="h-[74px] flex justify-center items-center">
+                            <Image className="rounded-xl "
+                                src={twlogo}
+                                alt="Tailwind logo"
+                                width={74}
+                                height={74}
+                                priority />
+                        </div>
+                        Tailwind
+                    </div>
+                </div>
 
+                
+            </div>
             <Gravity/>
         </>
     );
