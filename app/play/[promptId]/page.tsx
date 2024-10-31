@@ -1,15 +1,12 @@
 import PostInput from "@/components/PostInput";
-import PostPrompt from "@/components/PostPrompt";
 import PostTile from "@/components/PostTile";
-
+import PaginationComponent from "@/components/PaginationComponent";
+import PromptNavigation from "@/components/PromptNav";
 import { db } from "@/lib/db";
-import { Word, Post, RawPost } from "@/lib/types";
+import { Word, Post, RawPost, Prompt } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
-import { Prompt } from "@/lib/types";
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { timeAgo } from "@/lib/timeAgo";
-import PaginationComponent from "@/components/PaginationComponent";
 
 type PromptPageProps = {
   params: {
@@ -104,38 +101,19 @@ export default async function PromptPage({
       }))
     : [];
 
-  const prompt = promptRes[0];
-  const promptCount = allPrompts.length;
-  const promptsLowerBound = allPrompts[0].id;
-  const promptsUpperBound = promptsLowerBound + promptCount - 1;
-
-  async function nextPrompt() {
-    "use server";
-    if (prompt.id < promptsUpperBound) {
-      redirect(`/play/${prompt.id + 1}`);
-    }
-  }
-
-  async function prevPrompt() {
-    "use server";
-    if (prompt.id > promptsLowerBound) {
-      redirect(`/play/${prompt.id - 1}`);
-    }
-  }
-
   const handleSubmit = async (data: { words: string[]; content: string }) => {
     "use server";
 
     try {
       await db.query(
         `INSERT INTO wg_posts (clerk_id, prompt_id, content, words) VALUES ($1, $2, $3, $4)`,
-        [userId, prompt.id, data.content, data.words]
+        [userId, promptRes[0].id, data.content, data.words]
       );
       console.log("Success. content:", data.content, "and words:", data.words);
     } catch (err) {
       console.error(err);
     } finally {
-      revalidatePath(`/play/${prompt.id}`);
+      revalidatePath(`/play/${promptRes[0].id}`);
     }
   };
 
@@ -150,7 +128,7 @@ export default async function PromptPage({
     } catch (error) {
       console.error("deleting post failed", error);
     } finally {
-      revalidatePath(`/play/${prompt.id}`);
+      revalidatePath(`/play/${promptRes[0].id}`);
     }
   }
 
@@ -262,19 +240,13 @@ export default async function PromptPage({
     } catch (err) {
       console.error(err);
     } finally {
-      revalidatePath(`/play/${prompt.id}`);
+      revalidatePath(`/play/${promptRes[0].id}`);
     }
   }
 
   return (
     <div className="max-w-6xl flex flex-col gap-4 justify-center items-center">
-      <PostPrompt
-        prompt={prompt}
-        promptsUpperBound={promptsUpperBound}
-        promptsLowerBound={promptsLowerBound}
-        nextPrompt={nextPrompt}
-        prevPrompt={prevPrompt}
-      />
+      <PromptNavigation allPrompts={allPrompts} promptRes={promptRes} />
 
       <div className="max-w-5xl">
         <PostInput
