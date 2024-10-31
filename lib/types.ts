@@ -43,3 +43,16 @@ export type Reaction = {
   sick: boolean;
   eyeroll: boolean;
 }
+
+export type PromptPostsData = {
+  id: number;
+  prompt_id: number;
+  content: string;
+  words: string[];
+  upvotes: number;
+  clerk_id: string;
+  created_at: Date;
+  user_id: number;
+  username: string;
+  image_url: string;
+}
