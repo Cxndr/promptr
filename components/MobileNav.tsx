@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { AlignJustify, House } from "lucide-react";
@@ -26,10 +26,11 @@ export default function MobileNav() {
             <DialogTitle>Mobile Navigation</DialogTitle>
           </VisuallyHidden>
           <DialogDescription className="mt-4">
-            Use the navigation links to browse different pages and toggle dyslexic font.
+            Use the navigation links to browse different pages and toggle
+            dyslexic font.
           </DialogDescription>
           <Link href="/" onClick={closeSheet}>
-            <House className="text-primary" />
+            <House aria-label="home button" className="text-primary" />
           </Link>
           <nav className="flex flex-col gap-3 lg:gap-4 mt-6 items-start pl-0">
             <Link href="/play/1" aria-label="Play Page" onClick={closeSheet}>
@@ -42,7 +43,7 @@ export default function MobileNav() {
               About Us
             </Link>
             <div aria-label="Close" onClick={closeSheet}>
-              <FontToggle  />
+              <FontToggle />
             </div>
           </nav>
         </SheetContent>

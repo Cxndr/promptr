@@ -42,6 +42,7 @@ export default async function AboutUsPage() {
                 className="rounded-xl "
                 src={tslogo}
                 alt="TypeScript logo"
+                aria-label="TypeScript logo"
                 width={74}
                 height={74}
                 priority
@@ -56,6 +57,7 @@ export default async function AboutUsPage() {
                 className="rounded-xl "
                 src={nextlogo}
                 alt="Next.js logo"
+                aria-label="Next logo"
                 width={74}
                 height={74}
                 priority
@@ -70,6 +72,7 @@ export default async function AboutUsPage() {
                 className="rounded-xl "
                 src={pglogo}
                 alt="PostgreSQL logo"
+                aria-label="postgresql logo"
                 width={74}
                 height={74}
                 priority
@@ -84,6 +87,7 @@ export default async function AboutUsPage() {
                 className="rounded-xl "
                 src={supabaselogo}
                 alt="Supabase logo"
+                aria-label="supabase logo"
                 width={74}
                 height={74}
                 priority
@@ -98,6 +102,7 @@ export default async function AboutUsPage() {
                 className="rounded-xl "
                 src={githublogo}
                 alt="Github logo"
+                aria-label="github logo"
                 width={74}
                 height={74}
                 priority
@@ -112,6 +117,7 @@ export default async function AboutUsPage() {
                 className="rounded-xl "
                 src={twlogo}
                 alt="Tailwind logo"
+                aria-label="tailwind logo"
                 width={74}
                 height={74}
                 priority
