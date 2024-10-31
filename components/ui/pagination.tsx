@@ -23,7 +23,11 @@ const PaginationContent = React.forwardRef<
   HTMLUListElement,
   React.ComponentProps<"ul">
 >(({ className, ...props }, ref) => (
-  <ul ref={ref} className={cn("flex flex-row items-center gap-1", className)} {...props} />
+  <ul
+    ref={ref}
+    className={cn("flex flex-row items-center gap-1", className)}
+    {...props}
+  />
 ));
 PaginationContent.displayName = "PaginationContent";
 
@@ -49,25 +53,25 @@ const PaginationLink = ({
   size = "icon",
   ...props
 }: PaginationLinkProps) => {
-const finalHref: string  = disabled ? '#' : href;
-return (
-  <Link href={finalHref} passHref legacyBehavior>
-    <a
-      aria-current={isActive ? "page" : undefined}
-      aria-disabled={disabled || undefined}
-      className={cn(
-        buttonVariants({
-          variant: isActive ? "outline" : "ghost",
-          size,
-        }),
-        disabled ? "pointer-events-none opacity-50" : "", // Apply styles when disabled
-        className
-      )}
-      {...props}
-    />
-  </Link>
-);
-}
+  const finalHref: string = disabled ? "#" : href || "#";
+  return (
+    <Link href={finalHref} passHref legacyBehavior>
+      <a
+        aria-current={isActive ? "page" : undefined}
+        aria-disabled={disabled || undefined}
+        className={cn(
+          buttonVariants({
+            variant: isActive ? "outline" : "ghost",
+            size,
+          }),
+          disabled ? "pointer-events-none opacity-50" : "", // Apply styles when disabled
+          className
+        )}
+        {...props}
+      />
+    </Link>
+  );
+};
 
 PaginationLink.displayName = "PaginationLink";
 
