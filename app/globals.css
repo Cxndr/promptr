@@ -57,6 +57,8 @@ body {
     --background-raised: 40 10% 90%;
     --foreground: 240 10% 3.9%;
     --foreground-raised: 240 10% 10%;
+    --faded-light: 217.9 10.6% 70%;
+    --faded-dark: 240 3.8% 25%;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
@@ -89,6 +91,8 @@ body {
     --background-raised: 240 5.9% 20%;
     --foreground: 0 0% 98%;
     --foreground-raised: 0 0% 90%;
+    --faded-light: 217.9 10.6% 64.9%;
+    --faded-dark: 240 3.8% 46.1%;
     --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;

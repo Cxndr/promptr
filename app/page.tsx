@@ -14,12 +14,12 @@ export default async function Home() {
     redirect("/profile");
   }
   return (
-    <>
-      <div className="left-36 w-10 top-20 sm:top-40 absolute">
+    <div className="bg-background/80 py-4 my-auto mx-4 flex flex-col justify-center items-center rounded-3xl shadow-md shadow-black">
+      <div className="pt-4">
         <AniTitle />
       </div >
 
-      <div className="absolute h-28 top-36 sm:top-80 w-3/5">
+      <div className="">
         
         <h2 className="text-2xl p-8">How Phrase Factory Works...</h2>
         <p>In Phrase Factory, you choose a question (we call them prompts).</p> <p className="p-4">To respond,
@@ -37,6 +37,6 @@ export default async function Home() {
         <p className="p-4">Good luck!</p>
       </div>
       <Gravity />
-    </>
+    </div>
   );
 }
