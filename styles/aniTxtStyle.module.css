@@ -15,8 +15,9 @@
     position: relative;
     gap: 40px;
     min-height: 10vh;
-    width: 87svw;
-    transform: translateX(-34svw); 
+    width: 89svw;
+    left: -5vw;
+    transform: translateX(5svw); 
 }
 
 .word-wrapper {
@@ -26,7 +27,7 @@
     align-items: center;
     justify-content: flex-end;
     position: relative;
-    width: 25vw;
+    width: 89svw;
     overflow: hidden;
 }
 .word {
@@ -49,12 +50,14 @@
     z-index: 2;
 }
 
-@media (min-width: 380px) {
+@media (min-width: 1100px) {
     .word-wrapper {
         width: 95svw;
+        left: 41vw;
     }
 
     .AniTitle {
         width: 88svw;
+        transform: translateX(-68svw); 
     }
 }

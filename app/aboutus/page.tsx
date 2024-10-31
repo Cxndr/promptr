@@ -23,8 +23,8 @@ export default async function AboutUsPage() {
     <>
       <Gravity wordsArr={wordsArr} />
 
-      <div className="max-w-4xl bg-background/80 py-8 my-auto m-4 flex flex-col gap-8 justify-center items-center rounded-3xl shadow-md shadow-black z-10">
-        <div className="">
+      <div className="max-w-3xl bg-background/80 py-8 my-auto m-4 flex flex-col gap-8 justify-center items-center rounded-3xl shadow-md shadow-black z-10">
+        <div>
           <AniTitle />
         </div>
         <h2 className="text-2xl">About us...</h2>

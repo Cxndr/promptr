@@ -19,7 +19,7 @@ export default async function Home() {
     <>
       <Gravity wordsArr={wordsArr} />
       <div className="z-20">
-        <div className="max-w-7xl bg-background/75 py-4 px-8 my-auto mx-4 flex flex-col justify-center items-center rounded-3xl shadow-md shadow-black">
+        <div className="max-w-3xl bg-background/80 py-8 my-auto m-4 flex flex-col gap-8 justify-center items-center rounded-3xl shadow-md shadow-black z-10">
           <div className="pt-4">
             <AniTitle />
           </div>

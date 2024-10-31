@@ -159,9 +159,9 @@ export default function PostTile({
   };
 
   return (
-    <div className="flex bg-background-raised/70 rounded-2xl p-0 overflow-hidden shadow-md shadow-black">
+    <div className="w-[90svw] sm:w-[60svw] flex bg-background-raised/70 rounded-2xl p-0 overflow-hidden shadow-md shadow-black">
       <div className="flex flex-col justify-start items-center gap-4 relative">
-        <Avatar className="w-40 h-40 relative">
+        <Avatar className="w-40 h-40">
           <AvatarImage
             src={post.user.imageUrl || "/img/default-avatar.webp"}
             alt="User Profile Image"
@@ -223,7 +223,7 @@ export default function PostTile({
           )}
         </div>
 
-        <p className="text-3xl p-8">{post.content}</p>
+        <p className="text-sm p-8 sm:text-3xl">{post.content}</p>
 
         <div className="flex justify-center items-center text-lg absolute right-4 bottom-1">
           <Button
