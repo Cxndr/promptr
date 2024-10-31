@@ -1,10 +1,12 @@
-"use client";
+'use client'
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { AlignJustify, House } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import FontToggle from "./FontToggle";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { DialogTitle, DialogDescription } from "@radix-ui/react-dialog";
 
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +22,12 @@ export default function MobileNav() {
           <AlignJustify />
         </SheetTrigger>
         <SheetContent side="left">
+          <VisuallyHidden>
+            <DialogTitle>Mobile Navigation</DialogTitle>
+          </VisuallyHidden>
+          <DialogDescription className="mt-4">
+            Use the navigation links to browse different pages and toggle dyslexic font.
+          </DialogDescription>
           <Link href="/" onClick={closeSheet}>
             <House className="text-primary" />
           </Link>
@@ -34,7 +42,7 @@ export default function MobileNav() {
               About Us
             </Link>
             <div aria-label="Close" onClick={closeSheet}>
-              <FontToggle />
+              <FontToggle  />
             </div>
           </nav>
         </SheetContent>
