@@ -70,7 +70,7 @@ Place your database URL after the DATABASE_URL=
 6. **Validate Functionality:**
    Run `npm run build` followed by `npm run start` and visit http://localhost:3000 to validate that the site functions as intended with the provided .env.local configuration.
 
-7. **Delopy to Host:**
-   To delopy this project navaigate to your prefered hosting provider. I recommend [Vercel](https://vercel.app/) for quick and easy Next App delopyments. Steps may vary depending on host however generally you will login with GitHub and create a new project. Find your GitHub repo in the list (or copy the URL from your Forked project if it isn't listed). Go back to your Code Editor/IDE and copy the contents of the `.env.local` to clipboard. Add these to the Environment Variables for the project. With Vercel you can paste them all in at once and click save. Remember to name the project for easier navigation later. Then hit delopy and wait a moment for it to build.
+7. **Deploy to Host:**
+   To deploy this project navaigate to your prefered hosting provider. I recommend [Vercel](https://vercel.app/) for quick and easy Next App deployments. Steps may vary depending on host however generally you will login with GitHub and create a new project. Find your GitHub repo in the list (or copy the URL from your Forked project if it isn't listed). Go back to your Code Editor/IDE and copy the contents of the `.env.local` to clipboard. Add these to the Environment Variables for the project. With Vercel you can paste them all in at once and click save. Remember to name the project for easier navigation later. Then hit delopy and wait a moment for it to build.
 
-You should now have a delopyed copy of Phrase Factory!
+You should now have a deployed copy of Phrase Factory!
