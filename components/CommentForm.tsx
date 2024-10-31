@@ -7,13 +7,8 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 
-
-
-
 export default function CommentForm() {
-
   const form = useForm();
-
   return (
     <div>
       <Form {...form}>
@@ -21,21 +16,19 @@ export default function CommentForm() {
           <FormField
             control={form.control}
             name="commentForm"
-            render={( field ) => (
+            render={(field) => (
               <div>
                 <FormItem>
-                  <FormLabel/>
+                  <FormLabel />
                   <FormControl>
                     <input placeholder="Enter Comment..." {...field} />
                   </FormControl>
                 </FormItem>
-
               </div>
             )}
-          >
-          </FormField>
+          ></FormField>
         </form>
       </Form>
     </div>
-  )
+  );
 }

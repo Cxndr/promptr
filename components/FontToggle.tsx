@@ -14,7 +14,9 @@ export default function FontToggle() {
 
   useEffect(() => {
     // apply saved preference if in local storage
-    const savedPreference = JSON.parse(localStorage.getItem("isDyslexic") || "false");
+    const savedPreference = JSON.parse(
+      localStorage.getItem("isDyslexic") || "false"
+    );
     if (savedPreference) {
       setIsDyslexic(true);
     }
@@ -32,7 +34,10 @@ export default function FontToggle() {
   }, [isDyslexic]);
 
   return (
-    <button onClick={toggleFont} className="px-2 hover:scale-110 hover:text-primary transition-all duration-300">
+    <button
+      onClick={toggleFont}
+      className="px-2 hover:scale-110 hover:text-primary transition-all duration-300"
+    >
       {isDyslexic ? "Default Font" : "Dyslexic Font"}
     </button>
   );

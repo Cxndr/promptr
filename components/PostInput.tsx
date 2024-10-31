@@ -6,7 +6,6 @@ import { Tag } from "emblor";
 import {
   Form,
   FormControl,
-  // FormDescription,
   FormItem,
   FormLabel,
   FormMessage,
@@ -127,27 +126,19 @@ export default function PostInput({
   const form = useForm();
 
   return (
-    <Collapsible
-      open={isOpen}
-      onOpenChange={setIsOpen}
-    >
-
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <CollapsibleTrigger asChild className="mb-6">
-        {isOpen 
-          ? (
-            <Button className="font-bold bg-zinc-700 hover:bg-zinc-800 text-zinc-50 rounded-lg transition-all duration-200 text-base shadow-sm shadow-black">
-              Hide
-              <ChevronUp/>
-            </Button>
-          )
-          : (
-            <Button className="font-bold bg-primary hover:bg-primary-dark text-zinc-50 rounded-lg transition-all duration-200 text-base shadow-sm shadow-black">
-              Create a Response
-              <ChevronDown/>
-            </Button>
-          )
-        }
-        
+        {isOpen ? (
+          <Button className="font-bold bg-zinc-700 hover:bg-zinc-800 text-zinc-50 rounded-lg transition-all duration-200 text-base shadow-sm shadow-black">
+            Hide
+            <ChevronUp />
+          </Button>
+        ) : (
+          <Button className="font-bold bg-primary hover:bg-primary-dark text-zinc-50 rounded-lg transition-all duration-200 text-base shadow-sm shadow-black">
+            Create a Response
+            <ChevronDown />
+          </Button>
+        )}
       </CollapsibleTrigger>
 
       <CollapsibleContent className="CollapsibleContent">
@@ -176,9 +167,6 @@ export default function PostInput({
               render={() => (
                 <FormItem>
                   <FormLabel />
-
-                  {/* <FormDescription></FormDescription> */}
-
                   <div className="flex flex-col gap-6">
                     <FormControl>
                       <div className="">
@@ -208,7 +196,6 @@ export default function PostInput({
                       </div>
                     </FormControl>
                   </div>
-                  
 
                   <FormMessage />
                 </FormItem>
@@ -223,7 +210,6 @@ export default function PostInput({
           </form>
         </Form>
       </CollapsibleContent>
-
     </Collapsible>
   );
 }

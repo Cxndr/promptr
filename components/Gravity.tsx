@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 type SpanState = {
   pos: { x: number; y: number };
@@ -11,25 +11,28 @@ type SpanState = {
 };
 
 const colors = [
-  '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3',
-  '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39',
-  '#ffeb3b', '#ffc107', '#ff9800', '#ff5722', '#795548', '#9e9e9e', '#607d8b'
+  "#f44336",
+  "#e91e63",
+  "#9c27b0",
+  "#673ab7",
+  "#3f51b5",
+  "#2196f3",
+  "#03a9f4",
+  "#00bcd4",
+  "#009688",
+  "#4caf50",
+  "#8bc34a",
+  "#cddc39",
+  "#ffeb3b",
+  "#ffc107",
+  "#ff9800",
+  "#ff5722",
+  "#795548",
+  "#9e9e9e",
+  "#607d8b",
 ];
 
 const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
-
-// function getTextWidth(inputText: string) {
-//   const font = "16px Arial";
-
-//   const canvas = document.createElement("canvas");
-//   const context = canvas.getContext("2d");
-//   if (context) {
-//     context.font = font;
-//   const width = context.measureText(inputText).width;
-//   // const formattedWidth = Math.ceil(width) + "px";
-//   return width;
-//   }
-// } 
 
 type GravityProps = {
   wordsArr: string[];
@@ -46,14 +49,14 @@ const Gravity: React.FC<GravityProps> = ({ wordsArr }) => {
     // Initialize span states with random positions within window bounds minus the buffer
     const initialStates = arr.map((item) => ({
       pos: {
-        x: Math.random() * (window.innerWidth - (item.length*charW) - buffer), // Span approx width minus buffer
-        y: Math.random() * (window.innerHeight - (item.length*charW) - buffer) // Span approx height minus buffer
+        x: Math.random() * (window.innerWidth - item.length * charW - buffer), // Span approx width minus buffer
+        y: Math.random() * (window.innerHeight - item.length * charW - buffer), // Span approx height minus buffer
       },
       vel: { x: -0.5 + Math.random(), y: -0.5 + Math.random() },
       speed: { x: 2, y: 2 },
       dir: { x: 1, y: 1 },
       color: getRandomColor(),
-      string: item as string
+      string: item as string,
     }));
 
     setSpanStates(initialStates);
@@ -68,14 +71,34 @@ const Gravity: React.FC<GravityProps> = ({ wordsArr }) => {
           const nextY = span.pos.y + span.vel.y * span.speed.y * span.dir.y;
 
           // Boundary checking to ensure the spans bounce back within window constraints minus the buffer
-          const isBeyondXBounds = nextX <= buffer || nextX >= window.innerWidth - (span.string.length*charW) - buffer; // Approx width minus buffer
-          const isBeyondYBounds = nextY <= buffer || nextY >= window.innerHeight - (span.string.length*charW)  - buffer; // Approx height minus buffer
+          const isBeyondXBounds =
+            nextX <= buffer ||
+            nextX >= window.innerWidth - span.string.length * charW - buffer; // Approx width minus buffer
+          const isBeyondYBounds =
+            nextY <= buffer ||
+            nextY >= window.innerHeight - span.string.length * charW - buffer; // Approx height minus buffer
 
           return {
             ...span,
             pos: {
-              x: isBeyondXBounds ? Math.max(buffer, Math.min(nextX, window.innerWidth - (span.string.length*charW) - buffer)) : nextX,
-              y: isBeyondYBounds ? Math.max(buffer, Math.min(nextY, window.innerHeight - (span.string.length*charW) - buffer)) : nextY,
+              x: isBeyondXBounds
+                ? Math.max(
+                    buffer,
+                    Math.min(
+                      nextX,
+                      window.innerWidth - span.string.length * charW - buffer
+                    )
+                  )
+                : nextX,
+              y: isBeyondYBounds
+                ? Math.max(
+                    buffer,
+                    Math.min(
+                      nextY,
+                      window.innerHeight - span.string.length * charW - buffer
+                    )
+                  )
+                : nextY,
             },
             dir: {
               x: isBeyondXBounds ? span.dir.x * -1 : span.dir.x,
@@ -100,7 +123,7 @@ const Gravity: React.FC<GravityProps> = ({ wordsArr }) => {
           <span
             key={index}
             style={{
-              position: 'absolute',
+              position: "absolute",
               color: span.color,
               left: `${span.pos.x}px`,
               top: `${span.pos.y}px`,

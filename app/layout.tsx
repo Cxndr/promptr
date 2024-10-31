@@ -5,8 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Noto_Sans, Rubik_Mono_One } from "next/font/google";
-// import { ModeToggle } from "@/components/ModeToggle";
-import localFont from 'next/font/local'
+import localFont from "next/font/local";
 import BackGroundStyling from "@/components/BackgroundStyling";
 
 export const metadata: Metadata = {
@@ -32,34 +31,35 @@ const rubik = Rubik_Mono_One({
 const OpenDyslexic = localFont({
   src: [
     {
-      path: './fonts/OpenDyslexic-Regular.woff2',
-      weight: '400',
-      style: 'normal',
+      path: "./fonts/OpenDyslexic-Regular.woff2",
+      weight: "400",
+      style: "normal",
     },
     {
-      path: './fonts/OpenDyslexic-Italic.woff2',
-      weight: '400',
-      style: 'italic',
+      path: "./fonts/OpenDyslexic-Italic.woff2",
+      weight: "400",
+      style: "italic",
     },
     {
-      path: './fonts/OpenDyslexic-Bold-Italic.woff2',
-      weight: '700',
-      style: 'normal',
+      path: "./fonts/OpenDyslexic-Bold-Italic.woff2",
+      weight: "700",
+      style: "normal",
     },
   ],
-  variable: "--font-dyslexic"
-})
+  variable: "--font-dyslexic",
+});
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className={`${noto.variable} ${rubik.variable} ${OpenDyslexic.variable} antialiased`}>
+        <body
+          className={`${noto.variable} ${rubik.variable} ${OpenDyslexic.variable} antialiased`}
+        >
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -67,17 +67,15 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <BackGroundStyling>
-
               <Header />
-              
-                <main 
-                  className={`flex-grow flex flex-col items-center mb-4 mt-24`}
-                >
-                  {children}
-                </main>
+
+              <main
+                className={`flex-grow flex flex-col items-center mb-4 mt-24`}
+              >
+                {children}
+              </main>
 
               <Footer />
-
             </BackGroundStyling>
           </ThemeProvider>
         </body>

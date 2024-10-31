@@ -86,13 +86,19 @@ export function ModeToggle() {
         <DropdownMenuItem onClick={() => handleThemeChange("dark")}>
           {renderIcon("dark")} Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleThemeChange("colorblind-deuteranopia")}>
+        <DropdownMenuItem
+          onClick={() => handleThemeChange("colorblind-deuteranopia")}
+        >
           {renderIcon("colorblind-deuteranopia")} Deuteranopia
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleThemeChange("colorblind-protanopia")}>
+        <DropdownMenuItem
+          onClick={() => handleThemeChange("colorblind-protanopia")}
+        >
           {renderIcon("colorblind-protanopia")} Protanopia
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleThemeChange("colorblind-tritanopia")}>
+        <DropdownMenuItem
+          onClick={() => handleThemeChange("colorblind-tritanopia")}
+        >
           {renderIcon("colorblind-tritanopia")} Tritanopia
         </DropdownMenuItem>
       </DropdownMenuContent>
