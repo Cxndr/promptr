@@ -165,6 +165,7 @@ export default function PostTile({
           <AvatarImage
             src={post.user.imageUrl || "/img/default-avatar.webp"}
             alt="User Profile Image"
+            aria-label="user profile image"
             width={96}
             height={96}
             className="w-full h-full"
@@ -189,7 +190,10 @@ export default function PostTile({
             <div className="flex h-full max-w-5xl">
               <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className="bg-zinc-50 bg-opacity-0 hover:bg-zinc-700 shadow-none">
+                  <Button
+                    className="bg-zinc-50 bg-opacity-0 hover:bg-zinc-700 shadow-none"
+                    aria-label="edit button"
+                  >
                     <Pencil color={"white"} />
                   </Button>
                 </DialogTrigger>
@@ -210,6 +214,7 @@ export default function PostTile({
               </Dialog>
               <Button
                 onClick={handleDelete}
+                aria-label="delete button"
                 className="bg-zinc-50 bg-opacity-0 hover:bg-destructive shadow-none"
               >
                 <Trash2 color={"white"} />
@@ -223,6 +228,7 @@ export default function PostTile({
         <div className="flex justify-center items-center text-lg absolute right-4 bottom-1">
           <Button
             onClick={() => handleReaction("heart")}
+            aria-label="heart react"
             className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${
               existingReactions.heart && reactionButtonActiveClass
             }`}
@@ -233,6 +239,7 @@ export default function PostTile({
 
           <Button
             onClick={() => handleReaction("laugh")}
+            aria-label="laugh react"
             className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${
               existingReactions.laugh && reactionButtonActiveClass
             }`}
@@ -243,6 +250,7 @@ export default function PostTile({
 
           <Button
             onClick={() => handleReaction("sick")}
+            aria-label="sick react"
             className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${
               existingReactions.sick && reactionButtonActiveClass
             }`}
@@ -253,6 +261,7 @@ export default function PostTile({
 
           <Button
             onClick={() => handleReaction("eyeroll")}
+            aria-label="eyeroll react"
             className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${
               existingReactions.eyeroll && reactionButtonActiveClass
             }`}

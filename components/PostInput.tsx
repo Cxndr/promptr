@@ -129,12 +129,18 @@ export default function PostInput({
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <CollapsibleTrigger asChild className="mb-6">
         {isOpen ? (
-          <Button className="font-bold bg-zinc-700 hover:bg-zinc-800 text-zinc-50 rounded-lg transition-all duration-200 text-base shadow-sm shadow-black">
+          <Button
+            className="font-bold bg-zinc-700 hover:bg-zinc-800 text-zinc-50 rounded-lg transition-all duration-200 text-base shadow-sm shadow-black"
+            aria-label="hide button"
+          >
             Hide
             <ChevronUp />
           </Button>
         ) : (
-          <Button className="font-bold bg-primary hover:bg-primary-dark text-zinc-50 rounded-lg transition-all duration-200 text-base shadow-sm shadow-black">
+          <Button
+            className="font-bold bg-primary hover:bg-primary-dark text-zinc-50 rounded-lg transition-all duration-200 text-base shadow-sm shadow-black"
+            aria-label="create response"
+          >
             Create a Response
             <ChevronDown />
           </Button>
@@ -204,6 +210,7 @@ export default function PostInput({
             <button
               type="submit"
               className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-700 font-bold rounded-lg shadow-sm shadow-black text-xl"
+              aria-label="submit button"
             >
               Submit
             </button>
