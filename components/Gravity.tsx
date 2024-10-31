@@ -40,8 +40,8 @@ type GravityProps = {
 
 const Gravity: React.FC<GravityProps> = ({ wordsArr }) => {
   const [spanStates, setSpanStates] = useState<SpanState[]>([]);
-  const buffer = 2; // Buffer size to prevent sidebar from showing
-  const charW = 10;
+  const buffer = 3; // Buffer size to prevent sidebar from showing
+  const charW = 13;
 
   useEffect(() => {
     const arr = wordsArr;
