@@ -71,7 +71,7 @@ export default async function ProfilePage() {
   ];
 
   return (
-    <div className={style["main-container"]}>
+    <div className={"max-w-7xl bg-background/75 py-4 px-8 my-auto mx-4 flex flex-col justify-center items-center rounded-3xl shadow-md shadow-black"}>
       <SignedIn>
         {user?.imageUrl && (
           <Image
