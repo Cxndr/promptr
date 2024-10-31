@@ -3,10 +3,9 @@ import PostPrompt from "@/components/PostPrompt";
 import PostTile from "@/components/PostTile";
 
 import { db } from "@/lib/db";
-import { Word } from "@/lib/types";
+import { PublicUser, Word, Post, PromptPostsData } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
 import { Prompt } from "@/lib/types";
-import { Post } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { timeAgo } from "@/lib/timeAgo";
@@ -82,9 +81,7 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
     return items;
   };
 
-  type PromptPostsData = {
-    prompt_posts: Post[];
-  }
+
 
   const mergedData = await db.query(`
     WITH
@@ -116,7 +113,7 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
       ),
       prompt_posts AS (
         SELECT wg_posts.*, wg_users.clerk_id, wg_users.id AS user_id, 
-               wg_users.username, wg_users.image_url
+              wg_users.username, wg_users.image_url
         FROM wg_posts
         JOIN wg_users ON wg_posts.clerk_id = wg_users.clerk_id
         WHERE prompt_id = $1
@@ -137,35 +134,35 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
     const allPrompts: Prompt[] = mergedData.rows[0].all_prompts;
     const promptRes: Prompt[] = mergedData.rows[0].prompt_details;
     const totalPosts: number = parseInt(mergedData.rows[0].total_posts);
-    const promptPostsData: PromptPostsData | null = mergedData.rows[0];
-    const totalPages: number = Math.ceil(totalPosts / itemsPerPage);  
-    
-    // console.log("base ", baseWords)
-    // console.log("filler ", fillerWords)
-    // console.log("all ", allPrompts)
-    // console.log("res ", promptRes)
-    // console.log("total ", totalPosts)
-    // console.log("post data ", promptPostsData)
-    // console.log("pages ", totalPages)
-
-  const promptPosts: Post[] = promptPostsData?.prompt_posts?.length
-  ? promptPostsData.prompt_posts.map((prompt_post: any) => ({
-        id: prompt_post.id,
+    const totalPages: number = Math.ceil(totalPosts / itemsPerPage);
+    const promptPosts: Post[] = [];
+    mergedData.rows[0].prompt_posts.forEach((post: PromptPostsData ) => {
+      console.log("POST:::::::", post);
+      const postBaseWords:Word[] = [];
+      const postFillerWords:Word[] = [];
+      post.words.forEach((word, index) => {
+        if (index < 20) {
+          postBaseWords.push({ word: word, type: "base", used: 0 });
+        } else {
+          postFillerWords.push({word: word, type: "filler", used: 0 });
+        }
+      });
+      promptPosts.push({
+        id: post.id,
         user: {
-          userId: prompt_post.user_id,
-          clerkId: prompt_post.clerk_id,
-          username: prompt_post.username,
-          imageUrl: prompt_post.image_url
-        },
-        promptId: prompt_post.prompt_id,
-        content: prompt_post.content,
-        words: prompt_post.words,
-        upvotes: prompt_post.upvotes,
-        createdAt: new Date(prompt_post.created_at),
-      }))
-      : [];
+          userId: post.user_id,
+          clerkId: post.clerk_id,
+          username: post.username,
+          imageUrl: post.image_url
+        } as PublicUser,
+        promptId: post.prompt_id,
+        content: post.content,
+        words: postBaseWords.concat(postFillerWords),
+        upvotes: post.upvotes,
+        createdAt: new Date(post.created_at),
+      });
+    });
 
-  //console.log(promptPosts)
   const prompt = promptRes[0];
   const promptCount = allPrompts.length;
   const promptsLowerBound = allPrompts[0].id;
@@ -357,7 +354,6 @@ export default async function PromptPage({params, searchParams}: PromptPageProps
         <p>No posts available for this prompt yet. Be the first to contribute!</p>
       )}
   
-      {/* Pagination Controls */}
       <Pagination>
         <PaginationContent>
           <PaginationItem>

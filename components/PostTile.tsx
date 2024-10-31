@@ -59,23 +59,14 @@ export default function PostTile({ post, deletePost, makeReactions, getExistingR
   }, [getReactionCount, post])
 
   const baseWords: Word[] = []
-  post.words.slice(0, 20).map((baseWord) => {
-    baseWords.push({
-      word: baseWord,
-      type: 'base',
-      used: 0,
-    })
-  })
-
   const fillerWords: Word[] = []
-  post.words.slice(20, post.words.length).map((fillerWord) => {
-    fillerWords.push({
-      word: fillerWord,
-      type: 'filler',
-      used: 0,
-    })
+  post.words.map((word) => {
+    if (word.type === 'base') {
+      baseWords.push(word)
+    } else {
+      fillerWords.push(word)
+    }
   })
-
 
   function handleDelete() {
     if (post && post.id) {
@@ -167,17 +158,16 @@ export default function PostTile({ post, deletePost, makeReactions, getExistingR
             </div>
           }
           {ownedByUser &&
-            <div className="flex h-full">
+            <div className="flex h-full max-w-5xl">
               <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 <DialogTrigger asChild>
                   <Button
-                    // onClick={handleEdit}
                     className="bg-zinc-50 bg-opacity-0 hover:bg-zinc-700 shadow-none"
                   >
                     <Pencil color={"white"} />
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="">
                   <DialogHeader>
                     <DialogTitle>Edit post</DialogTitle>
                     <DialogDescription>
