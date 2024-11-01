@@ -16,7 +16,7 @@ export default function MobileNav() {
   };
 
   return (
-    <div className="md:hidden">
+    <div className="md:hidden flex flex-col justify-center pr-4">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger onClick={() => setIsOpen(true)}>
           <AlignJustify />

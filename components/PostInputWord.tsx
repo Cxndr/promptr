@@ -20,14 +20,14 @@ export default function PostInputWord({
     let newClassName = "";
     if (word.type === "base") {
       if (used > 0) {
-        newClassName += "disabled opacity-50 bg-grey-500 text-white";
+        newClassName += "disabled opacity-50 bg-grey-500 text-faded-dark shadow-none";
         setIsDisabled(true);
       } else {
-        newClassName += "bg-blue-500 hover:bg-blue-600 text-white";
+        newClassName += "bg-blue-500 hover:bg-blue-600 text-white shadow-sm shadow-themeshadow";
         setIsDisabled(false);
       }
     } else if (word.type === "filler") {
-      newClassName += "bg-orange-500 hover:bg-orange-600 text-white";
+      newClassName += "bg-orange-500 hover:bg-orange-600 text-white shadow-sm shadow-themeshadow";
     }
     setClassName(newClassName);
   }, [used, word]);
@@ -42,7 +42,7 @@ export default function PostInputWord({
   return (
     <Button
       type="button"
-      className={className}
+      className={`${className} `}
       onClick={handleClick}
       disabled={isDisabled}
     >

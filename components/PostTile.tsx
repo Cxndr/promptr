@@ -159,9 +159,10 @@ export default function PostTile({
   };
 
   return (
-    <div className="w-[90svw] sm:w-[60svw] flex bg-background-raised/70 rounded-2xl p-0 overflow-hidden shadow-md shadow-black">
+    <div className="flex bg-background-raised/70 rounded-2xl p-0 overflow-hidden shadow-md shadow-themeshadow">
       <div className="flex flex-col justify-start items-center gap-4 relative">
-        <Avatar className="w-40 h-40">
+        <div className="absolute left-0 w-24 sm:w-40 h-full bg-zinc-900"></div>
+        <Avatar className="w-24 h-24 sm:w-40 sm:h-40 relative top-0 left-0">
           <AvatarImage
             src={post.user.imageUrl || "/img/default-avatar.webp"}
             alt="User Profile Image"
@@ -181,20 +182,21 @@ export default function PostTile({
         </Avatar>
       </div>
 
-      <div className="relative h-full flex flex-col justify-center items-center flex-grow">
+      <div className="text-xs sm:text-sm font-normal sm:font-normal relative h-full flex flex-col justify-center items-center flex-grow">
         <div className="absolute right-0 top-0 flex justify-center items-center">
           {post.createdAt && (
             <div className="text-zinc-500 py-2 px-3">{timeAgoCreated}</div>
           )}
           {ownedByUser && (
             <div className="flex h-full max-w-5xl">
+
               <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 <DialogTrigger asChild>
                   <Button
-                    className="bg-zinc-50 bg-opacity-0 hover:bg-zinc-700 shadow-none"
+                    className="bg-zinc-50 bg-opacity-0 hover:bg-background-raised shadow-none text-foreground-raised/70"
                     aria-label="edit button"
                   >
-                    <Pencil color={"white"} />
+                    <Pencil />
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="">
@@ -212,20 +214,22 @@ export default function PostTile({
                   />
                 </DialogContent>
               </Dialog>
+
               <Button
                 onClick={handleDelete}
                 aria-label="delete button"
-                className="bg-zinc-50 bg-opacity-0 hover:bg-destructive shadow-none"
+                className="bg-zinc-50 bg-opacity-0 hover:bg-destructive text-foreground-raised/70 shadow-none"
               >
-                <Trash2 color={"white"} />
+                <Trash2 />
               </Button>
+
             </div>
           )}
         </div>
 
-        <p className="text-sm p-8 sm:text-3xl">{post.content}</p>
+        <p className="text-lg p-8 sm:text-3xl">{post.content}</p>
 
-        <div className="flex justify-center items-center text-lg absolute right-4 bottom-1">
+        <div className="flex flex-nowrap justify-center items-center text-lg absolute right-4 bottom-1">
           <Button
             onClick={() => handleReaction("heart")}
             aria-label="heart react"

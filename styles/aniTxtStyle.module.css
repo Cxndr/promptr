@@ -4,43 +4,47 @@
     min-width: 0.7ch;
 }
 
+.wrapper {
+    position: relative;
+    right:-31%;
+    top: 0.25rem;
+    /* transform: translate(0%, 0%); */
+}
+
 .AniTitle {
-    font-family: sans-serif;
     color: #dc3a73;
     text-align: center;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-direction: row-reverse;
-    position: relative;
     gap: 40px;
-    min-height: 10vh;
-    width: 89svw;
-    left: -5vw;
-    transform: translateX(5svw); 
+    height: 1rem;
+    width: 12rem;
+    transform: rotate(16deg);
 }
 
 .word-wrapper {
-    font-size: 1.9rem;
-    letter-spacing: 0.3rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.1rem;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     position: relative;
-    width: 89svw;
+    width: 17rem;
     overflow: hidden;
 }
 .word {
     position: absolute;
     width: max-content;
-    right: 60px;
+    right: 46px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .circle {
-    width: 55px;
+    width: 26px;
     aspect-ratio: 1;
     background-image: url('../public/img/wordGameLogo.webp');
     background-color: var(--circle-bg-color);
@@ -48,16 +52,31 @@
     background-repeat: no-repeat;
     border-radius: 50%;
     z-index: 2;
+    transform: rotate(34deg);
+    margin: 1rem;
+    filter: drop-shadow(0 0 0.05rem #1616169f);
 }
 
-@media (min-width: 1100px) {
-    .word-wrapper {
-        width: 95svw;
-        left: 41vw;
-    }
-
+@media (min-width: 640px) {
     .AniTitle {
-        width: 88svw;
-        transform: translateX(-68svw); 
+        transform: rotate(9deg);
+        width: 16rem;   
+    }
+    .wrapper {
+        filter: scale(1);
+        backface-visibility: hidden;
+        position: absolute;
+        right: 0%;
+        top: 2rem;
+    }
+    .circle {
+        width: 40px;
+    }
+    .word-wrapper {
+        font-size: 1rem;
+        letter-spacing: 0.2rem;
+    }
+    .word {
+        right: 60px;
     }
 }

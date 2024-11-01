@@ -7,10 +7,9 @@
 @import "@radix-ui/colors/mauve.css";
 
 :root {
-  --max-width: 1280px;
   box-sizing: border-box;
-  margin: 0 auto;
-  padding: 0 auto;
+  margin: 0;
+  padding: 0;
   text-align: center;
 }
 
@@ -18,14 +17,18 @@
   box-sizing: border-box;
 }
 
+/* .transition-colors {
+  transition: background-color 1s ease, color 1s ease;
+} */
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   display: flex;
-  min-width: 320px;
   min-height: 100vh;
   height: 100%;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 @layer utilities {
@@ -49,21 +52,26 @@ body.colorblind-tritanopia {
   background-color: #d9d9d9;
 }
 
+
 @layer base {
   :root {
     --background-svg: 240 10% 50%;
-    /* --background-raised: 0 0 98%; */ /* zinc-50 */
     --background: 40 10% 85%;
+    --background-pure: 40 10% 98%;
     --background-raised: 40 10% 90%;
     --foreground: 240 10% 3.9%;
+    --foreground-pure: 240 10% 2%;
     --foreground-raised: 240 10% 10%;
-    --faded-light: 217.9 10.6% 70%;
-    --faded-dark: 240 3.8% 25%;
+    --faded-light: 240 3.8% 45%;
+    --faded-dark: 240 3.8% 55%;
+    --theme-shadow: #00000093;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
+    /* --popover: 0 0% 100%; */
+    --popover: 0 0% 100% / 0%;
     --popover-foreground: 240 10% 3.9%;
     --primary: 338.9 70.4% 54.9%;
+    --primary-light: #e6c9e1;
     --primary-dark: 338.9 60% 48%;
     --primary-foreground: 0 0% 98%;
     --secondary: 240 4.8% 95.9%;
@@ -82,20 +90,34 @@ body.colorblind-tritanopia {
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    --link: #297bd8;
+    --link-hover: #c21f71;
+    --link-visited: #5100ff;
     --radius: 0.5rem;
     --circle-bg-color: white;
+    .reaction-button-active {
+      /* filter: stroke(0 0 0.2rem #141414); */
+      text-shadow: -2px 0 rgba(224, 175, 14), 0 2px rgb(224, 175, 14), 2px 0 rgb(224, 175, 14), 0 -2px rgb(224, 175, 14);
+      filter: drop-shadow(0 0 0.15rem rgba(32, 32, 32, 0.349)); /* #91862b */ /* #ffe600 */
+      color: var(--muted-foreground);
+    }
+    
   }
   .dark {
     --background-svg: 240 5% 6%;
     --background: 240 5.9% 10%; /* zinc-900 */
+    --background-pure: 240 5.9% 5%;
     --background-raised: 240 5.9% 20%;
     --foreground: 0 0% 98%;
+    --forground-pure: 0 0% 98%;
     --foreground-raised: 0 0% 90%;
-    --faded-light: 217.9 10.6% 64.9%;
+    --faded-light: 240 3.8% 70%;
     --faded-dark: 240 3.8% 46.1%;
+    --theme-shadow: #000000;
     --card: 240 10% 3.9%;
     --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
+    /* --popover: 240 10% 3.9%; */
+    --popover: #00000000;
     --popover-foreground: 0 0% 98%;
     --primary: 338.9 70.4% 54.9%;
     --primary-dark: 338.9 60% 48%;
@@ -117,6 +139,11 @@ body.colorblind-tritanopia {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --circle-bg-color: #09090b;
+    .reaction-button-active {
+      text-shadow: none;
+      filter: drop-shadow(0 0 0.25rem #b9a913); /* #91862b */ /* #ffe600 */
+      color: var(--muted-foreground);
+    }
   }
   .CollapsibleContent {
     overflow: hidden;
@@ -187,8 +214,7 @@ body.colorblind-tritanopia {
   cursor: pointer;
   transform: scale(1.16);
 }
-.reaction-button-active {
-  filter: drop-shadow(0 0 0.25rem #91862b);
-  color: var(--muted-foreground);
-}
 
+.border { /* overwrite emblor styling to apply border on it's components because it shows over child border-radius */
+  border: 0px;
+}

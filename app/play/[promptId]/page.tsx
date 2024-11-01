@@ -1,7 +1,7 @@
 import PostInput from "@/components/PostInput";
 import PostTile from "@/components/PostTile";
 import PaginationComponent from "@/components/PaginationComponent";
-import PromptNavigation from "@/components/PromptNav";
+import PromptNavigation from "@/components/PromptNavigation";
 import { db } from "@/lib/db";
 import { Word, Post, RawPost, Prompt } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
@@ -224,10 +224,10 @@ export default async function PromptPage({
   }
 
   return (
-    <div className="max-w-6xl flex flex-col gap-4 justify-center items-center">
+    <div className="mx-4 max-w-full flex flex-col gap-4 justify-center items-center">
       <PromptNavigation allPrompts={allPrompts} promptRes={promptRes} />
 
-      <div className="max-w-5xl">
+      <div className="xl:max-w-[74rem]">
         <PostInput
           baseWords={baseWords}
           fillerWords={fillerWords}
@@ -236,7 +236,7 @@ export default async function PromptPage({
       </div>
 
       {promptPosts.length > 0 ? (
-        <div className="max-w-5xl flex flex-col gap-8">
+        <div className="xl:max-w-[54rem] flex flex-col gap-8">
           {promptPosts.map((post) => (
             <PostTile
               key={post.id}
