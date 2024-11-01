@@ -2,37 +2,37 @@ import { db } from "./db";
 import { getXRandomWords } from "./generateBg";
 
 export async function fetchUserProfile(userId: string | null) {
-  const profile = await db.query(`SELECT * FROM wg_users WHERE clerk_id = $1`, [
-    userId,
-  ]);
-  return profile;
+	const profile = await db.query(`SELECT * FROM wg_users WHERE clerk_id = $1`, [
+		userId,
+	]);
+	return profile;
 }
 
 export async function fetchPost(postId: number | null) {
-  const post = await db.query(
-    `
+	const post = await db.query(
+		`
       SELECT wg_posts.*, wg_users.*
       FROM wg_posts,
       JOIN wg_users ON wg_posts.clerk_id = wg_users.cler
       WHERE id = $1
     `,
-    [postId]
-  );
-  return post;
+		[postId]
+	);
+	return post;
 }
 
 export async function fetchWords() {
-  const words = await db.query(`SELECT word FROM wg_words`);
-  return words;
+	const words = await db.query(`SELECT word FROM wg_words`);
+	return words;
 }
 
 export async function fetchRandomWords(amount: number) {
-  const wordsArr: string[] = [];
-  const res = (await fetchWords()).rows;
-  res.map((item) => {
-    wordsArr.push(item.word);
-  });
-  return getXRandomWords(wordsArr, amount);
+	const wordsArr: string[] = [];
+	const res = (await fetchWords()).rows;
+	res.map((item) => {
+		wordsArr.push(item.word);
+	});
+	return getXRandomWords(wordsArr, amount);
 }
 
 export const mergedDataQuery: string = `
