@@ -99,6 +99,8 @@ export default function PostTile({
       fillerWords.push(word);
     }
   });
+  console.log("baseWords: ", baseWords);
+  console.log("fillerWords: ", fillerWords);
 
   function handleDelete() {
     if (post && post.id) {
@@ -199,7 +201,9 @@ export default function PostTile({
                     <Pencil />
                   </Button>
                 </DialogTrigger>
+                
                 <DialogContent className="">
+
                   <DialogHeader>
                     <DialogTitle>Edit post</DialogTitle>
                     <DialogDescription>
@@ -207,6 +211,7 @@ export default function PostTile({
                       you&apos;re done.
                     </DialogDescription>
                   </DialogHeader>
+                  
                   <PostInput
                     baseWords={baseWords}
                     fillerWords={fillerWords}

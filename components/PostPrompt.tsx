@@ -35,7 +35,7 @@ export default function PostPrompt({
   }
 
   return (
-    <div className="w-auto xl:w-[50rem] max-w-full bg-background-raised/70 px-3 pb-3 rounded-2xl shadow-md shadow-themeshadow">
+    <div className="w-auto sm:w-[38rem] xl:w-[50rem] max-w-full bg-background-raised/70 px-3 pb-3 rounded-2xl shadow-md shadow-themeshadow">
       <h3 className="text-md font-medium italic text-faded-dark p-2">
         Prompt #{prompt.id} / {promptsUpperBound}
       </h3>

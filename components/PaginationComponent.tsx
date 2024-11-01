@@ -67,11 +67,12 @@ const PaginationComponent: React.FC<PaginationComponentProps> = ({
   };
   return (
     <Pagination>
-      <PaginationContent>
+      <PaginationContent className="bg-background-raised/70 rounded-2xl shadow-md shadow-themeshadow">
         <PaginationItem>
           <PaginationPrevious
             href={`?page=${currentPage - 1}`}
             disabled={currentPage === 1}
+            className="hover:bg-background-pure/45 rounded-2xl"
           />
         </PaginationItem>
         {generatePaginationItems()}
@@ -79,6 +80,7 @@ const PaginationComponent: React.FC<PaginationComponentProps> = ({
           <PaginationNext
             href={`?page=${currentPage + 1}`}
             disabled={currentPage === totalPages}
+            className="hover:bg-background-pure/45 rounded-2xl"
           />
         </PaginationItem>
       </PaginationContent>

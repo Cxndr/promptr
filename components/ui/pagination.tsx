@@ -65,7 +65,7 @@ const PaginationLink = ({
             size,
           }),
           disabled ? "pointer-events-none opacity-50" : "", // Apply styles when disabled
-          className
+          className, "hover:bg-background-pure/45"
         )}
         {...props}
       />

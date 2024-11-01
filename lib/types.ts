@@ -48,7 +48,7 @@ export type RawPost = {
   id: number;
   prompt_id: number;
   content: string;
-  words: Word[];
+  words: string[];
   upvotes: number;
   created_at: string;
   clerk_id: string;

@@ -63,8 +63,21 @@ export default async function PromptPage({
     mergedData.rows[0];
   const totalPages: number = Math.ceil(totalPosts / itemsPerPage);
 
-  const promptPosts: Post[] = promptPostsData?.prompt_posts?.length
-    ? promptPostsData.prompt_posts.map((prompt_post: RawPost) => ({
+  const promptPosts: Post[] = [];
+
+  if (promptPostsData?.prompt_posts?.length) {
+    promptPostsData.prompt_posts.forEach((prompt_post: RawPost ) => {
+
+    const postBaseWords:Word[] = [];
+    const postFillerWords:Word[] = [];
+    prompt_post.words.forEach((word, index) => {
+      if (index < 20) {
+        postBaseWords.push({ word: word, type: "base", used: 0 });
+      } else {
+        postFillerWords.push({word: word, type: "filler", used: 0 });
+      }
+    });
+    promptPosts.push({
         id: prompt_post.id,
         user: {
           userId: prompt_post.user_id,
@@ -74,11 +87,12 @@ export default async function PromptPage({
         },
         promptId: prompt_post.prompt_id,
         content: prompt_post.content,
-        words: prompt_post.words,
+        words: postBaseWords.concat(postFillerWords),
         upvotes: prompt_post.upvotes,
         createdAt: new Date(prompt_post.created_at),
-      }))
-    : [];
+      });
+    });
+  }
 
   const handleSubmit = async (data: { words: string[]; content: string }) => {
     "use server";
@@ -236,27 +250,30 @@ export default async function PromptPage({
       </div>
 
       {promptPosts.length > 0 ? (
-        <div className="xl:max-w-[54rem] flex flex-col gap-8">
-          {promptPosts.map((post) => (
-            <PostTile
-              key={post.id}
-              post={post}
-              getExistingReactions={getExistingReactions}
-              makeReactions={makeReactions}
-              getReactionCount={getReactionCount}
-              deletePost={deletePost}
-              editPost={editPost}
-              ownedByUser={post.user.clerkId === userId}
-              timeAgoCreated={timeAgo(post.createdAt)}
-            />
-          ))}
-        </div>
+        <>
+          <div className="xl:max-w-[54rem] flex flex-col gap-8">
+            {promptPosts.map((post) => (
+              <PostTile
+                key={post.id}
+                post={post}
+                getExistingReactions={getExistingReactions}
+                makeReactions={makeReactions}
+                getReactionCount={getReactionCount}
+                deletePost={deletePost}
+                editPost={editPost}
+                ownedByUser={post.user.clerkId === userId}
+                timeAgoCreated={timeAgo(post.createdAt)}
+              />
+            ))}
+          </div>
+          <PaginationComponent currentPage={currentPage} totalPages={totalPages} />
+        </>
       ) : (
-        <p>
+        <p className="bg-foreground-raised/70 text-background-pure rounded-3xl py-2 px-5 shadow-md shadow-themeshadow mb-3">
           No posts available for this prompt yet. Be the first to contribute!
         </p>
       )}
-      <PaginationComponent currentPage={currentPage} totalPages={totalPages} />
+      
     </div>
   );
 }
