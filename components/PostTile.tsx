@@ -7,274 +7,274 @@ import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { Trash2, Pencil } from "lucide-react";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
 } from "@/components/ui/dialog";
 import PostInput from "./PostInput";
 import { Word } from "@/lib/types";
 
 type PromptPostProps = {
-  post: Post;
-  makeReactions: (
-    post_id: number,
-    clerk_id: string,
-    newReaction: boolean,
-    reactionType: "heart" | "laugh" | "sick" | "eyeroll"
-  ) => void;
-  getExistingReactions: (
-    postId: number,
-    userId: string | undefined
-  ) => Promise<{
-    heart: boolean;
-    laugh: boolean;
-    sick: boolean;
-    eyeroll: boolean;
-  }>;
-  getReactionCount: (
-    postId: number
-  ) => Promise<{ heart: number; laugh: number; sick: number; eyeroll: number }>;
-  deletePost: (postId: number) => void;
-  editPost: (postId: number, content: string) => void;
-  ownedByUser: boolean;
-  timeAgoCreated: string;
+	post: Post;
+	makeReactions: (
+		post_id: number,
+		clerk_id: string,
+		newReaction: boolean,
+		reactionType: "heart" | "laugh" | "sick" | "eyeroll"
+	) => void;
+	getExistingReactions: (
+		postId: number,
+		userId: string | undefined
+	) => Promise<{
+		heart: boolean;
+		laugh: boolean;
+		sick: boolean;
+		eyeroll: boolean;
+	}>;
+	getReactionCount: (
+		postId: number
+	) => Promise<{ heart: number; laugh: number; sick: number; eyeroll: number }>;
+	deletePost: (postId: number) => void;
+	editPost: (postId: number, content: string) => void;
+	ownedByUser: boolean;
+	timeAgoCreated: string;
 };
 
 export default function PostTile({
-  post,
-  deletePost,
-  makeReactions,
-  getExistingReactions,
-  getReactionCount,
-  editPost,
-  ownedByUser,
-  timeAgoCreated,
+	post,
+	deletePost,
+	makeReactions,
+	getExistingReactions,
+	getReactionCount,
+	editPost,
+	ownedByUser,
+	timeAgoCreated,
 }: PromptPostProps) {
-  const [existingReactions, setExistingReactions] = useState({
-    heart: false,
-    laugh: false,
-    sick: false,
-    eyeroll: false,
-  });
-  const [reactionCount, setReactionCount] = useState({
-    heart: 0,
-    laugh: 0,
-    sick: 0,
-    eyeroll: 0,
-  });
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const currentUser = useUser();
+	const [existingReactions, setExistingReactions] = useState({
+		heart: false,
+		laugh: false,
+		sick: false,
+		eyeroll: false,
+	});
+	const [reactionCount, setReactionCount] = useState({
+		heart: 0,
+		laugh: 0,
+		sick: 0,
+		eyeroll: 0,
+	});
+	const [dialogOpen, setDialogOpen] = useState(false);
+	const currentUser = useUser();
 
-  const reactionButtonActiveClass = `reaction-button-active`;
+	const reactionButtonActiveClass = `reaction-button-active`;
 
-  useEffect(() => {
-    if (!currentUser.isLoaded) return;
-    async function getCurrentUserReactions() {
-      const incomingExistingReactions = await getExistingReactions(
-        post.id,
-        currentUser.user?.id
-      );
-      setExistingReactions(incomingExistingReactions);
-    }
-    getCurrentUserReactions();
-  }, [currentUser.isLoaded, currentUser.user, getExistingReactions, post]);
+	useEffect(() => {
+		if (!currentUser.isLoaded) return;
+		async function getCurrentUserReactions() {
+			const incomingExistingReactions = await getExistingReactions(
+				post.id,
+				currentUser.user?.id
+			);
+			setExistingReactions(incomingExistingReactions);
+		}
+		getCurrentUserReactions();
+	}, [currentUser.isLoaded, currentUser.user, getExistingReactions, post]);
 
-  useEffect(() => {
-    async function getAllReactionCount() {
-      const incomingReactionCount = await getReactionCount(post.id);
-      setReactionCount(incomingReactionCount);
-    }
-    getAllReactionCount();
-  }, [getReactionCount, post]);
+	useEffect(() => {
+		async function getAllReactionCount() {
+			const incomingReactionCount = await getReactionCount(post.id);
+			setReactionCount(incomingReactionCount);
+		}
+		getAllReactionCount();
+	}, [getReactionCount, post]);
 
-  const baseWords: Word[] = [];
-  const fillerWords: Word[] = [];
-  post.words.map((word) => {
-    if (word.type === "base") {
-      baseWords.push(word);
-    } else {
-      fillerWords.push(word);
-    }
-  });
+	const baseWords: Word[] = [];
+	const fillerWords: Word[] = [];
+	post.words.map((word) => {
+		if (word.type === "base") {
+			baseWords.push(word);
+		} else {
+			fillerWords.push(word);
+		}
+	});
 
-  function handleDelete() {
-    if (post && post.id) {
-      deletePost(post.id);
-    }
-  }
+	function handleDelete() {
+		if (post && post.id) {
+			deletePost(post.id);
+		}
+	}
 
-  function handleReaction(
-    reactionType: "heart" | "laugh" | "sick" | "eyeroll"
-  ) {
-    if (post && post.id) {
-      let bool = false;
+	function handleReaction(
+		reactionType: "heart" | "laugh" | "sick" | "eyeroll"
+	) {
+		if (post && post.id) {
+			let bool = false;
 
-      const updatedReactions = { ...existingReactions };
-      const updatedReactionCount = { ...reactionCount };
+			const updatedReactions = { ...existingReactions };
+			const updatedReactionCount = { ...reactionCount };
 
-      if (reactionType === "heart") {
-        bool = !existingReactions.heart;
-        updatedReactions.heart = bool;
-        updatedReactionCount.heart += bool ? 1 : -1;
-      }
-      if (reactionType === "laugh") {
-        bool = !existingReactions.laugh;
-        updatedReactions.laugh = bool;
-        updatedReactionCount.laugh += bool ? 1 : -1;
-      }
-      if (reactionType === "sick") {
-        bool = !existingReactions.sick;
-        updatedReactions.sick = bool;
-        updatedReactionCount.sick += bool ? 1 : -1;
-      }
-      if (reactionType === "eyeroll") {
-        bool = !existingReactions.eyeroll;
-        updatedReactions.eyeroll = bool;
-        updatedReactionCount.eyeroll += bool ? 1 : -1;
-      }
+			if (reactionType === "heart") {
+				bool = !existingReactions.heart;
+				updatedReactions.heart = bool;
+				updatedReactionCount.heart += bool ? 1 : -1;
+			}
+			if (reactionType === "laugh") {
+				bool = !existingReactions.laugh;
+				updatedReactions.laugh = bool;
+				updatedReactionCount.laugh += bool ? 1 : -1;
+			}
+			if (reactionType === "sick") {
+				bool = !existingReactions.sick;
+				updatedReactions.sick = bool;
+				updatedReactionCount.sick += bool ? 1 : -1;
+			}
+			if (reactionType === "eyeroll") {
+				bool = !existingReactions.eyeroll;
+				updatedReactions.eyeroll = bool;
+				updatedReactionCount.eyeroll += bool ? 1 : -1;
+			}
 
-      // Optimistic UI update - this makes the ui update go way faster (2s without 0.03s with)
-      setExistingReactions(updatedReactions);
-      setReactionCount(updatedReactionCount);
+			// Optimistic UI update - this makes the ui update go way faster (2s without 0.03s with)
+			setExistingReactions(updatedReactions);
+			setReactionCount(updatedReactionCount);
 
-      if (currentUser.isLoaded && currentUser.user) {
-        try {
-          makeReactions(post.id, currentUser.user.id, bool, reactionType);
-        } catch (err) {
-          console.error(err);
-          // Revert Optimistic UI update if API call fails
-          setExistingReactions(existingReactions);
-          setReactionCount(reactionCount);
-        }
-      }
-    }
-  }
+			if (currentUser.isLoaded && currentUser.user) {
+				try {
+					makeReactions(post.id, currentUser.user.id, bool, reactionType);
+				} catch (err) {
+					console.error(err);
+					// Revert Optimistic UI update if API call fails
+					setExistingReactions(existingReactions);
+					setReactionCount(reactionCount);
+				}
+			}
+		}
+	}
 
-  const handleUpdate = (data: { words: string[]; content: string }) => {
-    editPost(post.id, data.content);
-    setDialogOpen(false);
-  };
+	const handleUpdate = (words: string[], content: string) => {
+		editPost(post.id, content);
+		setDialogOpen(false);
+	};
 
-  return (
-    <div className="flex bg-background-raised/70 rounded-2xl p-0 overflow-hidden shadow-md shadow-themeshadow">
-      <div className="flex flex-col justify-start items-center gap-4 relative">
-        <div className="absolute left-0 w-24 sm:w-40 h-full bg-zinc-900"></div>
-        <Avatar className="w-24 h-24 sm:w-40 sm:h-40 relative top-0 left-0">
-          <AvatarImage
-            src={post.user.imageUrl || "/img/default-avatar.webp"}
-            alt="User Profile Image"
-            aria-label="user profile image"
-            width={96}
-            height={96}
-            className="w-full h-full"
-          />
-          <AvatarFallback>
-            {post.user.username
-              ? post.user.username.charAt(0).toUpperCase()
-              : "?"}
-          </AvatarFallback>
-          <h3 className="bg-zinc-800 bg-opacity-70 text-zinc-100 p-1 absolute bottom-0 w-full font-bold">
-            {post.user.username || "Unknown User"}
-          </h3>
-        </Avatar>
-      </div>
+	return (
+		<div className="flex bg-background-raised/70 rounded-2xl p-0 overflow-hidden shadow-md shadow-themeshadow">
+			<div className="flex flex-col justify-start items-center gap-4 relative">
+				<div className="absolute left-0 w-24 sm:w-40 h-full bg-zinc-900"></div>
+				<Avatar className="w-24 h-24 sm:w-40 sm:h-40 relative top-0 left-0">
+					<AvatarImage
+						src={post.user.imageUrl || "/img/default-avatar.webp"}
+						alt="User Profile Image"
+						aria-label="user profile image"
+						width={96}
+						height={96}
+						className="w-full h-full"
+					/>
+					<AvatarFallback>
+						{post.user.username
+							? post.user.username.charAt(0).toUpperCase()
+							: "?"}
+					</AvatarFallback>
+					<h3 className="bg-zinc-800 bg-opacity-70 text-zinc-100 p-1 absolute bottom-0 w-full font-bold">
+						{post.user.username || "Unknown User"}
+					</h3>
+				</Avatar>
+			</div>
 
-      <div className="text-xs sm:text-sm font-normal sm:font-normal relative h-full flex flex-col justify-center items-center flex-grow">
-        <div className="absolute right-0 top-0 flex justify-center items-center">
-          {post.createdAt && (
-            <div className="text-zinc-500 py-2 px-3">{timeAgoCreated}</div>
-          )}
-          {ownedByUser && (
-            <div className="flex h-full max-w-5xl">
+			<div className="text-xs sm:text-sm font-normal sm:font-normal relative h-full flex flex-col justify-center items-center flex-grow">
+				<div className="absolute right-0 top-0 flex justify-center items-center">
+					{post.createdAt && (
+						<div className="text-zinc-500 py-2 px-3">{timeAgoCreated}</div>
+					)}
+					{ownedByUser && (
+						<div className="flex h-full max-w-5xl">
+							<Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+								<DialogTrigger asChild>
+									<Button
+										className="bg-zinc-50 bg-opacity-0 hover:bg-background-raised shadow-none text-foreground-raised/70"
+										aria-label="edit button"
+									>
+										<Pencil />
+									</Button>
+								</DialogTrigger>
 
-              <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button
-                    className="bg-zinc-50 bg-opacity-0 hover:bg-background-raised shadow-none text-foreground-raised/70"
-                    aria-label="edit button"
-                  >
-                    <Pencil />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="">
-                  <DialogHeader>
-                    <DialogTitle>Edit post</DialogTitle>
-                    <DialogDescription>
-                      Make changes to your post here. Click save when
-                      you&apos;re done.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <PostInput
-                    baseWords={baseWords}
-                    fillerWords={fillerWords}
-                    handleSubmit={handleUpdate}
-                  />
-                </DialogContent>
-              </Dialog>
+								<DialogContent className="">
+									<DialogHeader>
+										<DialogTitle>Edit post</DialogTitle>
+										<DialogDescription>
+											Make changes to your post here. Click submit when
+											you&apos;re done.
+										</DialogDescription>
+									</DialogHeader>
 
-              <Button
-                onClick={handleDelete}
-                aria-label="delete button"
-                className="bg-zinc-50 bg-opacity-0 hover:bg-destructive text-foreground-raised/70 shadow-none"
-              >
-                <Trash2 />
-              </Button>
+									<PostInput
+										baseWords={baseWords}
+										fillerWords={fillerWords}
+										handleSubmit={handleUpdate}
+									/>
+								</DialogContent>
+							</Dialog>
 
-            </div>
-          )}
-        </div>
+							<Button
+								onClick={handleDelete}
+								aria-label="delete button"
+								className="bg-zinc-50 bg-opacity-0 hover:bg-destructive text-foreground-raised/70 shadow-none"
+							>
+								<Trash2 />
+							</Button>
+						</div>
+					)}
+				</div>
 
-        <p className="text-lg p-8 sm:text-3xl">{post.content}</p>
+				<p className="text-lg p-8 sm:text-3xl">{post.content}</p>
 
-        <div className="flex flex-nowrap justify-center items-center text-lg absolute right-4 bottom-1">
-          <Button
-            onClick={() => handleReaction("heart")}
-            aria-label="heart react"
-            className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${
-              existingReactions.heart && reactionButtonActiveClass
-            }`}
-          >
-            <span>❤️</span>
-            <span className="opacity-85 text-sm">{reactionCount.heart}</span>
-          </Button>
+				<div className="flex flex-nowrap justify-center items-center text-lg absolute right-4 bottom-1">
+					<Button
+						onClick={() => handleReaction("heart")}
+						aria-label="heart react"
+						className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${
+							existingReactions.heart && reactionButtonActiveClass
+						}`}
+					>
+						<span>❤️</span>
+						<span className="opacity-85 text-sm">{reactionCount.heart}</span>
+					</Button>
 
-          <Button
-            onClick={() => handleReaction("laugh")}
-            aria-label="laugh react"
-            className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${
-              existingReactions.laugh && reactionButtonActiveClass
-            }`}
-          >
-            <span>😂</span>
-            <span className="opacity-85 text-sm">{reactionCount.laugh}</span>
-          </Button>
+					<Button
+						onClick={() => handleReaction("laugh")}
+						aria-label="laugh react"
+						className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${
+							existingReactions.laugh && reactionButtonActiveClass
+						}`}
+					>
+						<span>😂</span>
+						<span className="opacity-85 text-sm">{reactionCount.laugh}</span>
+					</Button>
 
-          <Button
-            onClick={() => handleReaction("sick")}
-            aria-label="sick react"
-            className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${
-              existingReactions.sick && reactionButtonActiveClass
-            }`}
-          >
-            <span>🤮</span>
-            <span className="opacity-85 text-sm">{reactionCount.sick}</span>
-          </Button>
+					<Button
+						onClick={() => handleReaction("sick")}
+						aria-label="sick react"
+						className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${
+							existingReactions.sick && reactionButtonActiveClass
+						}`}
+					>
+						<span>🤮</span>
+						<span className="opacity-85 text-sm">{reactionCount.sick}</span>
+					</Button>
 
-          <Button
-            onClick={() => handleReaction("eyeroll")}
-            aria-label="eyeroll react"
-            className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${
-              existingReactions.eyeroll && reactionButtonActiveClass
-            }`}
-          >
-            <span>🙄</span>
-            <span className="opacity-85 text-sm">{reactionCount.eyeroll}</span>
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
+					<Button
+						onClick={() => handleReaction("eyeroll")}
+						aria-label="eyeroll react"
+						className={`reaction-button hover:bg-zinc-50 hover:bg-opacity-0 ${
+							existingReactions.eyeroll && reactionButtonActiveClass
+						}`}
+					>
+						<span>🙄</span>
+						<span className="opacity-85 text-sm">{reactionCount.eyeroll}</span>
+					</Button>
+				</div>
+			</div>
+		</div>
+	);
 }

@@ -179,6 +179,9 @@ body.colorblind-tritanopia {
   body {
     @apply bg-background-svg text-foreground;
   }
+  .custom-background {
+    @apply bg-background-svg;
+  }
 }
 
 .font-default {
