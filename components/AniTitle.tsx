@@ -51,34 +51,36 @@ export default function AnimatedSubtitle() {
     },
   };
   return (
-    <div className={aniStyle["AniTitle"]}>
-      <motion.div className={aniStyle["word-wrapper"]}>
-        <motion.div
-          className={aniStyle["word"]}
-          initial="hidden"
-          animate={toHide ? "hidden" : "visible"}
-          custom={words[currentWordIndex].length}
-          variants={wordVariants}
-          onAnimationComplete={(definition) => {
-            setToHide(!toHide);
-            if (definition === "hidden") {
-              const nextIndex = (currentWordIndex + 1) % words.length;
-              setCurrentWordIndex(nextIndex);
-            }
-          }}
-        >
-          {currentWord.map((letter, i) => (
-            <motion.span
-              className={aniStyle["span"]}
-              key={i}
-              variants={letterVariants}
-            >
-              {letter}
-            </motion.span>
-          ))}
+    <div className={`${aniStyle["wrapper"]}`}>
+      <div className={`${aniStyle["AniTitle"]} font-logo`}>
+        <motion.div className={`${aniStyle["word-wrapper"]}`}>
+          <motion.div
+            className={aniStyle["word"]}
+            initial="hidden"
+            animate={toHide ? "hidden" : "visible"}
+            custom={words[currentWordIndex].length}
+            variants={wordVariants}
+            onAnimationComplete={(definition) => {
+              setToHide(!toHide);
+              if (definition === "hidden") {
+                const nextIndex = (currentWordIndex + 1) % words.length;
+                setCurrentWordIndex(nextIndex);
+              }
+            }}
+          >
+            {currentWord.map((letter, i) => (
+              <motion.span
+                className={aniStyle["span"]}
+                key={i}
+                variants={letterVariants}
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </motion.div>
+          <motion.div className={aniStyle["circle"]}></motion.div>
         </motion.div>
-        <motion.div className={aniStyle["circle"]}></motion.div>
-      </motion.div>
+      </div>
     </div>
   );
 }

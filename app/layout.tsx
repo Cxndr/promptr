@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Noto_Sans, Rubik_Mono_One } from "next/font/google";
+import { Noto_Sans, Rubik_Mono_One, Pacifico} from "next/font/google";
 import localFont from "next/font/local";
 import BackGroundStyling from "@/components/BackgroundStyling";
 
@@ -17,8 +17,15 @@ export const metadata: Metadata = {
 const noto = Noto_Sans({
   subsets: ["latin"],
   style: "normal",
-  weight: "400",
+  weight: "variable",
   variable: "--font-noto",
+});
+
+const pacifico = Pacifico({
+  subsets: ["latin"],
+  style: "normal",
+  weight: "400",
+  variable: "--font-pacifico",
 });
 
 const rubik = Rubik_Mono_One({
@@ -58,7 +65,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body
-          className={`${noto.variable} ${rubik.variable} ${OpenDyslexic.variable} antialiased`}
+          className={`${noto.variable} ${rubik.variable} ${OpenDyslexic.variable} ${pacifico.variable} antialiased`}
         >
           <ThemeProvider
             attribute="class"
@@ -70,7 +77,7 @@ export default function RootLayout({
               <Header />
 
               <main
-                className={`flex-grow flex flex-col items-center mb-4 mt-14`}
+                className={`flex-grow flex flex-col items-center mb-4 mt-20`}
               >
                 {children}
               </main>

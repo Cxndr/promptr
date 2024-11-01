@@ -57,7 +57,7 @@ export default function PostInputField({
       enableAutocomplete={true}
       autocompleteOptions={tagOptions}
       restrictTagsToAutocompleteOptions={true}
-      draggable={true}
+      draggable={false}
       clearAll={true}
       onClearAll={handleClearAll}
       readOnly={true}
@@ -70,7 +70,7 @@ export default function PostInputField({
       className="bg-red-500"
       styleClasses={{
         tag: {
-          body: "bg-teal-500 text-white border-0 pl-2 pr-0 py-0 h-7 rounded-lg hover:bg-teal-600",
+          body: "bg-teal-500 text-white border-0 pl-2 pr-0 py-0 h-7 rounded-lg hover:bg-teal-600 shadow-sm shadow-themeshadow",
           closeButton: "bg-none text-white py-0 px-1",
         },
         tagList: {
@@ -78,9 +78,9 @@ export default function PostInputField({
           sortableList: "bg-blue-500 p-4",
         },
         inlineTagsContainer:
-          "bg-zinc-200 text-white rounded-2xl p-2 w-full min-h-11 border-0",
+          "bg-zinc-200 text-white rounded-2xl p-2 w-full min-h-11 emblor-tag-container shadow-sm shadow-themeshadow m-2",
         clearAllButton:
-          "bg-red-600 hover:bg-red-700 text-white w-auto self-center mt-3",
+          "bg-red-600 hover:bg-red-700 text-white w-auto self-center mt-3 shadow-sm shadow-themeshadow",
         input: "hidden",
         autoComplete: {
           popoverContent: "hidden",

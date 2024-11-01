@@ -4,6 +4,7 @@ import { fetchUserProfile } from "@/lib/fetch";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { fetchRandomWords } from "@/lib/fetch";
+import { Button } from "@/components/ui/button";
 
 export default async function Home() {
   const { userId } = await auth();
@@ -19,42 +20,48 @@ export default async function Home() {
     <>
       <Gravity wordsArr={wordsArr} />
       <div className="z-20">
-        <div className="max-w-3xl bg-background/80 py-8 my-auto m-4 flex flex-col gap-8 justify-center items-center rounded-3xl shadow-md shadow-black z-10">
-          <div className="pt-4">
-            <AniTitle />
+        <div className="relative max-w-5xl bg-background/80 px-8 py-5 mx-4 flex flex-col justify-center items-center rounded-3xl shadow-md shadow-black z-10">
+          
+          <div className="absolute -rotate-[18deg] text-2xl top-7 left-6 sm:left-28 sm:top-5 sm:-rotate-[13deg]">
+            🏭
           </div>
 
-          <div className="">
-            <h2 className="text-2xl p-8">How Phrase Factory Works...</h2>
+          <AniTitle />
+
+          <div className="flex flex-col gap-4">
+            <h2 className="text-3xl font-bold text-center">How To Play</h2>
+
+            <p className="font-bold text-center pb-2">
+              Create responses to prompts based on a random selection of words.
+            </p>
+
+            <p className="">
+              When you create a response you will be given two types of words:
+            </p>
+
+            <div className="flex gap-4 justify-center p-2">
+              <Button className="bg-blue-500 hover:bg-blue-500 cursor-default text-white shadow-sm shadow-themeshadow">Unique words</Button>
+              <Button className="bg-orange-500 hover:bg-orange-500 cursor-default text-white shadow-sm shadow-themeshadow">Filler words</Button>
+            </div>
+
             <p>
-              In Phrase Factory, you choose a question (we call them prompts).
-            </p>{" "}
-            <p className="p-4">
-              To respond, you can only choose from a select range of words.{" "}
-              <br />
-              There are two types:
+              Unique words can only be used once. Filler words can be used multiple times.
             </p>
-            <ul>
-              <li className="text-blue-500">- Unique words</li>
-              <li className="text-amber-500">- Filler words</li>
-            </ul>
-            <p className="p-4">
-              It&#39;s then down to you to come up with the best answer to the
-              prompt. Your response is then viewed by other users, where they
-              can react to your answer. Likewise, you can react to other
-              users&#39; answers.
+
+            <p >
+              Try and come up with the best answer to the prompt with the words you are given.
+              <br/>
+              <span className="text-faded-light">If you come up with something good submit it for other user&apos;s to see!</span>
             </p>
-            <p className="p-4">
-              Also, if you select the icon on the top right of the website you
-              can toggle between dark mode and light mode. Furthermore, there
-              are filters for people <br></br>who experience green, red and blue
-              colorblind.
+
+            <p>
+              You can vote on responses by leaving reactions. ❤️😂🤮🙄
+              <br/>
+              <span className="text-faded-light">The best voted respones are displayed at the top of each prompt page.</span>
             </p>
-            <p className="p-4">
-              Ultimately, the aim of the game is to create the most popular
-              response to the prompt.
-            </p>
-            <p className="p-4">Good luck!</p>
+
+            <p className="text-center">Good luck!</p>
+
           </div>
         </div>
       </div>

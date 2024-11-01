@@ -35,27 +35,25 @@ export default function PostPrompt({
   }
 
   return (
-    <>
-      <h3 className="text-md font-medium italic text-faded-dark">
-        Prompt #{prompt.id}
+    <div className="w-auto xl:w-[50rem] max-w-full bg-background-raised/70 px-3 pb-3 rounded-2xl shadow-md shadow-themeshadow">
+      <h3 className="text-md font-medium italic text-faded-dark p-2">
+        Prompt #{prompt.id} / {promptsUpperBound}
       </h3>
-      <div className="bg-foreground-raised/70 rounded-2xl shadow-md shadow-black">
-        <div className="w-full flex justify-center items-center gap-8">
-          <button className={leftButtonClassName} onClick={handlePrevNav}>
-            <ChevronLeft size={96} className="" />
-          </button>
-          <div className="max-w-4xl mx-auto">
-            {prompt && (
-              <p className="text-2xl font-bold text-left text-background">
-                {prompt.content}
-              </p>
-            )}
-          </div>
-          <button className={rightButtonClassName} onClick={handleNextNav}>
-            <ChevronRight size={96} className="" />
-          </button>
+      <div className="w-full flex justify-center items-center gap-0 sm:gap-6 bg-foreground-raised/70 rounded-2xl shadow-md shadow-black/80">
+        <button className={leftButtonClassName} onClick={handlePrevNav}>
+          <ChevronLeft size={96} className="w-20 sm:w-24" />
+        </button>
+        <div className="mx-auto">
+          {prompt && (
+            <p className="text-2xl font-bold text-center sm:text-left text-background-pure">
+              {prompt.content}
+            </p>
+          )}
         </div>
+        <button className={rightButtonClassName} onClick={handleNextNav}>
+          <ChevronRight size={96} className="w-20 sm:w-24" />
+        </button>
       </div>
-    </>
+    </div>
   );
 }

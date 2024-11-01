@@ -127,10 +127,10 @@ export default function PostInput({
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-      <CollapsibleTrigger asChild className="mb-6">
+      <CollapsibleTrigger asChild className="mb-4">
         {isOpen ? (
           <Button
-            className="font-bold bg-zinc-700 hover:bg-zinc-800 text-zinc-50 rounded-lg transition-all duration-200 text-base shadow-sm shadow-black"
+            className="font-bold bg-zinc-700 hover:bg-zinc-800 text-zinc-50 rounded-lg transition-all duration-200 text-base shadow-sm shadow-themeshadow"
             aria-label="hide button"
           >
             Hide
@@ -138,7 +138,7 @@ export default function PostInput({
           </Button>
         ) : (
           <Button
-            className="font-bold bg-primary hover:bg-primary-dark text-zinc-50 rounded-lg transition-all duration-200 text-base shadow-sm shadow-black"
+            className="overflow-hidden font-bold bg-primary hover:bg-primary-dark text-zinc-50 rounded-lg transition-all duration-200 text-base shadow-sm shadow-themeshadow"
             aria-label="create response"
           >
             Create a Response
@@ -147,10 +147,10 @@ export default function PostInput({
         )}
       </CollapsibleTrigger>
 
-      <CollapsibleContent className="CollapsibleContent">
-        <h3 className="text-xl">
+      <CollapsibleContent className="CollapsibleContent bg-background-raised/70 rounded-2xl shadow-md shadow-themeshadow mb-4">
+        <h3 className="text-xl pt-5">
           {responseSentence ? (
-            responseSentence
+            <span className="text-xl">{responseSentence}</span>
           ) : (
             <span className="text-faded-light">
               Create a response using the words below.
@@ -165,7 +165,7 @@ export default function PostInput({
               const content = responseSentence;
               handleSubmit({ words, content });
             }}
-            className="flex flex-col justify-center items-center p-4"
+            className="flex flex-col justify-center items-center pt-0 p-4"
           >
             <FormField
               control={form.control}
@@ -209,7 +209,7 @@ export default function PostInput({
             />
             <button
               type="submit"
-              className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-700 font-bold rounded-lg shadow-sm shadow-black text-xl"
+              className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-700 font-bold rounded-lg shadow-sm shadow-themeshadow text-xl text-zinc-100"
               aria-label="submit button"
             >
               Submit

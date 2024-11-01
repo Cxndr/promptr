@@ -40,8 +40,8 @@ type GravityProps = {
 
 const Gravity: React.FC<GravityProps> = ({ wordsArr }) => {
   const [spanStates, setSpanStates] = useState<SpanState[]>([]);
-  const buffer = 3; // Buffer size to prevent sidebar from showing
-  const charW = 13;
+  const buffer = 0 // Buffer size to prevent sidebar from showing
+  const charW = 11;
 
   useEffect(() => {
     const arr = wordsArr;
@@ -117,7 +117,7 @@ const Gravity: React.FC<GravityProps> = ({ wordsArr }) => {
 
   // Render the spans
   return (
-    <div className="z-10">
+    <div className="z-10 h-0">
       <p className="inline-block">
         {spanStates.map((span, index) => (
           <span

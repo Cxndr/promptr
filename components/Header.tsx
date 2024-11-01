@@ -1,31 +1,23 @@
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+
 import MobileNav from "./MobileNav";
-import MainNav from "./DesktopNav";
-import { ModeToggle } from "./ModeToggle";
+import DesktopNav from "./DesktopNav";
+import UserControls from "./UserControls";
+import LogoNav from "./LogoNav";
 
 const Header: React.FC = () => {
   return (
-    <header className="fixed w-full h-12 px-6 bg-background z-20 shadow-md shadow-black">
-      <div className="flex justify-between items-center h-full w-full ">
-        <div className="flex flex-row">
-          <MainNav />
-          <MobileNav />
-        </div>
+    <header className="fixed w-full h-12 px-4 bg-background z-40 shadow-md shadow-themeshadow transition-colors duration-1000">
+      <div className="flex-grow flex justify-center items-center h-full w-full ">
+        <MobileNav />
+        <LogoNav />
+      
+        <div className="flex md:justify-center flex-grow">
+          <DesktopNav />
 
-        <div className="flex gap-4 items-center">
-          <div className="">
-            <ModeToggle />
-          </div>
-
-          <div className="flex items-center hover:scale-110 transition-all duration-300">
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </div>
         </div>
+        
+        <UserControls />
+        
       </div>
     </header>
   );
