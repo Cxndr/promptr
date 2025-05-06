@@ -1,4 +1,4 @@
-# Phrase Factory
+# Promptr
 
 ### User Stories
 
@@ -42,7 +42,7 @@
 To deploy this project, complete the following steps:
 
 1. **Fork/Clone the Project Locally:**
-   Navigate to our [GitHub Repo](https://github.com/Cxndr/week12-finalproject) and click Fork in the upper right hand corner. Once Forked, find the copy of this repo under your repositories. Next click the large green Code button and copy the SSH key. Then open your terminal and run `git clone` followed by this copied SSH key and hit enter. This will obtain a local copy. Then run `npm i` to install the relevant packages.
+   Navigate to our [GitHub Repo](https://github.com/Cxndr/promptr) and click Fork in the upper right hand corner. Once Forked, find the copy of this repo under your repositories. Next click the large green Code button and copy the SSH key. Then open your terminal and run `git clone` followed by this copied SSH key and hit enter. This will obtain a local copy. Then run `npm i` to install the relevant packages.
 
 2. **Create the database tables:**
    Navigate to your local copy and open with your prefered Code Editor/IDE. Open the `schema.sql` file and create all the tables in your prefered database host provider by running each create table query.
@@ -73,4 +73,4 @@ Place your database URL after the DATABASE_URL=
 7. **Deploy to Host:**
    To deploy this project navaigate to your prefered hosting provider. I recommend [Vercel](https://vercel.app/) for quick and easy Next App deployments. Steps may vary depending on host however generally you will login with GitHub and create a new project. Find your GitHub repo in the list (or copy the URL from your Forked project if it isn't listed). Go back to your Code Editor/IDE and copy the contents of the `.env.local` to clipboard. Add these to the Environment Variables for the project. With Vercel you can paste them all in at once and click save. Remember to name the project for easier navigation later. Then hit deploy and wait a moment for it to build.
 
-You should now have a deployed copy of Phrase Factory!
+You should now have a deployed copy of Promptr!
