@@ -88,7 +88,7 @@ const Gravity: React.FC<GravityProps> = ({ wordsArr }) => {
 											nextX,
 											window.innerWidth - span.string.length * charW - buffer
 										)
-								  )
+								)
 								: nextX,
 							y: isBeyondYBounds
 								? Math.max(
@@ -97,7 +97,7 @@ const Gravity: React.FC<GravityProps> = ({ wordsArr }) => {
 											nextY,
 											window.innerHeight - span.string.length * charW - buffer
 										)
-								  )
+									)
 								: nextY,
 						},
 						dir: {

@@ -3,7 +3,7 @@ import aniStyle from "@/styles/aniTxtStyle.module.css";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-const words = ["Welcome", "to", "Phrase Factory!"];
+const words = ["Welcome", "to", "Promptr!"];
 
 export default function AnimatedSubtitle() {
 	const [toHide, setToHide] = useState(false);

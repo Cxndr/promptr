@@ -1,4 +1,3 @@
-import AniTitle from "@/components/AniTitle";
 import Gravity from "@/components/Gravity";
 import { fetchUserProfile } from "@/lib/fetch";
 import { auth } from "@clerk/nextjs/server";
@@ -19,13 +18,15 @@ export default async function Home() {
 	return (
 		<>
 			<Gravity wordsArr={wordsArr} />
-			<div className="z-20">
-				<div className="relative max-w-5xl bg-background/80 px-8 py-5 mx-4 flex flex-col justify-center items-center rounded-3xl shadow-md shadow-black z-10">
+			<div className="z-20 h-full flex flex-col justify-center items-center">
+				<div className="relative -top-4 max-w-5xl bg-background/80 px-8 py-5 mx-4 flex flex-col justify-center items-center rounded-3xl shadow-md shadow-black z-10">
 					<div className="absolute -rotate-[18deg] text-2xl top-7 left-6 sm:left-28 sm:top-5 sm:-rotate-[13deg]">
-						🏭
+						💬
 					</div>
 
-					<AniTitle />
+					<div className="absolute -rotate-[-18deg] text-2xl top-7 right-6 sm:right-28 sm:top-5 sm:-rotate-[-13deg]">
+						🗣️
+					</div>
 
 					<div className="flex flex-col gap-4">
 						<h2 className="text-3xl font-bold text-center">How To Play</h2>

@@ -6,7 +6,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
 	title: "Prompts",
-	description: "Select a prompt to go to try and answer them | Prompts",
+	description: "Select a prompt to play | Prompts",
 };
 
 export default async function PlayPage() {

@@ -647,7 +647,6 @@ const fillPrompts = async () => {
 };
 
 // uncomment these functions to call what you need
-
-//emptyAllTables();
-//fillWithWords();
-//fillPrompts();
+emptyAllTables();
+fillWithWords();
+fillPrompts();
