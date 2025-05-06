@@ -42,7 +42,7 @@
 To deploy this project, complete the following steps:
 
 1. **Fork/Clone the Project Locally:**
-   Navigate to our [GitHub Repo](https://github.com/Cxndr/week12-finalproject) and click Fork in the upper right hand corner. Once Forked, find the copy of this repo under your repositories. Next click the large green Code button and copy the SSH key. Then open your terminal and run `git clone` followed by this copied SSH key and hit enter. This will obtain a local copy. Then run `npm i` to install the relevant packages.
+   Navigate to our [GitHub Repo](https://github.com/Cxndr/promptr) and click Fork in the upper right hand corner. Once Forked, find the copy of this repo under your repositories. Next click the large green Code button and copy the SSH key. Then open your terminal and run `git clone` followed by this copied SSH key and hit enter. This will obtain a local copy. Then run `npm i` to install the relevant packages.
 
 2. **Create the database tables:**
    Navigate to your local copy and open with your prefered Code Editor/IDE. Open the `schema.sql` file and create all the tables in your prefered database host provider by running each create table query.
