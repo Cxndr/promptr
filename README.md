@@ -1,4 +1,4 @@
-# Phrase Factory
+# Promptr
 
 ### User Stories
 
