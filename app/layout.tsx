@@ -9,9 +9,9 @@ import localFont from "next/font/local";
 import BackGroundStyling from "@/components/BackgroundStyling";
 
 export const metadata: Metadata = {
-	title: "Phrase Factory",
+	title: "Promptr",
 	description:
-		"Create a solution to a prompt based on given words | Phrase Factory",
+		"Create a solution to a prompt based on given words | Promptr",
 };
 
 const noto = Noto_Sans({
